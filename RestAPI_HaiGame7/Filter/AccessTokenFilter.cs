@@ -17,6 +17,7 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using HaiGame7.Model.MyModel;
 using HaiGame7.BLL.Enum;
+using HaiGame7.BLL.Logic.Common;
 using System.Web.Script.Serialization;
 
 namespace HaiGame7.RestAPI.Filter
@@ -42,14 +43,22 @@ namespace HaiGame7.RestAPI.Filter
                     string accesstoken = requestQuery.Substring(startIndex + 1);
                     //验证accesstoken合法性
                     bool isValidAccess = true;
-                    //isValidAccess=AccessToken.IsOK();
+                    isValidAccess=CheckToken.IsValid(accesstoken);
                     if (isValidAccess==true)
                     {
                         return;
                     }
+                    else
+                    {
+                        message.MessageCode = Message.ACCESSTOKENINVALID_CODE;
+                        message.Message = Message.ACCESSTOKENINVALID;
+                    }
                 }
-                message.MessageCode = Message.NOACCESSTOKEN_CODE;
-                message.Message = Message.NOACCESSTOKEN;
+                else
+                {
+                    message.MessageCode = Message.NOACCESSTOKEN_CODE;
+                    message.Message = Message.NOACCESSTOKEN;
+                }
             }
             catch (Exception ex)
             {

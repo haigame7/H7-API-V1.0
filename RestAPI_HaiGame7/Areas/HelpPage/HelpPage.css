@@ -10,7 +10,9 @@
 .help-page-table p {
     font-family: "Segoe UI Light", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
 }
-
+.red{
+    color:red;
+}
 .help-page pre.wrapped {
     white-space: -moz-pre-wrap;
     white-space: -pre-wrap;

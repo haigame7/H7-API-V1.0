@@ -4,5 +4,6 @@
     {
         public string PhoneNumber { get; set; }
         public string PassWord { get; set; }
+        public string VerifyCode { get; set; }
     }
 }

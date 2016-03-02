@@ -36,10 +36,12 @@ namespace HaiGame7.RestAPI.Controllers
 
         #region Login 登录
         /// <summary>
-        /// 用户登录处理
+        /// 登录
         /// </summary>
         /// <returns>
         /// 登录成功：{"MessageCode":0,"Message":""}
+        /// 手机号不存在：{"MessageCode":10001,"Message":"no user"}
+        /// 密码错误：{"MessageCode":10002,"Message":"password error"}
         /// </returns>
         [HttpPost]
         public HttpResponseMessage Login([FromBody] SimpleUserModel user)
@@ -52,23 +54,47 @@ namespace HaiGame7.RestAPI.Controllers
         }
         #endregion
 
-        #region VerifyCode 获取验证码
+        #region VerifyCode1 获取验证码（注册用）
         /// <summary>
-        /// 获取验证码
+        /// 获取验证码（注册用）
         /// </summary>
         /// <returns>
-        /// 
+        /// 获取成功：{"MessageCode":0,"Message":""}
+        /// 手机号不存在：{"MessageCode":10001,"Message":"no user"}
+        /// 验证码获取失败：{"MessageCode":10003,"Message":"verfitycode error"}
         /// </returns>
         [HttpPost]
-        public HttpResponseMessage VerifyCode([FromBody] db_User user)
+        public HttpResponseMessage VerifyCode1([FromBody] SimpleUserModel user)
         {
+            UserLogic userLogic = new UserLogic();
+            jsonResult = userLogic.VerifyCode(user);
 
             returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
             return returnResult;
         }
         #endregion
 
-        #region 注册 Register
+        #region VerifyCode2 获取验证码（找回密码用）
+        /// <summary>
+        /// 获取验证码（找回密码用）
+        /// </summary>
+        /// <returns>
+        /// 获取成功：{"MessageCode":0,"Message":""}
+        /// 手机号不存在：{"MessageCode":10001,"Message":"no user"}
+        /// 验证码获取失败：{"MessageCode":10003,"Message":"verfitycode error"}
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage VerifyCode2([FromBody] SimpleUserModel user)
+        {
+            UserLogic userLogic = new UserLogic();
+            jsonResult = userLogic.VerifyCode(user);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region Register 注册
         /// <summary>
         /// 注册
         /// </summary>
@@ -76,8 +102,28 @@ namespace HaiGame7.RestAPI.Controllers
         /// 
         /// </returns>
         [HttpPost]
-        public HttpResponseMessage Register([FromBody] db_User user)
+        public HttpResponseMessage Register([FromBody] SimpleUserModel user)
         {
+            UserLogic userLogic = new UserLogic();
+            jsonResult = userLogic.Register(user);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region ResetPassWord 重置密码
+        /// <summary>
+        /// 重置密码
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage ResetPassWord([FromBody] SimpleUserModel user)
+        {
+            UserLogic userLogic = new UserLogic();
+            jsonResult = userLogic.ResetPassWord(user);
 
             returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
             return returnResult;
