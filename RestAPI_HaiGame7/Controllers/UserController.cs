@@ -59,15 +59,15 @@ namespace HaiGame7.RestAPI.Controllers
         /// 获取验证码（注册用）
         /// </summary>
         /// <returns>
-        /// 获取成功：{"MessageCode":0,"Message":""}
-        /// 手机号不存在：{"MessageCode":10001,"Message":"no user"}
-        /// 验证码获取失败：{"MessageCode":10003,"Message":"verfitycode error"}
+        /// 获取成功：{"MessageCode":0,"Message":"验证码"}
+        /// 获取失败：{"MessageCode":10003,"Message":"verfitycode error"}
+        /// 手机号已注册：{"MessageCode":10004,"Message":"user exist"}
         /// </returns>
         [HttpPost]
         public HttpResponseMessage VerifyCode1([FromBody] SimpleUserModel user)
         {
             UserLogic userLogic = new UserLogic();
-            jsonResult = userLogic.VerifyCode(user);
+            jsonResult = userLogic.VerifyCode1(user);
 
             returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
             return returnResult;
@@ -79,7 +79,7 @@ namespace HaiGame7.RestAPI.Controllers
         /// 获取验证码（找回密码用）
         /// </summary>
         /// <returns>
-        /// 获取成功：{"MessageCode":0,"Message":""}
+        /// 获取成功：{"MessageCode":0,"Message":"验证码"}
         /// 手机号不存在：{"MessageCode":10001,"Message":"no user"}
         /// 验证码获取失败：{"MessageCode":10003,"Message":"verfitycode error"}
         /// </returns>
@@ -87,7 +87,7 @@ namespace HaiGame7.RestAPI.Controllers
         public HttpResponseMessage VerifyCode2([FromBody] SimpleUserModel user)
         {
             UserLogic userLogic = new UserLogic();
-            jsonResult = userLogic.VerifyCode(user);
+            jsonResult = userLogic.VerifyCode2(user);
 
             returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
             return returnResult;
@@ -99,7 +99,10 @@ namespace HaiGame7.RestAPI.Controllers
         /// 注册
         /// </summary>
         /// <returns>
-        /// 
+        /// 注册成功：{"MessageCode":0,"Message":""}
+        /// 手机号已存在：{"MessageCode":10004,"Message":"user exist"}
+        /// 验证码错误：{"MessageCode":10005,"Message":"verifycode error"}
+        /// 验证码过期：{"MessageCode":10006,"Message":"verifycode expire"}
         /// </returns>
         [HttpPost]
         public HttpResponseMessage Register([FromBody] SimpleUserModel user)
@@ -117,7 +120,10 @@ namespace HaiGame7.RestAPI.Controllers
         /// 重置密码
         /// </summary>
         /// <returns>
-        /// 
+        /// 重置成功：{"MessageCode":0,"Message":""}
+        /// 手机号不存在：{"MessageCode":10001,"Message":"no user"}
+        /// 验证码错误：{"MessageCode":10005,"Message":"verifycode error"}
+        /// 验证码过期：{"MessageCode":10006,"Message":"verifycode expire"}
         /// </returns>
         [HttpPost]
         public HttpResponseMessage ResetPassWord([FromBody] SimpleUserModel user)

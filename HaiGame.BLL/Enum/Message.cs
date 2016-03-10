@@ -24,6 +24,18 @@ namespace HaiGame7.BLL.Enum
         public const int SMSERR_CODE = 10003;
         public const string SMSERR = "verfitycode error";
 
+        //手机号已注册
+        public const int USEREXIST_CODE = 10004;
+        public const string USEREXIST = "user exist";
+
+        //验证码错误
+        public const int VERIFYERR_CODE = 10005;
+        public const string VERIFYERR = "verifycode error";
+
+        //验证码过期
+        public const int VERIFYEXPIRE_CODE = 10006;
+        public const string VERIFYEXPIRE = "verifycode expire";
+
         //系统错误
         public const int SYSERR_CODE = 40001;
         public const string SYSERR = "system error";

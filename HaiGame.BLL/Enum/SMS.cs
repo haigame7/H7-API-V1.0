@@ -11,7 +11,7 @@ namespace HaiGame7.BLL.Enum
         //容联短信API端口
         public const string PORT = "8883";
         //容联短信API地址
-        public const string ADDRESS = @"https://app.cloopen.com:8883";
+        public const string ADDRESS = @"app.cloopen.com";
         //开发者账号
         public const string ACCOUNT_SID = @"aaf98f8950189e9b01505aadc9362abc";
         //开发者token

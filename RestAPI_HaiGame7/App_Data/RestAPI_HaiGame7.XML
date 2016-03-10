@@ -502,8 +502,8 @@
             </summary>
             <returns>
             获取成功：{"MessageCode":0,"Message":""}
-            手机号不存在：{"MessageCode":10001,"Message":"no user"}
-            验证码获取失败：{"MessageCode":10003,"Message":"verfitycode error"}
+            获取失败：{"MessageCode":10003,"Message":"verfitycode error"}
+            手机号已注册：{"MessageCode":10004,"Message":"user exist"}
             </returns>
         </member>
         <member name="M:HaiGame7.RestAPI.Controllers.UserController.VerifyCode2(HaiGame7.Model.MyModel.SimpleUserModel)">
@@ -521,7 +521,10 @@
             注册
             </summary>
             <returns>
-            
+            注册成功：{"MessageCode":0,"Message":""}
+            手机号已存在：{"MessageCode":10004,"Message":"user exist"}
+            验证码错误：{"MessageCode":10005,"Message":"verifycode error"}
+            验证码过期：{"MessageCode":10006,"Message":"verifycode expire"}
             </returns>
         </member>
         <member name="M:HaiGame7.RestAPI.Controllers.UserController.ResetPassWord(HaiGame7.Model.MyModel.SimpleUserModel)">
@@ -529,7 +532,10 @@
             重置密码
             </summary>
             <returns>
-            
+            重置成功：{"MessageCode":0,"Message":""}
+            手机号不存在：{"MessageCode":10001,"Message":"no user"}
+            验证码错误：{"MessageCode":10005,"Message":"verifycode error"}
+            验证码过期：{"MessageCode":10006,"Message":"verifycode expire"}
             </returns>
         </member>
         <member name="T:HaiGame7.BLL.Filter.ExceptionFilter">

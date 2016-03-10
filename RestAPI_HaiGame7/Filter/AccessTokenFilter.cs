@@ -43,7 +43,7 @@ namespace HaiGame7.RestAPI.Filter
                     string accesstoken = requestQuery.Substring(startIndex + 1);
                     //验证accesstoken合法性
                     bool isValidAccess = true;
-                    isValidAccess=CheckToken.IsValid(accesstoken);
+                    isValidAccess=Common.IsValid(accesstoken);
                     if (isValidAccess==true)
                     {
                         return;

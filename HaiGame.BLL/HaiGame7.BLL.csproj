@@ -78,8 +78,7 @@
     <Compile Include="Base\BaseMethod.cs" />
     <Compile Include="Enum\Message.cs" />
     <Compile Include="Enum\SMS.cs" />
-    <Compile Include="Logic\Common\CheckToken.cs" />
-    <Compile Include="Logic\Common\SMSLogic.cs" />
+    <Compile Include="Logic\Common\Common.cs" />
     <Compile Include="Logic\User\UserLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
