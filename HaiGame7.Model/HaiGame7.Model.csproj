@@ -148,6 +148,9 @@
       <DependentUpon>HaiGame.edmx</DependentUpon>
     </Compile>
     <Compile Include="MyModel\MessageModel.cs" />
+    <Compile Include="MyModel\MyAssetModel.cs" />
+    <Compile Include="MyModel\TotalAssetModel.cs" />
+    <Compile Include="MyModel\UserModel.cs" />
     <Compile Include="MyModel\SimpleUserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
