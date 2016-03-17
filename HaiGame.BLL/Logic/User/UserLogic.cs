@@ -158,7 +158,7 @@ namespace HaiGame7.BLL
                     
                     MD5 md5Hash = MD5.Create();
                     userRecord.UserPassWord = Common.GetMd5Hash(md5Hash, user.PassWord);
-                    
+                    userRecord.RegisterDate = DateTime.Now;
                     context.db_User.Add(userRecord);
                     //添加信息到资产表
                     //context.db_AssetRecord.Add();
@@ -208,6 +208,154 @@ namespace HaiGame7.BLL
                 }
             }
             result = jss.Serialize(message);
+            return result;
+        }
+        #endregion
+
+        #region 根据手机号获取我的个人信息
+        public string UserInfo(SimpleUserModel user)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //获取用户ID
+                db_User userInfo = Common.GetUserByPhoneNumber(user.PhoneNumber);
+                if (userInfo!=null)
+                {
+                    message.Message = Message.OK;
+                    message.MessageCode = Message.OK_CODE;
+                }
+                else
+                {
+                    message.Message = Message.NOUSER;
+                    message.MessageCode = Message.NOUSER_CODE;
+                }
+                returnResult.Add(message);
+                returnResult.Add(userInfo);
+            }
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
+        #region 更改个人信息
+        public string UpdateUserInfo(UserModel user)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //获取用户ID
+                db_User userInfo = Common.GetUserByPhoneNumber(user.PhoneNumber);
+                if (userInfo != null)
+                {
+                    #region 个人信息字段
+                    if (user.Address!=null)
+                    {
+                        userInfo.Address = user.Address;
+                    }
+                    if (user.Birthday != null)
+                    {
+                        userInfo.Birthday = DateTime.Parse(user.Birthday);
+                    }
+                    if (user.Hobby != null)
+                    {
+                        userInfo.Hobby = user.Hobby;
+                    }
+                    if (user.Sex != null)
+                    {
+                        userInfo.Sex = user.Sex;
+                    }
+                    if (user.UserWebNickName != null)
+                    {
+                        userInfo.UserWebNickName = user.UserWebNickName;
+                    }
+                    if (user.UserWebPicture != null)
+                    {
+                        userInfo.UserWebPicture = user.UserWebPicture;
+                    }
+                    #endregion
+                    context.SaveChanges();
+                    message.Message = Message.OK;
+                    message.MessageCode = Message.OK_CODE;
+                }
+                else
+                {
+                    message.Message = Message.NOUSER;
+                    message.MessageCode = Message.NOUSER_CODE;
+                }
+            }
+            result = jss.Serialize(message);
+            return result;
+        }
+        #endregion
+
+        #region 获取我的资产列表
+        public string MyAssetList(SimpleUserModel user)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+            //获取我的资产
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //获取用户
+                db_User userInfo = Common.GetUserByPhoneNumber(user.PhoneNumber);
+                //获取用户资产列表
+                var assertRecordList = context.db_AssetRecord.Where(c => c.UserID == userInfo.UserID)
+                    .Where(c => c.VirtualMoney != 0)
+                    .OrderByDescending(c => c.SysTime).ToList();
+                message.Message = Message.OK;
+                message.MessageCode = Message.OK_CODE;
+                returnResult.Add(message);
+                returnResult.Add(assertRecordList);
+            }
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
+        #region 获取我的总资产
+        public string MyTotalAsset(SimpleUserModel user)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            MyAssetModel myAsset = new MyAssetModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+            //获取我的资产
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //获取用户ID
+                db_User userInfo = Common.GetUserByPhoneNumber(user.PhoneNumber);
+                if (userInfo!=null)
+                {
+                    //获取用户总资产
+                    var asset = context.db_AssetRecord.Where(c => c.UserID == userInfo.UserID).Sum(c => c.VirtualMoney);
+                    myAsset.TotalAsset = (int)asset;
+                    //获取用户资产排名
+                    myAsset.MyRank = Common.MyRank(myAsset.TotalAsset, (DateTime)userInfo.RegisterDate);
+
+                    message.Message = Message.OK;
+                    message.MessageCode = Message.OK_CODE;
+                }
+                else
+                {
+                    message.Message = Message.NOUSER;
+                    message.MessageCode = Message.NOUSER_CODE;
+                }
+                
+                returnResult.Add(message);
+                returnResult.Add(myAsset);
+            }
+            result = jss.Serialize(returnResult);
             return result;
         }
         #endregion
