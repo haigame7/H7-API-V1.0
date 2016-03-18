@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HaiGame7.BLL.Enum
 {
-    public static class Message
+    public static class MESSAGE
     {
         //执行成功
         public const int OK_CODE = 0;
@@ -35,6 +35,14 @@ namespace HaiGame7.BLL.Enum
         //验证码过期
         public const int VERIFYEXPIRE_CODE = 10006;
         public const string VERIFYEXPIRE = "verifycode expire";
+
+        //昵称已存在
+        public const int NICKEXIST_CODE = 10007;
+        public const string NICKEXIST = "nickname exist";
+
+        //无游戏数据
+        public const int NOGAMEDATA_CODE = 10008;
+        public const string NOGAMEDATA = "no gamedata";
 
         //系统错误
         public const int SYSERR_CODE = 40001;

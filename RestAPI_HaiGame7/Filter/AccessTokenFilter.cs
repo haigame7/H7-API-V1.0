@@ -50,21 +50,21 @@ namespace HaiGame7.RestAPI.Filter
                     }
                     else
                     {
-                        message.MessageCode = Message.ACCESSTOKENINVALID_CODE;
-                        message.Message = Message.ACCESSTOKENINVALID;
+                        message.MessageCode = MESSAGE.ACCESSTOKENINVALID_CODE;
+                        message.Message = MESSAGE.ACCESSTOKENINVALID;
                     }
                 }
                 else
                 {
-                    message.MessageCode = Message.NOACCESSTOKEN_CODE;
-                    message.Message = Message.NOACCESSTOKEN;
+                    message.MessageCode = MESSAGE.NOACCESSTOKEN_CODE;
+                    message.Message = MESSAGE.NOACCESSTOKEN;
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                message.MessageCode = Message.SYSERR_CODE;
-                message.Message = Message.SYSERR;
+                message.MessageCode = MESSAGE.SYSERR_CODE;
+                message.Message = MESSAGE.SYSERR;
             }
             json = jss.Serialize(message);
             returnResult = new HttpResponseMessage { Content = new StringContent(json, 

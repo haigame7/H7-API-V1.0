@@ -136,7 +136,7 @@ namespace HaiGame7.RestAPI.Controllers
         }
         #endregion
 
-        #region 获取个人信息
+        #region UserInfo 获取个人信息
         /// <summary>
         /// 根据手机号获取个人信息
         /// </summary>
@@ -156,7 +156,7 @@ namespace HaiGame7.RestAPI.Controllers
         }
         #endregion
 
-        #region 更改个人信息
+        #region UpdateUserInfo 更改个人信息
         /// <summary>
         /// 更改个人信息，传入手机号和要更改的字段，不更改字段不要传
         /// </summary>
@@ -176,18 +176,66 @@ namespace HaiGame7.RestAPI.Controllers
         }
         #endregion
 
-        #region 获取游戏数据
+        #region MyGameInfo 我的游戏数据
+        /// <summary>
+        /// 我的游戏数据
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>
+        /// 返回值实例：[{"MessageCode":0,"Message":""},
+        /// {"UserID":64,"GameID":"173032376","GamePower":"0","CertifyState":0,"CertifyName":"氦七G9SJkIJQ8l+uZP4BJEVZ+aHEtLY="}]
+        /// </returns>
+        public HttpResponseMessage MyGameInfo([FromBody] SimpleUserModel user)
+        {
+            UserLogic userLogic = new UserLogic();
+            jsonResult = userLogic.MyGameInfo(user);
 
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
         #endregion
 
         #region 我的战斗力排名
 
         #endregion
 
-        #region 认证游戏ID
+        #region UpdateCertifyGameID 更改认证游戏ID
+        /// <summary>
+        /// 更改认证游戏ID
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>
+        /// 提交成功：{"MessageCode":0,"Message":返回认证昵称}
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage UpdateCertifyGameID([FromBody] SimpleUserModel user)
+        {
+            UserLogic userLogic = new UserLogic();
+            jsonResult = userLogic.UpdateCertifyGameID(user);
 
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
         #endregion
 
+        #region CertifyGameID 提交认证游戏ID
+        /// <summary>
+        /// 提交认证游戏ID
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>
+        /// 提交成功：{"MessageCode":0,"Message":返回认证昵称}
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage CertifyGameID([FromBody] SimpleUserModel user)
+        {
+            UserLogic userLogic = new UserLogic();
+            jsonResult = userLogic.CertifyGameID(user);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
 
         #region MyAssetList 我的资产列表
         /// <summary>
@@ -214,7 +262,7 @@ namespace HaiGame7.RestAPI.Controllers
         }
         #endregion
 
-        #region 我的总资产
+        #region MyTotalAsset 我的总资产
         /// <summary>
         /// 我的总资产，返回总氦金，和我的资产排名
         /// </summary>

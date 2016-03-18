@@ -38,8 +38,8 @@ namespace HaiGame7.BLL.Filter
             //记录系统错误log
 
             //返回系统错误提示
-            message.MessageCode = Message.SYSERR_CODE;
-            message.Message = Message.SYSERR;
+            message.MessageCode = MESSAGE.SYSERR_CODE;
+            message.Message = MESSAGE.SYSERR;
             result = jss.Serialize(message);
             returnResult.Content = new StringContent(result, Encoding.UTF8, "application/json");
 

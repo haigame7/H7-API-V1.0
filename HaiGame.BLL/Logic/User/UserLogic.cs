@@ -29,21 +29,21 @@ namespace HaiGame7.BLL
                     if (dbUser.UserPassWord == Common.GetMd5Hash(md5Hash,user.PassWord))
                     {
                         //登录成功
-                        message.MessageCode = Message.OK_CODE;
-                        message.Message = Message.OK;
+                        message.MessageCode = MESSAGE.OK_CODE;
+                        message.Message = MESSAGE.OK;
                     }
                     else
                     {
                         //密码错误
-                        message.MessageCode = Message.PWSERR_CODE;
-                        message.Message = Message.PWSERR;
+                        message.MessageCode = MESSAGE.PWSERR_CODE;
+                        message.Message = MESSAGE.PWSERR;
                     }
                 }
                 else
                 {
                     //用户未存在
-                    message.MessageCode = Message.NOUSER_CODE;
-                    message.Message = Message.NOUSER;
+                    message.MessageCode = MESSAGE.NOUSER_CODE;
+                    message.Message = MESSAGE.NOUSER;
                 }
             }
             result = jss.Serialize(message);
@@ -72,21 +72,21 @@ namespace HaiGame7.BLL
                     if (ret["statusCode"].ToString()=="000000")
                     {
                         //获取验证码成功
-                        message.MessageCode = Message.OK_CODE;
+                        message.MessageCode = MESSAGE.OK_CODE;
                         message.Message = verifyCode;
                     }
                     else
                     {
                         //获取验证码失败
-                        message.MessageCode = Message.SMSERR_CODE;
-                        message.Message = Message.SMSERR;
+                        message.MessageCode = MESSAGE.SMSERR_CODE;
+                        message.Message = MESSAGE.SMSERR;
                     }
                 }
                 else
                 {
                     //手机号不存在
-                    message.MessageCode = Message.NOUSER_CODE;
-                    message.Message = Message.NOUSER;
+                    message.MessageCode = MESSAGE.NOUSER_CODE;
+                    message.Message = MESSAGE.NOUSER;
                 }
             }
             result = jss.Serialize(message);
@@ -115,21 +115,21 @@ namespace HaiGame7.BLL
                     if (ret["statusCode"].ToString() == "000000")
                     {
                         //获取验证码成功
-                        message.MessageCode = Message.OK_CODE;
+                        message.MessageCode = MESSAGE.OK_CODE;
                         message.Message = verifyCode;
                     }
                     else
                     {
                         //获取验证码失败
-                        message.MessageCode = Message.SMSERR_CODE;
-                        message.Message = Message.SMSERR;
+                        message.MessageCode = MESSAGE.SMSERR_CODE;
+                        message.Message = MESSAGE.SMSERR;
                     }
                 }
                 else
                 {
                     //手机号已注册
-                    message.MessageCode = Message.USEREXIST_CODE;
-                    message.Message = Message.USEREXIST;
+                    message.MessageCode = MESSAGE.USEREXIST_CODE;
+                    message.Message = MESSAGE.USEREXIST;
                 }
             }
             result = jss.Serialize(message);
@@ -161,17 +161,17 @@ namespace HaiGame7.BLL
                     userRecord.RegisterDate = DateTime.Now;
                     context.db_User.Add(userRecord);
                     //添加信息到资产表
-                    //context.db_AssetRecord.Add();
+                    Asset.AddMoneyRegister(dbUser.UserID, context);
                     context.SaveChanges();
                     //添加成功
-                    message.MessageCode = Message.OK_CODE;
-                    message.Message = Message.OK;
+                    message.MessageCode = MESSAGE.OK_CODE;
+                    message.Message = MESSAGE.OK;
                 }
                 else
                 {
                     //手机号已存在
-                    message.MessageCode = Message.USEREXIST_CODE;
-                    message.Message = Message.USEREXIST;
+                    message.MessageCode = MESSAGE.USEREXIST_CODE;
+                    message.Message = MESSAGE.USEREXIST;
                 }
             }
             result = jss.Serialize(message);
@@ -190,11 +190,11 @@ namespace HaiGame7.BLL
             {
                 // 判断手机号是否存在
                 db_User dbUser = context.db_User.Where(c => c.PhoneNumber == user.PhoneNumber.Trim()).FirstOrDefault();
-                if (dbUser != null)
+                if (dbUser == null)
                 {
                     //手机号不存在
-                    message.MessageCode = Message.NOUSER_CODE;
-                    message.Message = Message.NOUSER;
+                    message.MessageCode = MESSAGE.NOUSER_CODE;
+                    message.Message = MESSAGE.NOUSER;
                 }
                 else
                 {
@@ -203,8 +203,8 @@ namespace HaiGame7.BLL
                     dbUser.UserPassWord= Common.GetMd5Hash(md5Hash, user.PassWord);
                     context.SaveChanges();
                     //修改成功
-                    message.MessageCode = Message.OK_CODE;
-                    message.Message = Message.OK;
+                    message.MessageCode = MESSAGE.OK_CODE;
+                    message.Message = MESSAGE.OK;
                 }
             }
             result = jss.Serialize(message);
@@ -222,17 +222,17 @@ namespace HaiGame7.BLL
 
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
-                //获取用户ID
-                db_User userInfo = Common.GetUserByPhoneNumber(user.PhoneNumber);
+                //获取用户
+                db_User userInfo = User.GetUserByPhoneNumber(user.PhoneNumber);
                 if (userInfo!=null)
                 {
-                    message.Message = Message.OK;
-                    message.MessageCode = Message.OK_CODE;
+                    message.Message = MESSAGE.OK;
+                    message.MessageCode = MESSAGE.OK_CODE;
                 }
                 else
                 {
-                    message.Message = Message.NOUSER;
-                    message.MessageCode = Message.NOUSER_CODE;
+                    message.Message = MESSAGE.NOUSER;
+                    message.MessageCode = MESSAGE.NOUSER_CODE;
                 }
                 returnResult.Add(message);
                 returnResult.Add(userInfo);
@@ -251,10 +251,13 @@ namespace HaiGame7.BLL
 
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
-                //获取用户ID
-                db_User userInfo = Common.GetUserByPhoneNumber(user.PhoneNumber);
+                //获取用户
+                db_User userInfo = User.GetUserByPhoneNumber(user.PhoneNumber);
                 if (userInfo != null)
                 {
+                    int code = MESSAGE.OK_CODE;
+                    string msg = MESSAGE.OK;
+
                     #region 个人信息字段
                     if (user.Address!=null)
                     {
@@ -274,7 +277,17 @@ namespace HaiGame7.BLL
                     }
                     if (user.UserWebNickName != null)
                     {
-                        userInfo.UserWebNickName = user.UserWebNickName;
+                        //验证昵称是否存在
+                        if(User.GetUserByNickName(user.UserWebNickName.Trim()))
+                        {
+                            userInfo.UserWebNickName = user.UserWebNickName;
+                        }
+                        else
+                        {
+                            //昵称已存在
+                            msg = MESSAGE.NICKEXIST;
+                            code = MESSAGE.NICKEXIST_CODE;  
+                        }
                     }
                     if (user.UserWebPicture != null)
                     {
@@ -282,13 +295,13 @@ namespace HaiGame7.BLL
                     }
                     #endregion
                     context.SaveChanges();
-                    message.Message = Message.OK;
-                    message.MessageCode = Message.OK_CODE;
+                    message.Message = msg;
+                    message.MessageCode = code;
                 }
                 else
                 {
-                    message.Message = Message.NOUSER;
-                    message.MessageCode = Message.NOUSER_CODE;
+                    message.Message = MESSAGE.NOUSER;
+                    message.MessageCode = MESSAGE.NOUSER_CODE;
                 }
             }
             result = jss.Serialize(message);
@@ -307,13 +320,13 @@ namespace HaiGame7.BLL
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
                 //获取用户
-                db_User userInfo = Common.GetUserByPhoneNumber(user.PhoneNumber);
+                db_User userInfo = User.GetUserByPhoneNumber(user.PhoneNumber);
                 //获取用户资产列表
                 var assertRecordList = context.db_AssetRecord.Where(c => c.UserID == userInfo.UserID)
                     .Where(c => c.VirtualMoney != 0)
                     .OrderByDescending(c => c.SysTime).ToList();
-                message.Message = Message.OK;
-                message.MessageCode = Message.OK_CODE;
+                message.Message = MESSAGE.OK;
+                message.MessageCode = MESSAGE.OK_CODE;
                 returnResult.Add(message);
                 returnResult.Add(assertRecordList);
             }
@@ -333,29 +346,157 @@ namespace HaiGame7.BLL
             //获取我的资产
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
-                //获取用户ID
-                db_User userInfo = Common.GetUserByPhoneNumber(user.PhoneNumber);
+                //获取用户
+                db_User userInfo = User.GetUserByPhoneNumber(user.PhoneNumber);
                 if (userInfo!=null)
                 {
                     //获取用户总资产
                     var asset = context.db_AssetRecord.Where(c => c.UserID == userInfo.UserID).Sum(c => c.VirtualMoney);
                     myAsset.TotalAsset = (int)asset;
                     //获取用户资产排名
-                    myAsset.MyRank = Common.MyRank(myAsset.TotalAsset, (DateTime)userInfo.RegisterDate);
+                    myAsset.MyRank = Asset.MyRank(myAsset.TotalAsset, (DateTime)userInfo.RegisterDate);
 
-                    message.Message = Message.OK;
-                    message.MessageCode = Message.OK_CODE;
+                    message.Message = MESSAGE.OK;
+                    message.MessageCode = MESSAGE.OK_CODE;
                 }
                 else
                 {
-                    message.Message = Message.NOUSER;
-                    message.MessageCode = Message.NOUSER_CODE;
+                    message.Message = MESSAGE.NOUSER;
+                    message.MessageCode = MESSAGE.NOUSER_CODE;
                 }
                 
                 returnResult.Add(message);
                 returnResult.Add(myAsset);
             }
             result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
+        #region 我的游戏数据
+        public string MyGameInfo(SimpleUserModel user)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            GameModel gameInfo=new GameModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+
+                //获取用户
+                db_User userInfo = User.GetUserByPhoneNumber(user.PhoneNumber);
+                if (userInfo != null)
+                {
+                    // 获取用户游戏数据
+                    var sql = "select t1.UserID,t1.GameID,t1.CertifyState,t2.GamePower,t1.CertifyName" +
+                            " from db_GameIDofUser t1" +
+                            " left join db_GameInfoofPlatform t2" +
+                            " on t1.UGID = t2.UGID" +
+                            " where t1.UserID = " + userInfo.UserID + " and t1.GameType = 'DOTA2'";
+
+                    gameInfo = context.Database.SqlQuery<GameModel>(sql)
+                                     .FirstOrDefault();
+
+                    if (gameInfo == null)
+                    {
+                        //无游戏数据
+                        message.Message = MESSAGE.NOGAMEDATA;
+                        message.MessageCode = MESSAGE.NOGAMEDATA_CODE;
+                    }
+                    else
+                    {
+                        message.Message = MESSAGE.OK;
+                        message.MessageCode = MESSAGE.OK_CODE;
+                    }
+                }
+                else
+                {
+                    message.Message = MESSAGE.NOUSER;
+                    message.MessageCode = MESSAGE.NOUSER_CODE;
+                }
+
+                returnResult.Add(message);
+                returnResult.Add(gameInfo);
+            }
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
+        #region 提交认证游戏ID
+        public string CertifyGameID(SimpleUserModel user)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //获取用户
+                db_User userInfo = User.GetUserByPhoneNumber(user.PhoneNumber);
+                if (userInfo != null)
+                {
+                    db_GameIDofUser gameIDofUser=new db_GameIDofUser();
+                    gameIDofUser.UserID = userInfo.UserID;   
+                    gameIDofUser.GameID = user.GameID;
+                    gameIDofUser.GameType = "DOTA2";
+                    gameIDofUser.CertifyState = 0;
+                    gameIDofUser.CertifyName = "氦七"+Common.MathRandom(6);
+                    context.db_GameIDofUser.Add(gameIDofUser);
+                    context.SaveChanges();
+
+                    message.Message = gameIDofUser.CertifyName;
+                    message.MessageCode = MESSAGE.OK_CODE;
+                }
+                else
+                {
+                    message.Message = MESSAGE.NOUSER;
+                    message.MessageCode = MESSAGE.NOUSER_CODE;
+                }
+            }
+
+            result = jss.Serialize(message);
+            return result;
+        }
+        #endregion
+
+        #region 更改认证游戏ID
+        public string UpdateCertifyGameID(SimpleUserModel user)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //获取用户
+                db_User userInfo = User.GetUserByPhoneNumber(user.PhoneNumber);
+                if (userInfo != null)
+                {
+                    db_GameIDofUser gameIDofUser =context.db_GameIDofUser.
+                                    Where(c=>c.UserID== userInfo.UserID).
+                                    Where(c => c.GameType == "DOTA2").
+                                    FirstOrDefault();
+
+                    gameIDofUser.GameID = user.GameID;
+                    gameIDofUser.CertifyState = 0;
+                    gameIDofUser.CertifyName = "氦七" + Common.MathRandom(6);
+                    context.SaveChanges();
+                    //返回认证昵称
+                    message.Message = gameIDofUser.CertifyName;
+                    message.MessageCode = MESSAGE.OK_CODE;
+                }
+                else
+                {
+                    //无用户信息
+                    message.Message = MESSAGE.NOUSER;
+                    message.MessageCode = MESSAGE.NOUSER_CODE;
+                }
+            }
+
+            result = jss.Serialize(message);
             return result;
         }
         #endregion

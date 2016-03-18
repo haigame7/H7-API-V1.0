@@ -481,6 +481,58 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
+        <member name="T:HaiGame7.RestAPI.Controllers.RankController">
+            <summary>
+            排行restful API，提供涉及到排行的服务。
+            </summary>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.RankController.UserRank(HaiGame7.Model.MyModel.RankParameterModel)">
+            <summary>
+            个人排行
+            </summary>
+            <param name="rank">
+            参数说明：
+            ranktype：排名类型 1.大神系数（GameGrade）2.氦金（Asset）3.战斗力（GamePower）
+            ranksort：排序 1.倒序（desc） 2.正序（asc）
+            startpage：页码
+            pagecount：每页记录数
+            参数实例：{"ranktype":"GamePower","ranksort":"desc","startpage":1,"pagecount":5}
+            </param>
+            <returns>
+            返回值实例：[{"MessageCode":0,"Message":""},
+            [{"NickName":null,"Hobby":null,"GameID":"106863163","GameGrade":"","GamePower":"0","Asset":774},
+            {"NickName":null,"Hobby":null,"GameID":"173032376","GameGrade":"","GamePower":"0","Asset":898},
+            {"NickName":null,"Hobby":null,"GameID":"89371588","GameGrade":"","GamePower":"0","Asset":1430},
+            {"NickName":null,"Hobby":null,"GameID":"10960902","GameGrade":"","GamePower":"1200","Asset":2622},
+            {"NickName":null,"Hobby":null,"GameID":"242950672","GameGrade":"","GamePower":"1804","Asset":10}]]
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.RankController.TeamRank(HaiGame7.Model.MyModel.RankParameterModel)">
+            <summary>
+            战队排行
+            </summary>
+            <param name="rank">
+            参数说明：
+            ranktype：排名类型 1.热度（HotScore）2.氦金（Asset）3.战斗力（FightScore）
+            ranksort：排序 1.倒序（desc） 2.正序（asc）
+            startpage：页码
+            pagecount：每页记录数
+            参数实例：{"ranktype":"HotScore","ranksort":"desc","startpage":1,"pagecount":5}
+            </param>
+            <returns>
+            返回值实例：[{"MessageCode":0,"Message":""},
+            [{"TeamName":"氦7硬邦邦","TeamDescription":"我们是一群很硬的男人","HotScore":0,"FightScore":0,"Asset":0},
+            {"TeamName":"訾1","TeamDescription":"qqq","HotScore":0,"FightScore":0,"Asset":0},
+            {"TeamName":"高1","TeamDescription":"11","HotScore":6,"FightScore":0,"Asset":0},
+            {"TeamName":"奶粉哪去了","TeamDescription":"专注真正好奶源，选择优质好奶粉","HotScore":3,"FightScore":0,"Asset":0},
+            {"TeamName":"huhaoran","TeamDescription":"huhaoran","HotScore":6,"FightScore":0,"Asset":0}]]
+            </returns>
+        </member>
+        <member name="T:HaiGame7.RestAPI.Controllers.TeamController">
+            <summary>
+            战队中心restful API，提供涉及到用户的服务。
+            </summary>
+        </member>
         <member name="T:HaiGame7.RestAPI.Controllers.UserController">
             <summary>
             用户中心restful API，提供涉及到用户的服务。
@@ -556,6 +608,34 @@
             <returns>
             更改成功：{"MessageCode":0,"Message":""}
             用户不存在：{"MessageCode":10001,"Message":"no user"}
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.UserController.MyGameInfo(HaiGame7.Model.MyModel.SimpleUserModel)">
+            <summary>
+            我的游戏数据
+            </summary>
+            <param name="user"></param>
+            <returns>
+            返回值实例：[{"MessageCode":0,"Message":""},
+            {"UserID":64,"GameID":"173032376","GamePower":"0","CertifyState":0,"CertifyName":"氦七G9SJkIJQ8l+uZP4BJEVZ+aHEtLY="}]
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.UserController.UpdateCertifyGameID(HaiGame7.Model.MyModel.SimpleUserModel)">
+            <summary>
+            更改认证游戏ID
+            </summary>
+            <param name="user"></param>
+            <returns>
+            提交成功：{"MessageCode":0,"Message":返回认证昵称}
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.UserController.CertifyGameID(HaiGame7.Model.MyModel.SimpleUserModel)">
+            <summary>
+            提交认证游戏ID
+            </summary>
+            <param name="user"></param>
+            <returns>
+            提交成功：{"MessageCode":0,"Message":返回认证昵称}
             </returns>
         </member>
         <member name="M:HaiGame7.RestAPI.Controllers.UserController.MyAssetList(HaiGame7.Model.MyModel.SimpleUserModel)">
