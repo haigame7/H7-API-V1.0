@@ -9,6 +9,7 @@ namespace HaiGame7.Model.MyModel
     public class UserRankModel
     {
         public string NickName { get; set; }//昵称
+        public string UserPicture { get; set; }//头像
         public string Hobby { get; set; }//签名
         public string GameID { get; set; }//游戏ID
         public string GameGrade { get; set; }//大神系数

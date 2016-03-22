@@ -13,12 +13,13 @@
 
 using HaiGame7.BLL.Enum;
 using HaiGame7.Model.MyModel;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http.Filters;
 using System.Web.Script.Serialization;
 
-namespace HaiGame7.BLL.Filter
+namespace HaiGame7.RestAPI.Filter
 {
     /// <summary>
     /// 异常处理Filter
@@ -35,12 +36,14 @@ namespace HaiGame7.BLL.Filter
             HttpResponseMessage returnResult=new HttpResponseMessage();
             JavaScriptSerializer jss = new JavaScriptSerializer();
             MessageModel message = new MessageModel();
+            HashSet<object> returnHash = new HashSet<object>();
             //记录系统错误log
 
             //返回系统错误提示
             message.MessageCode = MESSAGE.SYSERR_CODE;
             message.Message = MESSAGE.SYSERR;
-            result = jss.Serialize(message);
+            returnHash.Add(message);
+            result = jss.Serialize(returnHash);
             returnResult.Content = new StringContent(result, Encoding.UTF8, "application/json");
 
             actionExecutedContext.Response = returnResult;

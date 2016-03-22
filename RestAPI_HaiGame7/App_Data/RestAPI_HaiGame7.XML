@@ -481,6 +481,44 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
+        <member name="T:HaiGame7.RestAPI.Controllers.FightController">
+            <summary>
+            约战restful API，提供涉及到约战的服务。
+            </summary>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.FightController.AllFightList(HaiGame7.Model.MyModel.RankParameterModel)">
+            <summary>
+            约战动态列表
+            </summary>
+            <param name="rank">
+            参数说明：
+            startpage：页码
+            pagecount：每页记录数
+            参数实例：{"startpage":1,"pagecount":5}
+            </param>
+            <returns>
+            [{"MessageCode":0,"Message":""},
+            [{"Description":"战队【高1】接受战队【ddddd】的约战","FightTime":"2月22日","FightAsset":50},
+            {"Description":"战队【潜水泵战队】接受战队【国睡战队】的约战","FightTime":"2月24日","FightAsset":50},
+            {"Description":"战队【奶粉哪去了】接受战队【潜水泵战队】的约战","FightTime":"2月24日","FightAsset":1},
+            {"Description":"战队【aaaaaaaaaa】接受战队【国睡战队】的约战","FightTime":"2月24日","FightAsset":50},
+            {"Description":"战队【通天塔战队】接受战队【ddddd】的约战","FightTime":"2月25日","FightAsset":50},
+            {"Description":"战队【奶粉哪去了】向战队【通天塔战队】认怂","FightTime":"2月25日","FightAsset":50},
+            {"Description":"战队【通天塔战队】接受战队【通地塔】的约战","FightTime":"2月26日","FightAsset":50},
+            {"Description":"战队【huhaoran】向战队【通地塔】认怂","FightTime":"2月26日","FightAsset":2000},
+            {"Description":"战队【huhaoran】向战队【通地塔】认怂","FightTime":"2月26日","FightAsset":2000},
+            {"Description":"战队【訾1】接受战队【通天塔战队】的约战","FightTime":"2月26日","FightAsset":50}]]
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.FightController.MakeChallenge(HaiGame7.Model.MyModel.ChallengeParameterModel)">
+            <summary>
+            发起约战
+            </summary>
+            <param name="para"></param>
+            <returns>
+            约战成功：{"MessageCode":0,"Message":""}
+            </returns>
+        </member>
         <member name="T:HaiGame7.RestAPI.Controllers.RankController">
             <summary>
             排行restful API，提供涉及到排行的服务。
@@ -500,11 +538,11 @@
             </param>
             <returns>
             返回值实例：[{"MessageCode":0,"Message":""},
-            [{"NickName":null,"Hobby":null,"GameID":"106863163","GameGrade":"","GamePower":"0","Asset":774},
-            {"NickName":null,"Hobby":null,"GameID":"173032376","GameGrade":"","GamePower":"0","Asset":898},
-            {"NickName":null,"Hobby":null,"GameID":"89371588","GameGrade":"","GamePower":"0","Asset":1430},
-            {"NickName":null,"Hobby":null,"GameID":"10960902","GameGrade":"","GamePower":"1200","Asset":2622},
-            {"NickName":null,"Hobby":null,"GameID":"242950672","GameGrade":"","GamePower":"1804","Asset":10}]]
+            [{"NickName":null,"UserPicture":"","Hobby":null,"GameID":"106863163","GameGrade":"","GamePower":"0","Asset":774},
+            {"NickName":null,"UserPicture":"","Hobby":null,"GameID":"173032376","GameGrade":"","GamePower":"0","Asset":898},
+            {"NickName":null,"UserPicture":"","Hobby":null,"GameID":"89371588","GameGrade":"","GamePower":"0","Asset":1430},
+            {"NickName":null,"UserPicture":"","Hobby":null,"GameID":"10960902","GameGrade":"","GamePower":"1200","Asset":2622},
+            {"NickName":null,"UserPicture":"","Hobby":null,"GameID":"242950672","GameGrade":"","GamePower":"1804","Asset":10}]]
             </returns>
         </member>
         <member name="M:HaiGame7.RestAPI.Controllers.RankController.TeamRank(HaiGame7.Model.MyModel.RankParameterModel)">
@@ -521,17 +559,59 @@
             </param>
             <returns>
             返回值实例：[{"MessageCode":0,"Message":""},
-            [{"TeamName":"氦7硬邦邦","TeamDescription":"我们是一群很硬的男人","HotScore":0,"FightScore":0,"Asset":0},
-            {"TeamName":"訾1","TeamDescription":"qqq","HotScore":0,"FightScore":0,"Asset":0},
-            {"TeamName":"高1","TeamDescription":"11","HotScore":6,"FightScore":0,"Asset":0},
-            {"TeamName":"奶粉哪去了","TeamDescription":"专注真正好奶源，选择优质好奶粉","HotScore":3,"FightScore":0,"Asset":0},
-            {"TeamName":"huhaoran","TeamDescription":"huhaoran","HotScore":6,"FightScore":0,"Asset":0}]]
+            [{"TeamName":"氦7硬邦邦","TeamPicture":"","TeamDescription":"我们是一群很硬的男人","HotScore":0,"FightScore":0,"Asset":0},
+            {"TeamName":"訾1","TeamPicture":"","TeamDescription":"qqq","HotScore":0,"FightScore":0,"Asset":0},
+            {"TeamName":"高1","TeamPicture":"","TeamDescription":"11","HotScore":6,"FightScore":0,"Asset":0},
+            {"TeamName":"奶粉哪去了","TeamPicture":"","TeamDescription":"专注真正好奶源，选择优质好奶粉","HotScore":3,"FightScore":0,"Asset":0},
+            {"TeamName":"huhaoran","TeamPicture":"","TeamDescription":"huhaoran","HotScore":6,"FightScore":0,"Asset":0}]]
             </returns>
         </member>
         <member name="T:HaiGame7.RestAPI.Controllers.TeamController">
             <summary>
             战队中心restful API，提供涉及到用户的服务。
             </summary>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.MyTeam(HaiGame7.Model.MyModel.SimpleTeamModel)">
+            <summary>
+            我的默认战队
+            </summary>
+            <param name="team">
+            参数实例：{Creater:"13439843883"}
+            </param>
+            <returns>
+            返回值实例：[{"MessageCode":0,"Message":null},
+            {"Creater":64,"TeamName":"訾1","TeamLogo":"http://images.haigame7.com/logo/20160215144709XXKqu4W0Z5j3PxEIK0zW6uUR3LY=.png","TeamDescription":"qqq","TeamType":"DOTA2","FightScore":0,"Asset":0,"IsDeault":0,"WinCount":null,"LoseCount":null,"FollowCount":null,"Role":"teamcreater","CreateTime":"2016-10-01/"}]
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.Create(HaiGame7.Model.MyModel.SimpleTeamModel)">
+            <summary>
+            创建战队
+            </summary>
+            <param name="team">
+            参数实例：{Creater:"13439843883",TeamName:"氦7",TeamLogo:"图片url",TeamType:"DOTA2"}
+            </param>
+            <returns>
+            创建成功：{"MessageCode":0,"Message":""}
+            战队名称已存在：{"MessageCode":20001,"Message":"team exist"}
+            无权创建：{"MessageCode":20002,"Message":"you are teamuser"}
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.TeamList(HaiGame7.Model.MyModel.TeamListParameterModel)">
+            <summary>
+            根据不同条件，获取战队列表
+            </summary>
+            <param name="para">
+            type：1.createdate 注册日期 2.userfightscore 个人战斗力匹配 3.teamfightscore 战队战斗力匹配
+            参数实例：{"createUserID":111,"Type":"createdate","Sort":"desc","StartPage":1,"PageCount":10}
+            </param>
+            <returns>
+            返回值实例：[{"MessageCode":0,"Message":null},
+            [{"Creater":92,"TeamName":"氦7通天塔","TeamLogo":"http://images.haigame7.com/logo/20160308160716XXKqu4W0Z5j3PxEIK0zW6uUR3LY=.png","TeamDescription":"GTMA","TeamType":"DOTA2","FightScore":0,"Asset":0,"IsDeault":0,"WinCount":0,"LoseCount":0,"FollowCount":1,"Role":null,"CreateTime":"2016-03-08"},
+            {"Creater":65,"TeamName":"孟庆丰","TeamLogo":"http://images.haigame7.com/logo/20160308160601XXKqu4W0Z5j3PxEIK0zW6uUR3LY=.png","TeamDescription":"123","TeamType":"DOTA2","FightScore":0,"Asset":0,"IsDeault":1,"WinCount":0,"LoseCount":0,"FollowCount":0,"Role":null,"CreateTime":"2016-03-08"},
+            {"Creater":65,"TeamName":"123","TeamLogo":"http://images.haigame7.com/logo/20160308160540XXKqu4W0Z5j3PxEIK0zW6uUR3LY=.png","TeamDescription":"123","TeamType":"DOTA2","FightScore":0,"Asset":0,"IsDeault":1,"WinCount":0,"LoseCount":0,"FollowCount":0,"Role":null,"CreateTime":"2016-03-08"},
+            {"Creater":66,"TeamName":"平平一","TeamLogo":"http://images.haigame7.com/logo/20160229170559XXKqu4W0Z5j3PxEIK0zW6uUR3LY=.png","TeamDescription":"栽植有东西","TeamType":"DOTA2","FightScore":0,"Asset":0,"IsDeault":1,"WinCount":0,"LoseCount":0,"FollowCount":0,"Role":null,"CreateTime":"2016-02-29"},
+            {"Creater":65,"TeamName":"bugbug","TeamLogo":"http://images.haigame7.com/logo/20160229170507XXKqu4W0Z5j3PxEIK0zW6uUR3LY=.png","TeamDescription":"DebugDebugDebugDebug","TeamType":"DOTA2","FightScore":0,"Asset":0,"IsDeault":1,"WinCount":0,"LoseCount":0,"FollowCount":0,"Role":null,"CreateTime":"2016-02-29"}]]
+            </returns>
         </member>
         <member name="T:HaiGame7.RestAPI.Controllers.UserController">
             <summary>
@@ -597,7 +677,7 @@
             <param name="user"></param>
             <returns>
             返回值实例：[{"MessageCode":0,"Message":""},
-            {"db_ArticleComment":[],"db_AssetRecord":[],"db_GameIDofUser":[],"db_GameRecord":[],"db_GuessRecord":[],"db_MyCollection":[],"db_Report":[],"db_Team":[],"UserID":64,"Openid":null,"NickName":null,"UserPicture":null,"UserName":null,"PhoneNumber":"13439843883","CardID":null,"UserPassWord":"5d354089d5b6378016dca832d3645dbf","UserWebNickName":"不服","UserWebPicture":"http://images.haigame7.com/avatar/20160127162940WxExqw0paJXAo1AtXc4RzGYo2LE=.png","StudentID":null,"GameID":"173032376","Picture":null,"IDCardPic1":null,"IDCardPic2":null,"EMail":null,"Address":"北京-大兴区","Sex":"男","Birthday":"\/Date(1458230400000)\/","RegisterDate":null,"Unit":null,"Job":null,"Hobby":null,"SysTime":[0,0,0,0,0,0,45,178]}]
+            {"UserID":64,"PhoneNumber":"13439843883","PassWord":null,"UserWebPicture":"http://images.haigame7.com/avatar/20160127162940WxExqw0paJXAo1AtXc4RzGYo2LE=.png","UserWebNickName":"不服","UserName":null,"Address":"北京-大兴区","Sex":"男","Birthday":"2016-03-18","Hobby":null}]
             </returns>
         </member>
         <member name="M:HaiGame7.RestAPI.Controllers.UserController.UpdateUserInfo(HaiGame7.Model.MyModel.UserModel)">
@@ -645,11 +725,13 @@
             <param name="user"></param>
             <returns>
             返回值实例：[{"MessageCode":0,"Message":""},
-            [{"db_User":null,"GainRecordID":145,"UserID":64,"TrueMoney":null,"VirtualMoney":-50,"GainTime":"\/Date(1456463195923)\/","State":"正常记录","GainWay":"接受挑战","Remark":"2016/2/26 13:06:35 接受挑战 消费虚拟币：-50","OutTradeno":null,"TransactionID":null,"TradeType":null,"TimeEnd":null,"SysTime":[0,0,0,0,0,0,45,158]},
-            {"db_User":null,"GainRecordID":39,"UserID":64,"TrueMoney":null,"VirtualMoney":-50,"GainTime":"\/Date(1455513322253)\/","State":"正常记录","GainWay":"接受挑战","Remark":"2016/2/15 13:15:22 接受挑战 消费虚拟币：-50","OutTradeno":null,"TransactionID":null,"TradeType":null,"TimeEnd":null,"SysTime":[0,0,0,0,0,0,40,39]},
-            {"db_User":null,"GainRecordID":38,"UserID":64,"TrueMoney":0.00,"VirtualMoney":-1,"GainTime":"\/Date(1455512812317)\/","State":"正常记录","GainWay":"参加竞猜","Remark":"2016/2/15 13:06:52 参加竞猜 消费虚拟币：-1","OutTradeno":null,"TransactionID":null,"TradeType":null,"TimeEnd":null,"SysTime":[0,0,0,0,0,0,40,37]},
-            {"db_User":null,"GainRecordID":13,"UserID":64,"TrueMoney":0.00,"VirtualMoney":-1,"GainTime":"\/Date(1453949420567)\/","State":"正常记录","GainWay":"参加竞猜","Remark":"2016/1/28 10:50:20 参加竞猜 消费虚拟币：-1","OutTradeno":null,"TransactionID":null,"TradeType":null,"TimeEnd":null,"SysTime":[0,0,0,0,0,0,35,217]},
-            {"db_User":null,"GainRecordID":2,"UserID":64,"TrueMoney":0.00,"VirtualMoney":1000,"GainTime":"\/Date(1453872526857)\/","State":"正常记录","GainWay":"注册","Remark":"2016/1/27 13:28:46 注册 获得虚拟币：50","OutTradeno":null,"TransactionID":null,"TradeType":null,"TimeEnd":null,"SysTime":[0,0,0,0,0,0,35,136]}]
+            [{"VirtualMoney":0,"GainTime":"2016-02-27","GainWay":"现金充值","Remark":"2016/2/27 12:38:35 现金充值 获得虚拟币：0"},
+            {"VirtualMoney":0,"GainTime":"2016-02-27","GainWay":"现金充值","Remark":"2016/2/27 12:38:24 现金充值 获得虚拟币：0"},
+            {"VirtualMoney":-50,"GainTime":"2016-02-26","GainWay":"接受挑战","Remark":"2016/2/26 13:06:35 接受挑战 消费虚拟币：-50"},
+            {"VirtualMoney":-50,"GainTime":"2016-02-15","GainWay":"接受挑战","Remark":"2016/2/15 13:15:22 接受挑战 消费虚拟币：-50"},
+            {"VirtualMoney":-1,"GainTime":"2016-02-15","GainWay":"参加竞猜","Remark":"2016/2/15 13:06:52 参加竞猜 消费虚拟币：-1"},
+            {"VirtualMoney":-1,"GainTime":"2016-01-28","GainWay":"参加竞猜","Remark":"2016/1/28 10:50:20 参加竞猜 消费虚拟币：-1"},
+            {"VirtualMoney":1000,"GainTime":"2016-01-27","GainWay":"注册","Remark":"2016/1/27 13:28:46 注册 获得虚拟币：50"}]]
             ]
             </returns>
         </member>
@@ -662,12 +744,12 @@
             返回值实例：[{"MessageCode":0,"Message":""},{"TotalAsset":"898","MyRank":"8"}]
             </returns>
         </member>
-        <member name="T:HaiGame7.BLL.Filter.ExceptionFilter">
+        <member name="T:HaiGame7.RestAPI.Filter.ExceptionFilter">
             <summary>
             异常处理Filter
             </summary>
         </member>
-        <member name="M:HaiGame7.BLL.Filter.ExceptionFilter.OnException(System.Web.Http.Filters.HttpActionExecutedContext)">
+        <member name="M:HaiGame7.RestAPI.Filter.ExceptionFilter.OnException(System.Web.Http.Filters.HttpActionExecutedContext)">
             <summary>
             重写OnException，记录错误log，返回系统错误
             </summary>

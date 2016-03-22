@@ -47,11 +47,11 @@ namespace HaiGame7.RestAPI.Controllers
         /// </param>
         /// <returns>
         /// 返回值实例：[{"MessageCode":0,"Message":""},
-        /// [{"NickName":null,"Hobby":null,"GameID":"106863163","GameGrade":"","GamePower":"0","Asset":774},
-        /// {"NickName":null,"Hobby":null,"GameID":"173032376","GameGrade":"","GamePower":"0","Asset":898},
-        /// {"NickName":null,"Hobby":null,"GameID":"89371588","GameGrade":"","GamePower":"0","Asset":1430},
-        /// {"NickName":null,"Hobby":null,"GameID":"10960902","GameGrade":"","GamePower":"1200","Asset":2622},
-        /// {"NickName":null,"Hobby":null,"GameID":"242950672","GameGrade":"","GamePower":"1804","Asset":10}]]
+        /// [{"NickName":null,"UserPicture":"","Hobby":null,"GameID":"106863163","GameGrade":"","GamePower":"0","Asset":774},
+        /// {"NickName":null,"UserPicture":"","Hobby":null,"GameID":"173032376","GameGrade":"","GamePower":"0","Asset":898},
+        /// {"NickName":null,"UserPicture":"","Hobby":null,"GameID":"89371588","GameGrade":"","GamePower":"0","Asset":1430},
+        /// {"NickName":null,"UserPicture":"","Hobby":null,"GameID":"10960902","GameGrade":"","GamePower":"1200","Asset":2622},
+        /// {"NickName":null,"UserPicture":"","Hobby":null,"GameID":"242950672","GameGrade":"","GamePower":"1804","Asset":10}]]
         /// </returns>
         [HttpPost]
         public HttpResponseMessage UserRank([FromBody] RankParameterModel rank)
@@ -78,11 +78,11 @@ namespace HaiGame7.RestAPI.Controllers
         /// </param>
         /// <returns>
         /// 返回值实例：[{"MessageCode":0,"Message":""},
-        /// [{"TeamName":"氦7硬邦邦","TeamDescription":"我们是一群很硬的男人","HotScore":0,"FightScore":0,"Asset":0},
-        /// {"TeamName":"訾1","TeamDescription":"qqq","HotScore":0,"FightScore":0,"Asset":0},
-        /// {"TeamName":"高1","TeamDescription":"11","HotScore":6,"FightScore":0,"Asset":0},
-        /// {"TeamName":"奶粉哪去了","TeamDescription":"专注真正好奶源，选择优质好奶粉","HotScore":3,"FightScore":0,"Asset":0},
-        /// {"TeamName":"huhaoran","TeamDescription":"huhaoran","HotScore":6,"FightScore":0,"Asset":0}]]
+        /// [{"TeamName":"氦7硬邦邦","TeamPicture":"","TeamDescription":"我们是一群很硬的男人","HotScore":0,"FightScore":0,"Asset":0},
+        /// {"TeamName":"訾1","TeamPicture":"","TeamDescription":"qqq","HotScore":0,"FightScore":0,"Asset":0},
+        /// {"TeamName":"高1","TeamPicture":"","TeamDescription":"11","HotScore":6,"FightScore":0,"Asset":0},
+        /// {"TeamName":"奶粉哪去了","TeamPicture":"","TeamDescription":"专注真正好奶源，选择优质好奶粉","HotScore":3,"FightScore":0,"Asset":0},
+        /// {"TeamName":"huhaoran","TeamPicture":"","TeamDescription":"huhaoran","HotScore":6,"FightScore":0,"Asset":0}]]
         /// </returns>
         [HttpPost]
         public HttpResponseMessage TeamRank([FromBody] RankParameterModel rank)

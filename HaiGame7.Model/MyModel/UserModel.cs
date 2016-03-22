@@ -2,6 +2,7 @@
 {
     public class UserModel
     {
+        public int UserID { get; set; }
         public string PhoneNumber { get; set; }
         public string PassWord { get; set; }
         public string UserWebPicture { get; set; }

@@ -18,7 +18,6 @@ using HaiGame7.RestAPI.Filter;
 using HaiGame7.BLL;
 using HaiGame7.Model.EFModel;
 using HaiGame7.Model.MyModel;
-using HaiGame7.BLL.Filter;
 
 namespace HaiGame7.RestAPI.Controllers
 {
@@ -143,7 +142,7 @@ namespace HaiGame7.RestAPI.Controllers
         /// <param name="user"></param>
         /// <returns>
         /// 返回值实例：[{"MessageCode":0,"Message":""},
-        /// {"db_ArticleComment":[],"db_AssetRecord":[],"db_GameIDofUser":[],"db_GameRecord":[],"db_GuessRecord":[],"db_MyCollection":[],"db_Report":[],"db_Team":[],"UserID":64,"Openid":null,"NickName":null,"UserPicture":null,"UserName":null,"PhoneNumber":"13439843883","CardID":null,"UserPassWord":"5d354089d5b6378016dca832d3645dbf","UserWebNickName":"不服","UserWebPicture":"http://images.haigame7.com/avatar/20160127162940WxExqw0paJXAo1AtXc4RzGYo2LE=.png","StudentID":null,"GameID":"173032376","Picture":null,"IDCardPic1":null,"IDCardPic2":null,"EMail":null,"Address":"北京-大兴区","Sex":"男","Birthday":"\/Date(1458230400000)\/","RegisterDate":null,"Unit":null,"Job":null,"Hobby":null,"SysTime":[0,0,0,0,0,0,45,178]}]
+        /// {"UserID":64,"PhoneNumber":"13439843883","PassWord":null,"UserWebPicture":"http://images.haigame7.com/avatar/20160127162940WxExqw0paJXAo1AtXc4RzGYo2LE=.png","UserWebNickName":"不服","UserName":null,"Address":"北京-大兴区","Sex":"男","Birthday":"2016-03-18","Hobby":null}]
         /// </returns>
         [HttpPost]
         public HttpResponseMessage UserInfo([FromBody] SimpleUserModel user)
@@ -195,10 +194,6 @@ namespace HaiGame7.RestAPI.Controllers
         }
         #endregion
 
-        #region 我的战斗力排名
-
-        #endregion
-
         #region UpdateCertifyGameID 更改认证游戏ID
         /// <summary>
         /// 更改认证游戏ID
@@ -244,11 +239,13 @@ namespace HaiGame7.RestAPI.Controllers
         /// <param name="user"></param>
         /// <returns>
         /// 返回值实例：[{"MessageCode":0,"Message":""},
-        /// [{"db_User":null,"GainRecordID":145,"UserID":64,"TrueMoney":null,"VirtualMoney":-50,"GainTime":"\/Date(1456463195923)\/","State":"正常记录","GainWay":"接受挑战","Remark":"2016/2/26 13:06:35 接受挑战 消费虚拟币：-50","OutTradeno":null,"TransactionID":null,"TradeType":null,"TimeEnd":null,"SysTime":[0,0,0,0,0,0,45,158]},
-        /// {"db_User":null,"GainRecordID":39,"UserID":64,"TrueMoney":null,"VirtualMoney":-50,"GainTime":"\/Date(1455513322253)\/","State":"正常记录","GainWay":"接受挑战","Remark":"2016/2/15 13:15:22 接受挑战 消费虚拟币：-50","OutTradeno":null,"TransactionID":null,"TradeType":null,"TimeEnd":null,"SysTime":[0,0,0,0,0,0,40,39]},
-        /// {"db_User":null,"GainRecordID":38,"UserID":64,"TrueMoney":0.00,"VirtualMoney":-1,"GainTime":"\/Date(1455512812317)\/","State":"正常记录","GainWay":"参加竞猜","Remark":"2016/2/15 13:06:52 参加竞猜 消费虚拟币：-1","OutTradeno":null,"TransactionID":null,"TradeType":null,"TimeEnd":null,"SysTime":[0,0,0,0,0,0,40,37]},
-        /// {"db_User":null,"GainRecordID":13,"UserID":64,"TrueMoney":0.00,"VirtualMoney":-1,"GainTime":"\/Date(1453949420567)\/","State":"正常记录","GainWay":"参加竞猜","Remark":"2016/1/28 10:50:20 参加竞猜 消费虚拟币：-1","OutTradeno":null,"TransactionID":null,"TradeType":null,"TimeEnd":null,"SysTime":[0,0,0,0,0,0,35,217]},
-        /// {"db_User":null,"GainRecordID":2,"UserID":64,"TrueMoney":0.00,"VirtualMoney":1000,"GainTime":"\/Date(1453872526857)\/","State":"正常记录","GainWay":"注册","Remark":"2016/1/27 13:28:46 注册 获得虚拟币：50","OutTradeno":null,"TransactionID":null,"TradeType":null,"TimeEnd":null,"SysTime":[0,0,0,0,0,0,35,136]}]
+        /// [{"VirtualMoney":0,"GainTime":"2016-02-27","GainWay":"现金充值","Remark":"2016/2/27 12:38:35 现金充值 获得虚拟币：0"},
+        /// {"VirtualMoney":0,"GainTime":"2016-02-27","GainWay":"现金充值","Remark":"2016/2/27 12:38:24 现金充值 获得虚拟币：0"},
+        /// {"VirtualMoney":-50,"GainTime":"2016-02-26","GainWay":"接受挑战","Remark":"2016/2/26 13:06:35 接受挑战 消费虚拟币：-50"},
+        /// {"VirtualMoney":-50,"GainTime":"2016-02-15","GainWay":"接受挑战","Remark":"2016/2/15 13:15:22 接受挑战 消费虚拟币：-50"},
+        /// {"VirtualMoney":-1,"GainTime":"2016-02-15","GainWay":"参加竞猜","Remark":"2016/2/15 13:06:52 参加竞猜 消费虚拟币：-1"},
+        /// {"VirtualMoney":-1,"GainTime":"2016-01-28","GainWay":"参加竞猜","Remark":"2016/1/28 10:50:20 参加竞猜 消费虚拟币：-1"},
+        /// {"VirtualMoney":1000,"GainTime":"2016-01-27","GainWay":"注册","Remark":"2016/1/27 13:28:46 注册 获得虚拟币：50"}]]
         /// ]
         /// </returns>
         [HttpPost]

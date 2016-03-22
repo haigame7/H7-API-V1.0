@@ -44,6 +44,18 @@ namespace HaiGame7.BLL.Enum
         public const int NOGAMEDATA_CODE = 10008;
         public const string NOGAMEDATA = "no gamedata";
 
+        //战队名称已存在
+        public const int TEAMEXIST_CODE = 20001;
+        public const string TEAMEXIST = "team exist";
+
+        //你是队员，无权创建战队
+        public const int TEAMUSER_CODE = 20002;
+        public const string TEAMUSER = "you are teanuser";
+
+        //不属于任何战队
+        public const int NOTEAM_CODE = 20003;
+        public const string NOTEAM = "you are noteam";
+
         //系统错误
         public const int SYSERR_CODE = 40001;
         public const string SYSERR = "system error";

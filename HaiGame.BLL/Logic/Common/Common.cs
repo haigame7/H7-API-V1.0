@@ -96,5 +96,29 @@ namespace HaiGame7.BLL.Logic.Common
         }
         #endregion
 
+        #region 返回时间差
+        public static string DateDiff(DateTime DateTime1, DateTime DateTime2)
+        {
+            string dateDiff = null;
+            TimeSpan ts = DateTime2 - DateTime1;
+            if (ts.Days >=1)
+            {
+                dateDiff = DateTime1.Month.ToString() + "月" + DateTime1.Day.ToString() + "日";
+            }
+            else
+            {
+                if (ts.Hours > 1)
+                {
+                    dateDiff = ts.Hours.ToString() + "小时前";
+                }
+                else
+                {
+                    dateDiff = ts.Minutes.ToString() + "分钟前";
+                }
+            }
+            return dateDiff;
+        }
+        #endregion
+
     }
 }

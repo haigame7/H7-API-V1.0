@@ -18,6 +18,7 @@ namespace HaiGame7.BLL
             string result="";
             MessageModel message = new MessageModel();
             JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
 
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
@@ -46,7 +47,8 @@ namespace HaiGame7.BLL
                     message.Message = MESSAGE.NOUSER;
                 }
             }
-            result = jss.Serialize(message);
+            returnResult.Add(message);
+            result = jss.Serialize(returnResult);
             return result;
         }
         #endregion
@@ -57,6 +59,7 @@ namespace HaiGame7.BLL
             string result = "";
             MessageModel message = new MessageModel();
             JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
 
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
@@ -89,7 +92,8 @@ namespace HaiGame7.BLL
                     message.Message = MESSAGE.NOUSER;
                 }
             }
-            result = jss.Serialize(message);
+            returnResult.Add(message);
+            result = jss.Serialize(returnResult);
             return result;
         }
         #endregion
@@ -100,6 +104,7 @@ namespace HaiGame7.BLL
             string result = "";
             MessageModel message = new MessageModel();
             JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
 
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
@@ -132,7 +137,8 @@ namespace HaiGame7.BLL
                     message.Message = MESSAGE.USEREXIST;
                 }
             }
-            result = jss.Serialize(message);
+            returnResult.Add(message);
+            result = jss.Serialize(returnResult);
             return result;
         }    
         #endregion
@@ -143,6 +149,7 @@ namespace HaiGame7.BLL
             string result = "";
             MessageModel message = new MessageModel();
             JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
 
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
@@ -174,7 +181,8 @@ namespace HaiGame7.BLL
                     message.Message = MESSAGE.USEREXIST;
                 }
             }
-            result = jss.Serialize(message);
+            returnResult.Add(message);
+            result = jss.Serialize(returnResult);
             return result;
         }
         #endregion
@@ -185,6 +193,7 @@ namespace HaiGame7.BLL
             string result = "";
             MessageModel message = new MessageModel();
             JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
 
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
@@ -207,7 +216,8 @@ namespace HaiGame7.BLL
                     message.Message = MESSAGE.OK;
                 }
             }
-            result = jss.Serialize(message);
+            returnResult.Add(message);
+            result = jss.Serialize(returnResult);
             return result;
         }
         #endregion
@@ -223,7 +233,7 @@ namespace HaiGame7.BLL
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
                 //获取用户
-                db_User userInfo = User.GetUserByPhoneNumber(user.PhoneNumber);
+                UserModel userInfo = User.GetUserModelByPhoneNumber(user.PhoneNumber);
                 if (userInfo!=null)
                 {
                     message.Message = MESSAGE.OK;
@@ -248,6 +258,7 @@ namespace HaiGame7.BLL
             string result = "";
             MessageModel message = new MessageModel();
             JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
 
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
@@ -304,7 +315,8 @@ namespace HaiGame7.BLL
                     message.MessageCode = MESSAGE.NOUSER_CODE;
                 }
             }
-            result = jss.Serialize(message);
+            returnResult.Add(message);
+            result = jss.Serialize(returnResult);
             return result;
         }
         #endregion
@@ -322,13 +334,18 @@ namespace HaiGame7.BLL
                 //获取用户
                 db_User userInfo = User.GetUserByPhoneNumber(user.PhoneNumber);
                 //获取用户资产列表
-                var assertRecordList = context.db_AssetRecord.Where(c => c.UserID == userInfo.UserID)
-                    .Where(c => c.VirtualMoney != 0)
-                    .OrderByDescending(c => c.SysTime).ToList();
+                // 获取用户游戏数据
+                var sql = "SELECT t1.VirtualMoney,CONVERT(varchar(100), t1.GainTime, 23) as GainTime,t1.GainWay,t2.Remark" +
+                          " FROM db_AssetRecord t1" +
+                          " WHERE t1.UserID = " + userInfo.UserID + "ORDER BY t1.GainTime DESC";
+
+                var assetList = context.Database.SqlQuery<AssetList>(sql)
+                                 .ToList();
+
                 message.Message = MESSAGE.OK;
                 message.MessageCode = MESSAGE.OK_CODE;
                 returnResult.Add(message);
-                returnResult.Add(assertRecordList);
+                returnResult.Add(assetList);
             }
             result = jss.Serialize(returnResult);
             return result;
@@ -431,6 +448,7 @@ namespace HaiGame7.BLL
             string result = "";
             MessageModel message = new MessageModel();
             JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
 
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
@@ -456,8 +474,8 @@ namespace HaiGame7.BLL
                     message.MessageCode = MESSAGE.NOUSER_CODE;
                 }
             }
-
-            result = jss.Serialize(message);
+            returnResult.Add(message);
+            result = jss.Serialize(returnResult);
             return result;
         }
         #endregion
@@ -468,6 +486,7 @@ namespace HaiGame7.BLL
             string result = "";
             MessageModel message = new MessageModel();
             JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
 
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
@@ -495,8 +514,8 @@ namespace HaiGame7.BLL
                     message.MessageCode = MESSAGE.NOUSER_CODE;
                 }
             }
-
-            result = jss.Serialize(message);
+            returnResult.Add(message);
+            result = jss.Serialize(returnResult);
             return result;
         }
         #endregion

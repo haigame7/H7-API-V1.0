@@ -147,11 +147,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>HaiGame.edmx</DependentUpon>
     </Compile>
+    <Compile Include="MyModel\AssetList.cs" />
+    <Compile Include="MyModel\ChallengeParameterModel.cs" />
+    <Compile Include="MyModel\FightStateModel.cs" />
+    <Compile Include="MyModel\FightStateDetailModel.cs" />
     <Compile Include="MyModel\GameModel.cs" />
     <Compile Include="MyModel\HeroModel.cs" />
     <Compile Include="MyModel\MessageModel.cs" />
     <Compile Include="MyModel\MyAssetModel.cs" />
     <Compile Include="MyModel\RankParameterModel.cs" />
+    <Compile Include="MyModel\SimpleTeamModel.cs" />
+    <Compile Include="MyModel\TeamListParameterModel.cs" />
+    <Compile Include="MyModel\TeamModel.cs" />
     <Compile Include="MyModel\TeamRankModel.cs" />
     <Compile Include="MyModel\TotalAssetModel.cs" />
     <Compile Include="MyModel\UserModel.cs" />

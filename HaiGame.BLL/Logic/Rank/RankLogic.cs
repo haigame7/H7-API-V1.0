@@ -25,7 +25,8 @@ namespace HaiGame7.BLL
             {
                 //联合查询
                 var sql = "select" +
-                          " t1.UserWebNickName," +
+                          " t1.UserWebNickName as NickName," +
+                          " t1.UserWebPicture as UserPicture,"+
                           " t1.Hobby," +
                           " t2.GameID," +
                           " t3.GamePower," +
@@ -76,6 +77,7 @@ namespace HaiGame7.BLL
                 var sql = "SELECT" +
                           " t.TeamName," +
                           " t.TeamDescription," +
+                          " t.TeamPicture," +
                           " (CASE WHEN t.FightScore IS NULL THEN 0 ELSE t.FightScore END) as FightScore," +
                           " (CASE WHEN t.Asset IS NULL THEN 0 ELSE t.Asset END) as Asset," +
                           " (" +

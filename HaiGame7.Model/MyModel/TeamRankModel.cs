@@ -9,6 +9,7 @@ namespace HaiGame7.Model.MyModel
     public class TeamRankModel
     {
         public string TeamName { get; set; }//战队名称
+        public string TeamPicture { get; set; }//战队logo
         public string TeamDescription { get; set; }//战队口号
         public int HotScore { get; set; }//热度
         public int FightScore { get; set; }//战斗力

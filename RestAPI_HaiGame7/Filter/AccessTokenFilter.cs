@@ -19,6 +19,7 @@ using HaiGame7.Model.MyModel;
 using HaiGame7.BLL.Enum;
 using HaiGame7.BLL.Logic.Common;
 using System.Web.Script.Serialization;
+using System.Collections.Generic;
 
 namespace HaiGame7.RestAPI.Filter
 {
@@ -30,6 +31,7 @@ namespace HaiGame7.RestAPI.Filter
             HttpResponseMessage returnResult;
             JavaScriptSerializer jss = new JavaScriptSerializer();
             MessageModel message = new MessageModel();
+            HashSet<object> returnHash = new HashSet<object>();
 
             try
             {
@@ -66,7 +68,8 @@ namespace HaiGame7.RestAPI.Filter
                 message.MessageCode = MESSAGE.SYSERR_CODE;
                 message.Message = MESSAGE.SYSERR;
             }
-            json = jss.Serialize(message);
+            returnHash.Add(message);
+            json = jss.Serialize(returnHash);
             returnResult = new HttpResponseMessage { Content = new StringContent(json, 
                                                     System.Text.Encoding.UTF8, "application/json") };
             actionContext.Response = returnResult;
