@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="HaiGame7Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="HaiGame7Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="db_Article">
           <Key>
             <PropertyRef Name="ArticleID" />
@@ -48,6 +48,20 @@
           <Property Name="TransactionID" Type="varchar" MaxLength="64" />
           <Property Name="TradeType" Type="varchar" MaxLength="32" />
           <Property Name="TimeEnd" Type="datetime" />
+          <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="db_BoBo">
+          <Key>
+            <PropertyRef Name="BoBoID" />
+          </Key>
+          <Property Name="BoBoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GameID" Type="varchar" MaxLength="256" />
+          <Property Name="Name" Type="varchar" MaxLength="256" />
+          <Property Name="UserPicture" Type="varchar" MaxLength="512" />
+          <Property Name="Sex" Type="varchar" MaxLength="8" />
+          <Property Name="Birthday" Type="datetime" />
+          <Property Name="Introduce" Type="varchar" MaxLength="512" />
+          <Property Name="备注" Type="varchar" MaxLength="512" />
           <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="db_CommonUseHero">
@@ -133,6 +147,18 @@
           <Property Name="State" Type="int" />
           <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="db_GameBoBo">
+          <Key>
+            <PropertyRef Name="MID" />
+          </Key>
+          <Property Name="MID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BoBoID" Type="int" />
+          <Property Name="GameID" Type="int" />
+          <Property Name="Count" Type="int" />
+          <Property Name="TalkShow" Type="varchar" MaxLength="512" />
+          <Property Name="备注" Type="char" MaxLength="10" />
+          <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
         <EntityType Name="db_GameIDofUser">
           <Key>
             <PropertyRef Name="UGID" />
@@ -179,9 +205,10 @@
           <Property Name="GameID" Type="int" />
           <Property Name="UserID" Type="int" />
           <Property Name="TeamID" Type="int" />
+          <Property Name="BoBoID" Type="int" />
           <Property Name="ApplyTIme" Type="datetime" />
           <Property Name="IsCancel" Type="int" />
-          <Property Name="State" Type="varchar" MaxLength="32" />
+          <Property Name="State" Type="int" />
           <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="db_GuessAndVote">
@@ -502,6 +529,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DB_GAMEB_REFERENCE_DB_BOBO">
+          <End Role="db_BoBo" Type="Self.db_BoBo" Multiplicity="0..1" />
+          <End Role="db_GameBoBo" Type="Self.db_GameBoBo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="db_BoBo">
+              <PropertyRef Name="BoBoID" />
+            </Principal>
+            <Dependent Role="db_GameBoBo">
+              <PropertyRef Name="BoBoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DB_GAMEB_REFERENCE_DB_GAME">
+          <End Role="db_Game" Type="Self.db_Game" Multiplicity="0..1" />
+          <End Role="db_GameBoBo" Type="Self.db_GameBoBo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="db_Game">
+              <PropertyRef Name="GameID" />
+            </Principal>
+            <Dependent Role="db_GameBoBo">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DB_GAMEI_REFERENCE_DB_GAMEI">
           <End Role="db_GameIDofUser" Type="Self.db_GameIDofUser" Multiplicity="0..1" />
           <End Role="db_GameInfoofPlatform" Type="Self.db_GameInfoofPlatform" Multiplicity="*" />
@@ -698,12 +749,14 @@
           <EntitySet Name="db_Article" EntityType="Self.db_Article" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_ArticleComment" EntityType="Self.db_ArticleComment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_AssetRecord" EntityType="Self.db_AssetRecord" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="db_BoBo" EntityType="Self.db_BoBo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_CommonUseHero" EntityType="Self.db_CommonUseHero" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_DateFight" EntityType="Self.db_DateFight" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_FightResult" EntityType="Self.db_FightResult" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_FightState" EntityType="Self.db_FightState" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_Follow" EntityType="Self.db_Follow" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_Game" EntityType="Self.db_Game" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="db_GameBoBo" EntityType="Self.db_GameBoBo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_GameIDofUser" EntityType="Self.db_GameIDofUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_GameInfoofPlatform" EntityType="Self.db_GameInfoofPlatform" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_GameRecord" EntityType="Self.db_GameRecord" Schema="dbo" store:Type="Tables" />
@@ -757,6 +810,14 @@
           <AssociationSet Name="FK_DB_FOLLO_REFERENCE_DB_DATEF" Association="Self.FK_DB_FOLLO_REFERENCE_DB_DATEF">
             <End Role="db_DateFight" EntitySet="db_DateFight" />
             <End Role="db_Follow" EntitySet="db_Follow" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DB_GAMEB_REFERENCE_DB_BOBO" Association="Self.FK_DB_GAMEB_REFERENCE_DB_BOBO">
+            <End Role="db_BoBo" EntitySet="db_BoBo" />
+            <End Role="db_GameBoBo" EntitySet="db_GameBoBo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DB_GAMEB_REFERENCE_DB_GAME" Association="Self.FK_DB_GAMEB_REFERENCE_DB_GAME">
+            <End Role="db_Game" EntitySet="db_Game" />
+            <End Role="db_GameBoBo" EntitySet="db_GameBoBo" />
           </AssociationSet>
           <AssociationSet Name="FK_DB_GAMEI_REFERENCE_DB_GAMEI" Association="Self.FK_DB_GAMEI_REFERENCE_DB_GAMEI">
             <End Role="db_GameIDofUser" EntitySet="db_GameIDofUser" />
@@ -823,7 +884,8 @@
             <End Role="db_UnAnswer" EntitySet="db_UnAnswer" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HaiGame7Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -875,6 +937,21 @@
           <Property Name="TimeEnd" Type="DateTime" Precision="3" />
           <Property Name="SysTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="db_User" Relationship="Self.FK_DB_ASSET_REFERENCE_DB_USER" FromRole="db_AssetRecord" ToRole="db_User" />
+        </EntityType>
+        <EntityType Name="db_BoBo">
+          <Key>
+            <PropertyRef Name="BoBoID" />
+          </Key>
+          <Property Name="BoBoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GameID" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="UserPicture" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
+          <Property Name="Sex" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Birthday" Type="DateTime" Precision="3" />
+          <Property Name="Introduce" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
+          <Property Name="备注" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
+          <Property Name="SysTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="db_GameBoBo" Relationship="Self.FK_DB_GAMEB_REFERENCE_DB_BOBO" FromRole="db_BoBo" ToRole="db_GameBoBo" />
         </EntityType>
         <EntityType Name="db_CommonUseHero">
           <Key>
@@ -966,10 +1043,25 @@
           <Property Name="HoldTime" Type="DateTime" Precision="3" />
           <Property Name="HoldAddress" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="HoldRule" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="Int32" />
           <Property Name="SysTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="db_FightResult" Relationship="Self.FK_DB_FIGHT_REFERENCE_DB_GAME" FromRole="db_Game" ToRole="db_FightResult" />
+          <NavigationProperty Name="db_GameBoBo" Relationship="Self.FK_DB_GAMEB_REFERENCE_DB_GAME" FromRole="db_Game" ToRole="db_GameBoBo" />
           <NavigationProperty Name="db_GameRecord" Relationship="Self.FK_DB_GAMER_REFERENCE_DB_GAME" FromRole="db_Game" ToRole="db_GameRecord" />
-          <Property Name="State" Type="Int32" />
+        </EntityType>
+        <EntityType Name="db_GameBoBo">
+          <Key>
+            <PropertyRef Name="MID" />
+          </Key>
+          <Property Name="MID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BoBoID" Type="Int32" />
+          <Property Name="GameID" Type="Int32" />
+          <Property Name="Count" Type="Int32" />
+          <Property Name="TalkShow" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
+          <Property Name="备注" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="SysTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="db_BoBo" Relationship="Self.FK_DB_GAMEB_REFERENCE_DB_BOBO" FromRole="db_GameBoBo" ToRole="db_BoBo" />
+          <NavigationProperty Name="db_Game" Relationship="Self.FK_DB_GAMEB_REFERENCE_DB_GAME" FromRole="db_GameBoBo" ToRole="db_Game" />
         </EntityType>
         <EntityType Name="db_GameIDofUser">
           <Key>
@@ -1021,9 +1113,10 @@
           <Property Name="GameID" Type="Int32" />
           <Property Name="UserID" Type="Int32" />
           <Property Name="TeamID" Type="Int32" />
+          <Property Name="BoBoID" Type="Int32" />
           <Property Name="ApplyTIme" Type="DateTime" Precision="3" />
           <Property Name="IsCancel" Type="Int32" />
-          <Property Name="State" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="Int32" />
           <Property Name="SysTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="db_Game" Relationship="Self.FK_DB_GAMER_REFERENCE_DB_GAME" FromRole="db_GameRecord" ToRole="db_Game" />
           <NavigationProperty Name="db_Team" Relationship="Self.FK_DB_GAMER_REFERENCE_DB_TEAM" FromRole="db_GameRecord" ToRole="db_Team" />
@@ -1302,6 +1395,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DB_GAMEB_REFERENCE_DB_BOBO">
+          <End Role="db_BoBo" Type="Self.db_BoBo" Multiplicity="0..1" />
+          <End Role="db_GameBoBo" Type="Self.db_GameBoBo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="db_BoBo">
+              <PropertyRef Name="BoBoID" />
+            </Principal>
+            <Dependent Role="db_GameBoBo">
+              <PropertyRef Name="BoBoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DB_COMMO_REFERENCE_DB_GAMEI">
           <End Role="db_GameInfoofPlatform" Type="Self.db_GameInfoofPlatform" Multiplicity="0..1" />
           <End Role="db_CommonUseHero" Type="Self.db_CommonUseHero" Multiplicity="*" />
@@ -1394,6 +1499,18 @@
               <PropertyRef Name="GameID" />
             </Principal>
             <Dependent Role="db_FightResult">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DB_GAMEB_REFERENCE_DB_GAME">
+          <End Role="db_Game" Type="Self.db_Game" Multiplicity="0..1" />
+          <End Role="db_GameBoBo" Type="Self.db_GameBoBo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="db_Game">
+              <PropertyRef Name="GameID" />
+            </Principal>
+            <Dependent Role="db_GameBoBo">
               <PropertyRef Name="GameID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1566,16 +1683,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="HaiGame7Entities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="HaiGame7Entities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="db_Article" EntityType="Self.db_Article" />
           <EntitySet Name="db_ArticleComment" EntityType="Self.db_ArticleComment" />
           <EntitySet Name="db_AssetRecord" EntityType="Self.db_AssetRecord" />
+          <EntitySet Name="db_BoBo" EntityType="Self.db_BoBo" />
           <EntitySet Name="db_CommonUseHero" EntityType="Self.db_CommonUseHero" />
           <EntitySet Name="db_DateFight" EntityType="Self.db_DateFight" />
           <EntitySet Name="db_FightResult" EntityType="Self.db_FightResult" />
           <EntitySet Name="db_FightState" EntityType="Self.db_FightState" />
           <EntitySet Name="db_Follow" EntityType="Self.db_Follow" />
           <EntitySet Name="db_Game" EntityType="Self.db_Game" />
+          <EntitySet Name="db_GameBoBo" EntityType="Self.db_GameBoBo" />
           <EntitySet Name="db_GameIDofUser" EntityType="Self.db_GameIDofUser" />
           <EntitySet Name="db_GameInfoofPlatform" EntityType="Self.db_GameInfoofPlatform" />
           <EntitySet Name="db_GameRecord" EntityType="Self.db_GameRecord" />
@@ -1605,6 +1724,10 @@
           <AssociationSet Name="FK_DB_ASSET_REFERENCE_DB_USER" Association="Self.FK_DB_ASSET_REFERENCE_DB_USER">
             <End Role="db_User" EntitySet="db_User" />
             <End Role="db_AssetRecord" EntitySet="db_AssetRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DB_GAMEB_REFERENCE_DB_BOBO" Association="Self.FK_DB_GAMEB_REFERENCE_DB_BOBO">
+            <End Role="db_BoBo" EntitySet="db_BoBo" />
+            <End Role="db_GameBoBo" EntitySet="db_GameBoBo" />
           </AssociationSet>
           <AssociationSet Name="FK_DB_COMMO_REFERENCE_DB_GAMEI" Association="Self.FK_DB_COMMO_REFERENCE_DB_GAMEI">
             <End Role="db_GameInfoofPlatform" EntitySet="db_GameInfoofPlatform" />
@@ -1637,6 +1760,10 @@
           <AssociationSet Name="FK_DB_FIGHT_REFERENCE_DB_GAME" Association="Self.FK_DB_FIGHT_REFERENCE_DB_GAME">
             <End Role="db_Game" EntitySet="db_Game" />
             <End Role="db_FightResult" EntitySet="db_FightResult" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DB_GAMEB_REFERENCE_DB_GAME" Association="Self.FK_DB_GAMEB_REFERENCE_DB_GAME">
+            <End Role="db_Game" EntitySet="db_Game" />
+            <End Role="db_GameBoBo" EntitySet="db_GameBoBo" />
           </AssociationSet>
           <AssociationSet Name="FK_DB_GAMER_REFERENCE_DB_GAME" Association="Self.FK_DB_GAMER_REFERENCE_DB_GAME">
             <End Role="db_Game" EntitySet="db_Game" />
@@ -1700,7 +1827,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="HaiGame7ModelStoreContainer" CdmEntityContainer="HaiGame7Entities">
+        <EntityContainerMapping StorageEntityContainer="HaiGame7ModelStoreContainer" CdmEntityContainer="HaiGame7Entities1">
           <EntitySetMapping Name="db_Article">
             <EntityTypeMapping TypeName="HaiGame7Model.db_Article">
               <MappingFragment StoreEntitySet="db_Article">
@@ -1745,6 +1872,21 @@
                 <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
                 <ScalarProperty Name="TradeType" ColumnName="TradeType" />
                 <ScalarProperty Name="TimeEnd" ColumnName="TimeEnd" />
+                <ScalarProperty Name="SysTime" ColumnName="SysTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="db_BoBo">
+            <EntityTypeMapping TypeName="HaiGame7Model.db_BoBo">
+              <MappingFragment StoreEntitySet="db_BoBo">
+                <ScalarProperty Name="BoBoID" ColumnName="BoBoID" />
+                <ScalarProperty Name="GameID" ColumnName="GameID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UserPicture" ColumnName="UserPicture" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Introduce" ColumnName="Introduce" />
+                <ScalarProperty Name="备注" ColumnName="备注" />
                 <ScalarProperty Name="SysTime" ColumnName="SysTime" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1826,7 +1968,6 @@
           <EntitySetMapping Name="db_Game">
             <EntityTypeMapping TypeName="HaiGame7Model.db_Game">
               <MappingFragment StoreEntitySet="db_Game">
-                <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="GameID" ColumnName="GameID" />
                 <ScalarProperty Name="GameName" ColumnName="GameName" />
                 <ScalarProperty Name="ShowPicture" ColumnName="ShowPicture" />
@@ -1834,6 +1975,20 @@
                 <ScalarProperty Name="HoldTime" ColumnName="HoldTime" />
                 <ScalarProperty Name="HoldAddress" ColumnName="HoldAddress" />
                 <ScalarProperty Name="HoldRule" ColumnName="HoldRule" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="SysTime" ColumnName="SysTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="db_GameBoBo">
+            <EntityTypeMapping TypeName="HaiGame7Model.db_GameBoBo">
+              <MappingFragment StoreEntitySet="db_GameBoBo">
+                <ScalarProperty Name="MID" ColumnName="MID" />
+                <ScalarProperty Name="BoBoID" ColumnName="BoBoID" />
+                <ScalarProperty Name="GameID" ColumnName="GameID" />
+                <ScalarProperty Name="Count" ColumnName="Count" />
+                <ScalarProperty Name="TalkShow" ColumnName="TalkShow" />
+                <ScalarProperty Name="备注" ColumnName="备注" />
                 <ScalarProperty Name="SysTime" ColumnName="SysTime" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1885,6 +2040,7 @@
                 <ScalarProperty Name="GameID" ColumnName="GameID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="TeamID" ColumnName="TeamID" />
+                <ScalarProperty Name="BoBoID" ColumnName="BoBoID" />
                 <ScalarProperty Name="ApplyTIme" ColumnName="ApplyTIme" />
                 <ScalarProperty Name="IsCancel" ColumnName="IsCancel" />
                 <ScalarProperty Name="State" ColumnName="State" />

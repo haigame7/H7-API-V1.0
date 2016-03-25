@@ -4,37 +4,40 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="11b70b995d9f4c8d8bbc5c1d5c0a5a61" Name="Diagram1">
-        <EntityTypeShape EntityType="HaiGame7Model.db_Article" Width="1.5" PointX="0.75" PointY="16" IsExpanded="true" />
+      <Diagram DiagramId="1d7767ac9449499aa65bc1f592ad96f8" Name="Diagram1">
+        <EntityTypeShape EntityType="HaiGame7Model.db_Article" Width="1.5" PointX="0.75" PointY="16.125" IsExpanded="true" />
         <EntityTypeShape EntityType="HaiGame7Model.db_ArticleComment" Width="1.5" PointX="3" PointY="20.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="HaiGame7Model.db_AssetRecord" Width="1.5" PointX="3" PointY="9.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="HaiGame7Model.db_CommonUseHero" Width="1.5" PointX="7.5" PointY="15" IsExpanded="true" />
-        <EntityTypeShape EntityType="HaiGame7Model.db_DateFight" Width="1.5" PointX="5.25" PointY="37.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="HaiGame7Model.db_FightResult" Width="1.5" PointX="5.25" PointY="26.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="HaiGame7Model.db_FightState" Width="1.5" PointX="7.5" PointY="34.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="HaiGame7Model.db_Follow" Width="1.5" PointX="7.5" PointY="37.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="HaiGame7Model.db_Game" Width="1.5" PointX="3" PointY="34.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="HaiGame7Model.db_AssetRecord" Width="1.5" PointX="3" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="HaiGame7Model.db_BoBo" Width="1.5" PointX="6" PointY="52.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="HaiGame7Model.db_CommonUseHero" Width="1.5" PointX="7.5" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="HaiGame7Model.db_DateFight" Width="1.5" PointX="5.25" PointY="37.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="HaiGame7Model.db_FightResult" Width="1.5" PointX="5.25" PointY="48.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="HaiGame7Model.db_FightState" Width="1.5" PointX="7.5" PointY="34.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="HaiGame7Model.db_Follow" Width="1.5" PointX="7.5" PointY="37.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HaiGame7Model.db_Game" Width="1.5" PointX="3" PointY="45.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="HaiGame7Model.db_GameBoBo" Width="1.5" PointX="8.25" PointY="46.75" IsExpanded="true" />
         <EntityTypeShape EntityType="HaiGame7Model.db_GameIDofUser" Width="1.5" PointX="3" PointY="15.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="HaiGame7Model.db_GameInfoofPlatform" Width="1.5" PointX="5.25" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="HaiGame7Model.db_GameInfoofPlatform" Width="1.5" PointX="5.25" PointY="14.375" IsExpanded="true" />
         <EntityTypeShape EntityType="HaiGame7Model.db_GameRecord" Width="1.5" PointX="5.25" PointY="30.375" IsExpanded="true" />
         <EntityTypeShape EntityType="HaiGame7Model.db_GuessAndVote" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="HaiGame7Model.db_GuessFight" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="HaiGame7Model.db_GuessFightLink" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
         <EntityTypeShape EntityType="HaiGame7Model.db_GuessOption" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="HaiGame7Model.db_GuessRecord" Width="1.5" PointX="3" PointY="23.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="HaiGame7Model.db_GuessRecord" Width="1.5" PointX="3" PointY="24.125" IsExpanded="true" />
         <EntityTypeShape EntityType="HaiGame7Model.db_Message" Width="1.5" PointX="5.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="HaiGame7Model.db_MyCollection" Width="1.5" PointX="3" PointY="27.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="HaiGame7Model.db_QRCode" Width="1.5" PointX="7.5" PointY="40.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="HaiGame7Model.db_Report" Width="1.5" PointX="3" PointY="31" IsExpanded="true" />
+        <EntityTypeShape EntityType="HaiGame7Model.db_MyCollection" Width="1.5" PointX="3" PointY="27.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="HaiGame7Model.db_QRCode" Width="1.5" PointX="7.5" PointY="40.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="HaiGame7Model.db_Report" Width="1.5" PointX="3" PointY="31.25" IsExpanded="true" />
         <EntityTypeShape EntityType="HaiGame7Model.db_SysMessage" Width="1.5" PointX="8" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="HaiGame7Model.db_Team" Width="1.5" PointX="3" PointY="38.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HaiGame7Model.db_Team" Width="1.5" PointX="3" PointY="38.875" IsExpanded="true" />
         <EntityTypeShape EntityType="HaiGame7Model.db_TeamBlog" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="HaiGame7Model.db_TeamUser" Width="1.5" PointX="5.25" PointY="45.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="HaiGame7Model.db_UnAnswer" Width="1.5" PointX="7.5" PointY="43.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="HaiGame7Model.db_TeamUser" Width="1.5" PointX="5.25" PointY="46.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="HaiGame7Model.db_UnAnswer" Width="1.5" PointX="7.5" PointY="43.5" IsExpanded="true" />
         <EntityTypeShape EntityType="HaiGame7Model.db_User" Width="1.5" PointX="0.75" PointY="20.125" IsExpanded="true" />
         <AssociationConnector Association="HaiGame7Model.FK_DB_ARTIC_REFERENCE_DB_ARTIC" ManuallyRouted="false" />
         <AssociationConnector Association="HaiGame7Model.FK_DB_ARTIC_REFERENCE_DB_USER" ManuallyRouted="false" />
         <AssociationConnector Association="HaiGame7Model.FK_DB_ASSET_REFERENCE_DB_USER" ManuallyRouted="false" />
+        <AssociationConnector Association="HaiGame7Model.FK_DB_GAMEB_REFERENCE_DB_BOBO" ManuallyRouted="false" />
         <AssociationConnector Association="HaiGame7Model.FK_DB_COMMO_REFERENCE_DB_GAMEI" ManuallyRouted="false" />
         <AssociationConnector Association="HaiGame7Model.FK_DB_DATEF_REFERENCE_DB_TEAM" ManuallyRouted="false" />
         <AssociationConnector Association="HaiGame7Model.FK_DB_DATEF_REFERENCE_DB_TEAM1" ManuallyRouted="false" />
@@ -43,6 +46,7 @@
         <AssociationConnector Association="HaiGame7Model.FK_DB_QRCOD_REFERENCE_DB_DATEF" ManuallyRouted="false" />
         <AssociationConnector Association="HaiGame7Model.FK_DB_UNANS_REFERENCE_DB_DATEF" ManuallyRouted="false" />
         <AssociationConnector Association="HaiGame7Model.FK_DB_FIGHT_REFERENCE_DB_GAME" ManuallyRouted="false" />
+        <AssociationConnector Association="HaiGame7Model.FK_DB_GAMEB_REFERENCE_DB_GAME" ManuallyRouted="false" />
         <AssociationConnector Association="HaiGame7Model.FK_DB_GAMER_REFERENCE_DB_GAME" ManuallyRouted="false" />
         <AssociationConnector Association="HaiGame7Model.FK_DB_GAMEI_REFERENCE_DB_GAMEI" ManuallyRouted="false" />
         <AssociationConnector Association="HaiGame7Model.FK_DB_GAMEI_REFERENCE_DB_USER" ManuallyRouted="false" />

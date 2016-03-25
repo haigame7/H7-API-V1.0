@@ -29,12 +29,14 @@ namespace HaiGame7.Model.EFModel
         public virtual DbSet<db_Article> db_Article { get; set; }
         public virtual DbSet<db_ArticleComment> db_ArticleComment { get; set; }
         public virtual DbSet<db_AssetRecord> db_AssetRecord { get; set; }
+        public virtual DbSet<db_BoBo> db_BoBo { get; set; }
         public virtual DbSet<db_CommonUseHero> db_CommonUseHero { get; set; }
         public virtual DbSet<db_DateFight> db_DateFight { get; set; }
         public virtual DbSet<db_FightResult> db_FightResult { get; set; }
         public virtual DbSet<db_FightState> db_FightState { get; set; }
         public virtual DbSet<db_Follow> db_Follow { get; set; }
         public virtual DbSet<db_Game> db_Game { get; set; }
+        public virtual DbSet<db_GameBoBo> db_GameBoBo { get; set; }
         public virtual DbSet<db_GameIDofUser> db_GameIDofUser { get; set; }
         public virtual DbSet<db_GameInfoofPlatform> db_GameInfoofPlatform { get; set; }
         public virtual DbSet<db_GameRecord> db_GameRecord { get; set; }

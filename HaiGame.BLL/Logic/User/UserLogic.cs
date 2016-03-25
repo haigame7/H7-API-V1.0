@@ -296,7 +296,7 @@ namespace HaiGame7.BLL
             {
                 //获取用户
                 db_User userInfo = context.db_User.Where(c => c.PhoneNumber == user.PhoneNumber).FirstOrDefault();
-
+                
                 if (userInfo != null)
                 {
                     int code = MESSAGE.OK_CODE;

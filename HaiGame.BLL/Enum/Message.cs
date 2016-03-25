@@ -71,5 +71,9 @@ namespace HaiGame7.BLL.Enum
         //AccessToken 无效
         public const int ACCESSTOKENINVALID_CODE = 40003;
         public const string ACCESSTOKENINVALID = "invalid accesstoken";
+
+        //无报名信息
+        public const int NOJOINMATCH_CODE = 50001;
+        public const string NOJOINMATCH = "no joinmatch";
     }
 }

@@ -1,12 +1,8 @@
 ﻿using HaiGame7.BLL.Enum;
-using HaiGame7.BLL.Logic.Common;
 using HaiGame7.Model.EFModel;
 using HaiGame7.Model.MyModel;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
 namespace HaiGame7.BLL

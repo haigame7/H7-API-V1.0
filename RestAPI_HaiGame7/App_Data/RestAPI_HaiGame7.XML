@@ -578,6 +578,64 @@
             {"TeamName":"huhaoran","TeamPicture":"","TeamDescription":"huhaoran","HotScore":6,"FightScore":0,"Asset":0}]]
             </returns>
         </member>
+        <member name="T:HaiGame7.RestAPI.Controllers.MatchController">
+            <summary>
+            赛事restful API，提供涉及到赛事的服务。
+            </summary>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.MatchController.MatchList">
+            <summary>
+            赛事列表
+            </summary>
+            <returns>
+            返回实例：[{"MessageCode":0,"Message":""},
+            [{"MatchID":4,"MatchName":"test","ShowPicture":"test","Introduce":"test"}]]
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.MatchController.BoBoList(HaiGame7.Model.MyModel.MatchModel)">
+            <summary>
+            主播列表
+            </summary>
+            <param name="match">
+            传入参数：{MatchID:"4"}
+            </param>
+            <returns>
+            返回值实例：
+            [{"MessageCode":0,"Message":""},
+            [{"MatchID":4,"Count":20,"TalkShow":"加入我吧","Name":"MM","UserPicture":"http://images.haigame7.com/avatar/20160128135746WxExqw0paJXAo1AtXc4RzGYo2LE=.png","Sex":"女","Introduce":"ZZZZZZZZZZZZZZZ","Age":null,"GameID":"12345"}]]
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.MatchController.BoBoCount(HaiGame7.Model.MyModel.MatchParameterModel)">
+             <summary>
+             主播已报名战队数
+             </summary>
+             <param name="match">
+             参数实例：{matchid:"4",boboid:"4"}
+             </param>
+             <returns>
+            返回实例值：[{"MessageCode":0,"Message":""},{"JoinCount":0}]
+             </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.MatchController.JoinMatch(HaiGame7.Model.MyModel.MatchParameter2Model)">
+            <summary>
+            报名参赛
+            </summary>
+            <param name="match">
+            参数实例：{matchid:"4",boboid:"4",TeamID:"11",PhoneNumber:"13439843883"}
+            </param>
+            <returns>
+            返回实例：[{"MessageCode":0,"Message":""}]
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.MatchController.MyJoinMatch(HaiGame7.Model.MyModel.MatchParameter2Model)">
+            <summary>
+            只传两个参数，参数实例：{matchid:"4",TeamID:"11"}
+            </summary>
+            <param name="match">
+            [{"MessageCode":0,"Message":""}，{Name:"MM",ApplyTime:"2015-01-01 11:11:11"}]
+            </param>
+            <returns></returns>
+        </member>
         <member name="T:HaiGame7.RestAPI.Controllers.TeamController">
             <summary>
             战队中心restful API，提供涉及到用户的服务。

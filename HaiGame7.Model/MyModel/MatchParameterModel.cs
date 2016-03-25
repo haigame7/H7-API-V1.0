@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace HaiGame7.Model.MyModel
 {
-    public class MatchModel
+    public class MatchParameterModel
     {
         public int MatchID { get; set; }
-        public string MatchName { get; set; }
-        public string ShowPicture { get; set; }
-        public string Introduce { get; set; }
+        public int BoBoID { get; set; }
     }
 }

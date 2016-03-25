@@ -12,20 +12,17 @@ namespace HaiGame7.Model.EFModel
     using System;
     using System.Collections.Generic;
     
-    public partial class db_GameRecord
+    public partial class db_GameBoBo
     {
-        public int GameRecordID { get; set; }
-        public Nullable<int> GameID { get; set; }
-        public Nullable<int> UserID { get; set; }
-        public Nullable<int> TeamID { get; set; }
+        public int MID { get; set; }
         public Nullable<int> BoBoID { get; set; }
-        public Nullable<System.DateTime> ApplyTIme { get; set; }
-        public Nullable<int> IsCancel { get; set; }
-        public Nullable<int> State { get; set; }
+        public Nullable<int> GameID { get; set; }
+        public Nullable<int> Count { get; set; }
+        public string TalkShow { get; set; }
+        public string 备注 { get; set; }
         public byte[] SysTime { get; set; }
     
+        public virtual db_BoBo db_BoBo { get; set; }
         public virtual db_Game db_Game { get; set; }
-        public virtual db_Team db_Team { get; set; }
-        public virtual db_User db_User { get; set; }
     }
 }
