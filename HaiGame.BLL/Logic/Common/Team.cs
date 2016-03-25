@@ -3,8 +3,6 @@ using HaiGame7.Model.MyModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HaiGame7.BLL.Logic.Common
 {
@@ -50,6 +48,7 @@ namespace HaiGame7.BLL.Logic.Common
                 if (team2!=null)
                 {
                     myTeam.Asset = team2.Asset;
+                    myTeam.TeamID = team2.TeamID;
                     myTeam.Creater = team2.CreateUserID;
                     myTeam.CreateTime = ((DateTime)team2.CreateTime).ToString("yyyy-MM-dd");
                     myTeam.FightScore= team2.FightScore;
@@ -68,6 +67,7 @@ namespace HaiGame7.BLL.Logic.Common
             {
                 myTeam.Asset = team.Asset;
                 myTeam.Creater = team.CreateUserID;
+                myTeam.TeamID = team.TeamID;
                 myTeam.CreateTime = ((DateTime)team.CreateTime).ToString("yyyy-MM-dd");
                 myTeam.FightScore = team.FightScore;
                 myTeam.FollowCount = team.FollowCount;
@@ -85,6 +85,46 @@ namespace HaiGame7.BLL.Logic.Common
         }
         #endregion
 
+        #region 根据UserID获取我的所有战队ID
+        public static string MyAllTeamID(int userID)
+        {
+            string myAllTeamID = "()";
+
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //获取db_Team表里的数据
+                var teamList=context.db_Team.Where(c => c.CreateUserID == userID).ToList();
+
+                //获取db_TeamUser表里的数据
+                if (teamList.Count == 0)
+                {
+                    var teamUser=context.db_TeamUser.Where(c => c.UserID == userID).FirstOrDefault();
+                    if (teamUser!=null)
+                    {
+                        myAllTeamID = "(" + teamUser.TeamID + ")";
+                    }
+                }
+                else
+                {
+                    string temp = "";
+                    for (int i=0;i< teamList.Count;i++)
+                    {
+                        if (i== teamList.Count-1)
+                        {
+                            temp = temp + teamList[i].TeamID.ToString();
+                        }
+                        else
+                        {
+                            temp = temp + teamList[i].TeamID.ToString()+",";
+                        }  
+                    }
+                    myAllTeamID = "(" + temp + ")";
+                }
+            }
+            return myAllTeamID;
+        }
+        #endregion
+
         #region 用户个人战斗力匹配战队
         public static List<TeamModel> TeamListByUserFightScore(TeamListParameterModel para)
         {
@@ -94,6 +134,7 @@ namespace HaiGame7.BLL.Logic.Common
                 // 获取战队列表
                 var sql = "SELECT" +
                     " t1.CreateUserID as Creater," +
+                    " t1.TeamID," +
                     " t1.TeamName," +
                     " t1.TeamPicture as TeamLogo," +
                     " t1.TeamDescription," +
@@ -126,6 +167,7 @@ namespace HaiGame7.BLL.Logic.Common
                 // 获取战队列表
                 var sql = "SELECT" +
                     " t1.CreateUserID as Creater," +
+                    " t1.TeamID," +
                     " t1.TeamName," +
                     " t1.TeamPicture as TeamLogo," +
                     " t1.TeamDescription," +
@@ -159,7 +201,8 @@ namespace HaiGame7.BLL.Logic.Common
                 // 获取战队列表
                 var sql = "SELECT"+
                     " t1.CreateUserID as Creater,"+
-                    " t1.TeamName,"+
+                    " t1.TeamID," +
+                    " t1.TeamName," +
                     " t1.TeamPicture as TeamLogo,"+
                     " t1.TeamDescription,"+
                     " t1.TeamType,"+

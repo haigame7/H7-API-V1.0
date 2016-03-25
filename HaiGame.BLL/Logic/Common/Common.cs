@@ -7,6 +7,11 @@ using HaiGame7.BLL.Enum;
 using System.Security.Cryptography;
 using HaiGame7.Model.EFModel;
 using HaiGame7.Model.MyModel;
+using System.IO;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.Serialization.Formatters.Binary;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HaiGame7.BLL.Logic.Common
 {
@@ -120,5 +125,42 @@ namespace HaiGame7.BLL.Logic.Common
         }
         #endregion
 
+        #region macSha1算法加密 UTF BASE64加密
+        /// <summary>
+        /// macSha1算法加密 UTF BASE64加密
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string HmacSha1(string text, string key)
+        {
+            Encoding encode = Encoding.GetEncoding("UTF-8");
+            byte[] byteData = encode.GetBytes(text);
+            byte[] byteKey = encode.GetBytes(key);
+            HMACSHA1 hmac = new HMACSHA1(byteKey);
+            CryptoStream cs = new CryptoStream(Stream.Null, hmac, CryptoStreamMode.Write);
+            cs.Write(byteData, 0, byteData.Length);
+            cs.Close();
+            return Convert.ToBase64String(hmac.Hash);
+        }
+        #endregion
+
+        /// <summary>
+        /// 将Base64字符串转换为图片
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public static string Base64ToImage(string base64)
+        {
+            byte[] arr = Convert.FromBase64String(base64);
+            MemoryStream ms = new MemoryStream(arr);
+            Bitmap bmp = new Bitmap(ms);
+
+            string txtFileName = @"D:\HiGameImages\avatar\"+DateTime.Now.ToString("yyyyMMddHHmmss") + HmacSha1(MathRandom(6), ENCRY.ENCRYSTR) + ".png";
+            bmp.Save(txtFileName, ImageFormat.Png);
+            ms.Close();
+
+            return txtFileName.Replace(@"D:\HiGameImages\avatar\",@"http://images.haigame7.com/avatar/");
+        }
     }
 }

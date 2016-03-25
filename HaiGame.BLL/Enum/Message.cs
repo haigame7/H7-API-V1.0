@@ -56,6 +56,10 @@ namespace HaiGame7.BLL.Enum
         public const int NOTEAM_CODE = 20003;
         public const string NOTEAM = "you are noteam";
 
+        //您是队员，不能发起约战
+        public const int USERCHALLENGE_CODE = 20002;
+        public const string USERCHALLENGE = "您是队员，不能发起约战";
+
         //系统错误
         public const int SYSERR_CODE = 40001;
         public const string SYSERR = "system error";

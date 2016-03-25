@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="HaiGame7Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="HaiGame7Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="db_Article">
           <Key>
             <PropertyRef Name="ArticleID" />
@@ -125,11 +125,12 @@
           </Key>
           <Property Name="GameID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GameName" Type="varchar" MaxLength="32" />
-          <Property Name="ShowPicture" Type="varchar" MaxLength="32" />
-          <Property Name="Introduce" Type="varchar" MaxLength="256" />
+          <Property Name="ShowPicture" Type="varchar" MaxLength="512" />
+          <Property Name="Introduce" Type="text" />
           <Property Name="HoldTime" Type="datetime" />
           <Property Name="HoldAddress" Type="varchar" MaxLength="64" />
           <Property Name="HoldRule" Type="varchar" MaxLength="128" />
+          <Property Name="State" Type="int" />
           <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="db_GameIDofUser">
@@ -822,8 +823,7 @@
             <End Role="db_UnAnswer" EntitySet="db_UnAnswer" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HaiGame7Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -961,14 +961,15 @@
           </Key>
           <Property Name="GameID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="GameName" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
-          <Property Name="ShowPicture" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
-          <Property Name="Introduce" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="ShowPicture" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
+          <Property Name="Introduce" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="HoldTime" Type="DateTime" Precision="3" />
           <Property Name="HoldAddress" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="HoldRule" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="SysTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="db_FightResult" Relationship="Self.FK_DB_FIGHT_REFERENCE_DB_GAME" FromRole="db_Game" ToRole="db_FightResult" />
           <NavigationProperty Name="db_GameRecord" Relationship="Self.FK_DB_GAMER_REFERENCE_DB_GAME" FromRole="db_Game" ToRole="db_GameRecord" />
+          <Property Name="State" Type="Int32" />
         </EntityType>
         <EntityType Name="db_GameIDofUser">
           <Key>
@@ -1825,6 +1826,7 @@
           <EntitySetMapping Name="db_Game">
             <EntityTypeMapping TypeName="HaiGame7Model.db_Game">
               <MappingFragment StoreEntitySet="db_Game">
+                <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="GameID" ColumnName="GameID" />
                 <ScalarProperty Name="GameName" ColumnName="GameName" />
                 <ScalarProperty Name="ShowPicture" ColumnName="ShowPicture" />

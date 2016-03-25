@@ -17,5 +17,6 @@ namespace HaiGame7.Model.MyModel
         public string FightAddress { get; set; }
         public string CurrentState { get; set; }
         public DateTime StateTime { get; set; }
+        public string StateTimeStr { get; set; }
     }
 }

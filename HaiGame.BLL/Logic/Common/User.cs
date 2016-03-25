@@ -39,6 +39,23 @@ namespace HaiGame7.BLL.Logic.Common
         }
         #endregion
 
+        #region 通过昵称获取用户信息
+        public static UserModel GetUserModelByNickName(string nickName)
+        {
+            UserModel user;
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                var sql = "SELECT t1.UserID,t1.PhoneNumber,t1.UserWebNickName," +
+                         "  t1.UserWebPicture,t1.UserName,t1.Address,t1.Sex,CONVERT(varchar(100), t1.Birthday, 23) as Birthday,t1.Hobby" +
+                         "  FROM db_User t1 WHERE t1.UserWebNickName= " + nickName + "";
+
+                user = context.Database.SqlQuery<UserModel>(sql)
+                                 .FirstOrDefault();
+            }
+            return user;
+        }
+        #endregion
+
         #region 判断昵称是否存在
         public static bool GetUserByNickName(string nickName)
         {

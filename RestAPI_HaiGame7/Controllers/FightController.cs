@@ -85,5 +85,27 @@ namespace HaiGame7.RestAPI.Controllers
             return returnResult;
         }
         #endregion
+
+        #region 我的约战
+        /// <summary>
+        /// 我的约战
+        /// </summary>
+        /// <param name="fight">
+        /// 参数实例：{PhoneNumber:"13439843883",FightType:"Send",StartPage:1,PageCount:10}
+        /// </param>
+        /// <returns>
+        /// 返回实例：[{"MessageCode":0,"Message":""},
+        /// [{"DateID":168,"STeamID":125,"ETeamID":124,"STeamName":"通天塔战队","ETeamName":"訾1","Money":50,"FightAddress":null,"CurrentState":"已应战","StateTime":"\/Date(-62135596800000)\/","StateTimeStr":"2016-02-26 13:06:35"}]]
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage MyFight([FromBody] FightParameterModel fight)
+        {
+            FightLogic fightLogic = new FightLogic();
+            jsonResult = fightLogic.MyFight(fight);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
     }
 }

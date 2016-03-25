@@ -5,6 +5,7 @@ namespace HaiGame7.Model.MyModel
     public class TeamModel
     {
         public Nullable<int> Creater { get; set; }
+        public int TeamID { get; set; }
         public string TeamName { get; set; }
         public string TeamLogo { get; set; }
         public string TeamDescription { get; set; }

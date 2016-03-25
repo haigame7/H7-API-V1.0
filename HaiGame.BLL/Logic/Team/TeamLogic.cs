@@ -204,6 +204,7 @@ namespace HaiGame7.BLL
 
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
+                
                 //判断战队名称是否存在
                 //判断是否有权限创建
             }

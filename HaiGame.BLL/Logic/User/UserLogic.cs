@@ -155,21 +155,23 @@ namespace HaiGame7.BLL
             {
                 // 判断手机号是否存在
                 db_User dbUser = context.db_User.Where(c => c.PhoneNumber == user.PhoneNumber.Trim()).FirstOrDefault();
-                if (dbUser != null)
+                if (dbUser == null)
                 {
                     db_AssetRecord assetRecord = new db_AssetRecord();
                     db_User userRecord = new db_User();
 
                     //添加信息到User表
                     userRecord.PhoneNumber = user.PhoneNumber;
-                    
                     MD5 md5Hash = MD5.Create();
                     userRecord.UserPassWord = Common.GetMd5Hash(md5Hash, user.PassWord);
                     userRecord.RegisterDate = DateTime.Now;
                     context.db_User.Add(userRecord);
-                    //添加信息到资产表
-                    Asset.AddMoneyRegister(dbUser.UserID, context);
                     context.SaveChanges();
+
+                    //添加信息到资产表
+                    db_User regUser = context.db_User.Where(c => c.PhoneNumber == user.PhoneNumber.Trim()).FirstOrDefault();
+                    Asset.AddMoneyRegister(regUser.UserID);
+                    
                     //添加成功
                     message.MessageCode = MESSAGE.OK_CODE;
                     message.Message = MESSAGE.OK;
@@ -252,6 +254,36 @@ namespace HaiGame7.BLL
         }
         #endregion
 
+        #region 根据昵称获取个人信息
+        public string UserInfoByNickName(SimpleUserModel user)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //获取用户
+                UserModel userInfo = User.GetUserModelByNickName(user.PhoneNumber);
+                if (userInfo != null)
+                {
+                    message.Message = MESSAGE.OK;
+                    message.MessageCode = MESSAGE.OK_CODE;
+                }
+                else
+                {
+                    message.Message = MESSAGE.NOUSER;
+                    message.MessageCode = MESSAGE.NOUSER_CODE;
+                }
+                returnResult.Add(message);
+                returnResult.Add(userInfo);
+            }
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
         #region 更改个人信息
         public string UpdateUserInfo(UserModel user)
         {
@@ -263,7 +295,8 @@ namespace HaiGame7.BLL
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
                 //获取用户
-                db_User userInfo = User.GetUserByPhoneNumber(user.PhoneNumber);
+                db_User userInfo = context.db_User.Where(c => c.PhoneNumber == user.PhoneNumber).FirstOrDefault();
+
                 if (userInfo != null)
                 {
                     int code = MESSAGE.OK_CODE;
@@ -302,7 +335,7 @@ namespace HaiGame7.BLL
                     }
                     if (user.UserWebPicture != null)
                     {
-                        userInfo.UserWebPicture = user.UserWebPicture;
+                        userInfo.UserWebPicture = Common.Base64ToImage(user.UserWebPicture);
                     }
                     #endregion
                     context.SaveChanges();

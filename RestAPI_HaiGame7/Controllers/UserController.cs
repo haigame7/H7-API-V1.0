@@ -155,6 +155,26 @@ namespace HaiGame7.RestAPI.Controllers
         }
         #endregion
 
+        #region UserInfoByNickName 根据昵称获取个人信息
+        /// <summary>
+        /// 根据昵称获取个人信息
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>
+        /// 返回值实例：[{"MessageCode":0,"Message":""},
+        /// {"UserID":64,"PhoneNumber":"13439843883","PassWord":null,"UserWebPicture":"http://images.haigame7.com/avatar/20160127162940WxExqw0paJXAo1AtXc4RzGYo2LE=.png","UserWebNickName":"不服","UserName":null,"Address":"北京-大兴区","Sex":"男","Birthday":"2016-03-18","Hobby":null}]
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage UserInfoByNickName([FromBody] SimpleUserModel user)
+        {
+            UserLogic userLogic = new UserLogic();
+            jsonResult = userLogic.UserInfoByNickName(user);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
         #region UpdateUserInfo 更改个人信息
         /// <summary>
         /// 更改个人信息，传入手机号和要更改的字段，不更改字段不要传

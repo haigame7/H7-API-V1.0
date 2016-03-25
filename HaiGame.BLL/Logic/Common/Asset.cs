@@ -40,25 +40,30 @@ namespace HaiGame7.BLL.Logic.Common
         /// </summary>
         /// <param name="userID">用户ID</param>
         /// <returns>true|false</returns>
-        public static bool AddMoneyRegister(int userID, HaiGame7Entities context)
+        public static bool AddMoneyRegister(int userID)
         {
-            db_AssetRecord assetRecord = new db_AssetRecord();
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                db_AssetRecord assetRecord = new db_AssetRecord();
 
-            assetRecord.UserID = userID;
-            assetRecord.VirtualMoney = ASSET.MONEY_REG;
-            assetRecord.TrueMoney = 0;
-            assetRecord.GainWay = ASSET.GAINWAY_REG;
-            assetRecord.GainTime = DateTime.Now;
-            assetRecord.State = ASSET.MONEYSTATE_YES;
-            //时间+操作+收入支出金额
-            assetRecord.Remark = assetRecord.GainTime + " " +
-                                assetRecord.GainWay + " "
-                                + ASSET.PAY_IN +
-                                assetRecord.VirtualMoney.ToString();
+                assetRecord.UserID = userID;
+                assetRecord.VirtualMoney = ASSET.MONEY_REG;
+                assetRecord.TrueMoney = 0;
+                assetRecord.GainWay = ASSET.GAINWAY_REG;
+                assetRecord.GainTime = DateTime.Now;
+                assetRecord.State = ASSET.MONEYSTATE_YES;
+                //时间+操作+收入支出金额
+                assetRecord.Remark = assetRecord.GainTime + " " +
+                                    assetRecord.GainWay + " "
+                                    + ASSET.PAY_IN +
+                                    assetRecord.VirtualMoney.ToString();
 
-            //将充值记录加入资产记录表
-            context.db_AssetRecord.Add(assetRecord);
-            return true;
+                //将充值记录加入资产记录表
+                context.db_AssetRecord.Add(assetRecord);
+                context.SaveChanges();
+                return true;
+            }
+            
         }
         #endregion
     }
