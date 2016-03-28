@@ -108,6 +108,9 @@
     <Compile Include="EFModel\db_GuessRecord.cs">
       <DependentUpon>HaiGame7.tt</DependentUpon>
     </Compile>
+    <Compile Include="EFModel\db_MatchGuess.cs">
+      <DependentUpon>HaiGame7.tt</DependentUpon>
+    </Compile>
     <Compile Include="EFModel\db_Message.cs">
       <DependentUpon>HaiGame7.tt</DependentUpon>
     </Compile>
@@ -161,6 +164,10 @@
     <Compile Include="MyModel\FightStateModel.cs" />
     <Compile Include="MyModel\FightStateDetailModel.cs" />
     <Compile Include="MyModel\GameModel.cs" />
+    <Compile Include="MyModel\Guess2Model.cs" />
+    <Compile Include="MyModel\GuessModel.cs" />
+    <Compile Include="MyModel\GuessParameterModel.cs" />
+    <Compile Include="MyModel\GuessRecordModel.cs" />
     <Compile Include="MyModel\HeroModel.cs" />
     <Compile Include="MyModel\MatchModel.cs" />
     <Compile Include="MyModel\MatchParameter2Model.cs" />

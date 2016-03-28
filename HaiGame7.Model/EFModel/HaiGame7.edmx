@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="HaiGame7Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="HaiGame7Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="db_Article">
           <Key>
             <PropertyRef Name="ArticleID" />
@@ -15,8 +15,8 @@
           <Property Name="Content" Type="text" />
           <Property Name="Catalog" Type="varchar" MaxLength="32" />
           <Property Name="CreateTime" Type="datetime" />
-          <Property Name="ArticleCount" Type="int" />
           <Property Name="Remark" Type="varchar" MaxLength="32" />
+          <Property Name="ArticleCount" Type="int" />
           <Property Name="Label" Type="varchar" MaxLength="256" />
           <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
@@ -111,6 +111,9 @@
           <Property Name="CustomerTeamID" Type="int" />
           <Property Name="Result" Type="varchar" MaxLength="8" />
           <Property Name="GameStage" Type="varchar" MaxLength="32" />
+          <Property Name="StartTime" Type="datetime" />
+          <Property Name="EndTime" Type="datetime" />
+          <Property Name="IDFromDota2" Type="varchar" MaxLength="32" />
           <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="db_FightState">
@@ -156,7 +159,7 @@
           <Property Name="GameID" Type="int" />
           <Property Name="Count" Type="int" />
           <Property Name="TalkShow" Type="varchar" MaxLength="512" />
-          <Property Name="备注" Type="char" MaxLength="10" />
+          <Property Name="Remark" Type="varchar" MaxLength="512" />
           <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="db_GameIDofUser">
@@ -271,6 +274,20 @@
           <Property Name="WinMoney" Type="int" />
           <Property Name="FinalMoney" Type="int" />
           <Property Name="GuessType" Type="int" />
+          <Property Name="GuessTime" Type="datetime" />
+          <Property Name="Odds" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="db_MatchGuess">
+          <Key>
+            <PropertyRef Name="GuessID" />
+          </Key>
+          <Property Name="GuessID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ResultID" Type="int" />
+          <Property Name="GuessName" Type="varchar" MaxLength="16" />
+          <Property Name="STeamOdds" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ETeamOdds" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Remark" Type="varchar" MaxLength="256" />
           <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="db_Message">
@@ -402,10 +419,10 @@
           <Property Name="UserPicture" Type="varchar" MaxLength="1024" />
           <Property Name="UserName" Type="varchar" MaxLength="32" />
           <Property Name="PhoneNumber" Type="varchar" MaxLength="32" />
-          <Property Name="CardID" Type="varchar" MaxLength="32" />
           <Property Name="UserPassWord" Type="varchar" MaxLength="256" />
           <Property Name="UserWebNickName" Type="varchar" MaxLength="64" />
           <Property Name="UserWebPicture" Type="varchar" MaxLength="1024" />
+          <Property Name="CardID" Type="varchar" MaxLength="32" />
           <Property Name="StudentID" Type="varchar" MaxLength="32" />
           <Property Name="GameID" Type="varchar" MaxLength="32" />
           <Property Name="Picture" Type="varchar" MaxLength="128" />
@@ -661,6 +678,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DB_MATCH_REFERENCE_DB_FIGHT">
+          <End Role="db_FightResult" Type="Self.db_FightResult" Multiplicity="0..1" />
+          <End Role="db_MatchGuess" Type="Self.db_MatchGuess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="db_FightResult">
+              <PropertyRef Name="ResultID" />
+            </Principal>
+            <Dependent Role="db_MatchGuess">
+              <PropertyRef Name="ResultID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DB_MYCOL_REFERENCE_DB_USER">
           <End Role="db_User" Type="Self.db_User" Multiplicity="0..1" />
           <End Role="db_MyCollection" Type="Self.db_MyCollection" Multiplicity="*" />
@@ -765,6 +794,7 @@
           <EntitySet Name="db_GuessFightLink" EntityType="Self.db_GuessFightLink" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_GuessOption" EntityType="Self.db_GuessOption" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_GuessRecord" EntityType="Self.db_GuessRecord" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="db_MatchGuess" EntityType="Self.db_MatchGuess" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_Message" EntityType="Self.db_Message" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_MyCollection" EntityType="Self.db_MyCollection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_QRCode" EntityType="Self.db_QRCode" Schema="dbo" store:Type="Tables" />
@@ -855,6 +885,10 @@
             <End Role="db_User" EntitySet="db_User" />
             <End Role="db_GuessRecord" EntitySet="db_GuessRecord" />
           </AssociationSet>
+          <AssociationSet Name="FK_DB_MATCH_REFERENCE_DB_FIGHT" Association="Self.FK_DB_MATCH_REFERENCE_DB_FIGHT">
+            <End Role="db_FightResult" EntitySet="db_FightResult" />
+            <End Role="db_MatchGuess" EntitySet="db_MatchGuess" />
+          </AssociationSet>
           <AssociationSet Name="FK_DB_MYCOL_REFERENCE_DB_USER" Association="Self.FK_DB_MYCOL_REFERENCE_DB_USER">
             <End Role="db_User" EntitySet="db_User" />
             <End Role="db_MyCollection" EntitySet="db_MyCollection" />
@@ -884,8 +918,7 @@
             <End Role="db_UnAnswer" EntitySet="db_UnAnswer" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HaiGame7Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1009,6 +1042,10 @@
           <Property Name="GameStage" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="SysTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="db_Game" Relationship="Self.FK_DB_FIGHT_REFERENCE_DB_GAME" FromRole="db_FightResult" ToRole="db_Game" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
+          <Property Name="IDFromDota2" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="db_MatchGuess" Relationship="HaiGame7Model.FK_DB_MATCH_REFERENCE_DB_FIGHT" FromRole="db_FightResult" ToRole="db_MatchGuess" />
         </EntityType>
         <EntityType Name="db_FightState">
           <Key>
@@ -1058,10 +1095,10 @@
           <Property Name="GameID" Type="Int32" />
           <Property Name="Count" Type="Int32" />
           <Property Name="TalkShow" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
-          <Property Name="备注" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="SysTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="db_BoBo" Relationship="Self.FK_DB_GAMEB_REFERENCE_DB_BOBO" FromRole="db_GameBoBo" ToRole="db_BoBo" />
           <NavigationProperty Name="db_Game" Relationship="Self.FK_DB_GAMEB_REFERENCE_DB_GAME" FromRole="db_GameBoBo" ToRole="db_Game" />
+          <Property Name="Remark" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="db_GameIDofUser">
           <Key>
@@ -1190,6 +1227,8 @@
           <Property Name="GuessType" Type="Int32" />
           <Property Name="SysTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="db_User" Relationship="Self.FK_DB_GUESS_REFERENCE_DB_USER" FromRole="db_GuessRecord" ToRole="db_User" />
+          <Property Name="GuessTime" Type="DateTime" Precision="3" />
+          <Property Name="Odds" Type="Decimal" Precision="10" Scale="2" />
         </EntityType>
         <EntityType Name="db_Message">
           <Key>
@@ -1821,7 +1860,37 @@
             <End Role="db_Team" EntitySet="db_Team" />
             <End Role="db_TeamUser" EntitySet="db_TeamUser" />
           </AssociationSet>
+          <EntitySet Name="db_MatchGuess" EntityType="HaiGame7Model.db_MatchGuess" />
+          <AssociationSet Name="FK_DB_MATCH_REFERENCE_DB_FIGHT" Association="HaiGame7Model.FK_DB_MATCH_REFERENCE_DB_FIGHT">
+            <End Role="db_FightResult" EntitySet="db_FightResult" />
+            <End Role="db_MatchGuess" EntitySet="db_MatchGuess" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="db_MatchGuess">
+          <Key>
+            <PropertyRef Name="GuessID" />
+          </Key>
+          <Property Name="GuessID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResultID" Type="Int32" />
+          <Property Name="GuessName" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="STeamOdds" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ETeamOdds" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Remark" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="SysTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="db_FightResult" Relationship="HaiGame7Model.FK_DB_MATCH_REFERENCE_DB_FIGHT" FromRole="db_MatchGuess" ToRole="db_FightResult" />
+        </EntityType>
+        <Association Name="FK_DB_MATCH_REFERENCE_DB_FIGHT">
+          <End Type="HaiGame7Model.db_FightResult" Role="db_FightResult" Multiplicity="0..1" />
+          <End Type="HaiGame7Model.db_MatchGuess" Role="db_MatchGuess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="db_FightResult">
+              <PropertyRef Name="ResultID" />
+            </Principal>
+            <Dependent Role="db_MatchGuess">
+              <PropertyRef Name="ResultID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1933,6 +2002,9 @@
           <EntitySetMapping Name="db_FightResult">
             <EntityTypeMapping TypeName="HaiGame7Model.db_FightResult">
               <MappingFragment StoreEntitySet="db_FightResult">
+                <ScalarProperty Name="IDFromDota2" ColumnName="IDFromDota2" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="ResultID" ColumnName="ResultID" />
                 <ScalarProperty Name="GameID" ColumnName="GameID" />
                 <ScalarProperty Name="HomeTeamID" ColumnName="HomeTeamID" />
@@ -1983,12 +2055,12 @@
           <EntitySetMapping Name="db_GameBoBo">
             <EntityTypeMapping TypeName="HaiGame7Model.db_GameBoBo">
               <MappingFragment StoreEntitySet="db_GameBoBo">
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="MID" ColumnName="MID" />
                 <ScalarProperty Name="BoBoID" ColumnName="BoBoID" />
                 <ScalarProperty Name="GameID" ColumnName="GameID" />
                 <ScalarProperty Name="Count" ColumnName="Count" />
                 <ScalarProperty Name="TalkShow" ColumnName="TalkShow" />
-                <ScalarProperty Name="备注" ColumnName="备注" />
                 <ScalarProperty Name="SysTime" ColumnName="SysTime" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2102,6 +2174,8 @@
           <EntitySetMapping Name="db_GuessRecord">
             <EntityTypeMapping TypeName="HaiGame7Model.db_GuessRecord">
               <MappingFragment StoreEntitySet="db_GuessRecord">
+                <ScalarProperty Name="Odds" ColumnName="Odds" />
+                <ScalarProperty Name="GuessTime" ColumnName="GuessTime" />
                 <ScalarProperty Name="GuessRecordID" ColumnName="GuessRecordID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="GuessID" ColumnName="GuessID" />
@@ -2270,6 +2344,19 @@
                 <ScalarProperty Name="Job" ColumnName="Job" />
                 <ScalarProperty Name="Hobby" ColumnName="Hobby" />
                 <ScalarProperty Name="SysTime" ColumnName="SysTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="db_MatchGuess">
+            <EntityTypeMapping TypeName="HaiGame7Model.db_MatchGuess">
+              <MappingFragment StoreEntitySet="db_MatchGuess">
+                <ScalarProperty Name="SysTime" ColumnName="SysTime" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="ETeamOdds" ColumnName="ETeamOdds" />
+                <ScalarProperty Name="STeamOdds" ColumnName="STeamOdds" />
+                <ScalarProperty Name="GuessName" ColumnName="GuessName" />
+                <ScalarProperty Name="ResultID" ColumnName="ResultID" />
+                <ScalarProperty Name="GuessID" ColumnName="GuessID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

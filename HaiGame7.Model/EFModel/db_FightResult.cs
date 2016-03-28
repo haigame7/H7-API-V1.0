@@ -14,6 +14,12 @@ namespace HaiGame7.Model.EFModel
     
     public partial class db_FightResult
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public db_FightResult()
+        {
+            this.db_MatchGuess = new HashSet<db_MatchGuess>();
+        }
+    
         public int ResultID { get; set; }
         public Nullable<int> GameID { get; set; }
         public Nullable<int> HomeTeamID { get; set; }
@@ -21,7 +27,12 @@ namespace HaiGame7.Model.EFModel
         public string Result { get; set; }
         public string GameStage { get; set; }
         public byte[] SysTime { get; set; }
+        public Nullable<System.DateTime> StartTime { get; set; }
+        public Nullable<System.DateTime> EndTime { get; set; }
+        public string IDFromDota2 { get; set; }
     
         public virtual db_Game db_Game { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<db_MatchGuess> db_MatchGuess { get; set; }
     }
 }

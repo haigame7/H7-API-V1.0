@@ -87,6 +87,7 @@
     <Compile Include="Logic\Common\User.cs" />
     <Compile Include="Logic\Common\Fight.cs" />
     <Compile Include="Logic\Fight\FightLogic.cs" />
+    <Compile Include="Logic\Guess\GuessLogic.cs" />
     <Compile Include="Logic\Match\MatchLogic.cs" />
     <Compile Include="Logic\Rank\RankLogic.cs" />
     <Compile Include="Logic\Team\TeamLogic.cs" />

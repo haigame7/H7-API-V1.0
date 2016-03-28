@@ -24,6 +24,8 @@ namespace HaiGame7.Model.EFModel
         public Nullable<int> FinalMoney { get; set; }
         public Nullable<int> GuessType { get; set; }
         public byte[] SysTime { get; set; }
+        public Nullable<System.DateTime> GuessTime { get; set; }
+        public Nullable<decimal> Odds { get; set; }
     
         public virtual db_User db_User { get; set; }
     }
