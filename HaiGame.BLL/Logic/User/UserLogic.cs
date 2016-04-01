@@ -368,7 +368,7 @@ namespace HaiGame7.BLL
                 db_User userInfo = User.GetUserByPhoneNumber(user.PhoneNumber);
                 //获取用户资产列表
                 // 获取用户游戏数据
-                var sql = "SELECT t1.VirtualMoney,CONVERT(varchar(100), t1.GainTime, 23) as GainTime,t1.GainWay,t2.Remark" +
+                var sql = "SELECT t1.VirtualMoney,CONVERT(varchar(100), t1.GainTime, 23) as GainTime,t1.GainWay,t1.Remark" +
                           " FROM db_AssetRecord t1" +
                           " WHERE t1.UserID = " + userInfo.UserID + "ORDER BY t1.GainTime DESC";
 
@@ -548,6 +548,47 @@ namespace HaiGame7.BLL
                 }
             }
             returnResult.Add(message);
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
+        #region 未加入战队用户列表
+        public string NoTeamUserList(UserListParameterModel para)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+            List<User2Model> userInfo;
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //查询条件：user表中没有战队信息的user信息，按注册日期排序
+                var sql = "SELECT t1.UserID,t1.PhoneNumber,t1.UserWebNickName," +
+                         "  t1.UserWebPicture,t1.UserName,t1.Address,"+
+                         "  t1.Sex,CONVERT(varchar(100), t1.Birthday, 23) as Birthday,t1.Hobby" +
+                         "  FROM"+
+                         "  db_User t1"+
+                         "  LEFT JOIN db_Team t2 ON t1.UserID = t2.CreateUserID"+
+                         "  LEFT JOIN db_TeamUser t3 ON t1.UserID = t3.UserID"+
+                         "  WHERE t2.CreateUserID IS NULL AND t3.UserID IS NULL";
+
+                userInfo = context.Database.SqlQuery<User2Model>(sql)
+                                 .Skip((para.StartPage - 1) * para.PageCount)
+                                 .Take(para.PageCount).ToList();
+                //循环user，添加擅长英雄图标
+                for (int i=0;i< userInfo.Count;i++)
+                {
+                    ///氦金
+                    userInfo[i].Asset = User.GetAssetByUserID(userInfo[i].UserID);
+                    //战斗力
+                    userInfo[i].GamePower= User.GetGamePowerByUserID(userInfo[i].UserID);
+                    //擅长英雄
+                    userInfo[i].HeroImage = User.GetHeroImgeByUserID(userInfo[i].UserID);
+                }
+            }
+            returnResult.Add(message);
+            returnResult.Add(userInfo);
             result = jss.Serialize(returnResult);
             return result;
         }

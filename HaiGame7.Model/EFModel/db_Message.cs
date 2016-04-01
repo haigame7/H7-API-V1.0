@@ -30,6 +30,7 @@ namespace HaiGame7.Model.EFModel
         public Nullable<int> State { get; set; }
         public string MessageType { get; set; }
         public byte[] SysTime { get; set; }
+        public string ReceiveName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<db_SysMessage> db_SysMessage { get; set; }

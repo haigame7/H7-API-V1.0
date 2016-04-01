@@ -30,6 +30,7 @@ namespace HaiGame7.Model.EFModel
         public Nullable<System.DateTime> StartTime { get; set; }
         public Nullable<System.DateTime> EndTime { get; set; }
         public string IDFromDota2 { get; set; }
+        public Nullable<int> BoBoID { get; set; }
     
         public virtual db_Game db_Game { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

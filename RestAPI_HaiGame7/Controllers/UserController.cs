@@ -298,5 +298,24 @@ namespace HaiGame7.RestAPI.Controllers
         }
         #endregion
 
+        #region NoTeamUserList 未加入战队用户列表
+        /// <summary>
+        /// 未加入战队用户列表
+        /// </summary>
+        /// <param name="para">
+        /// {StartPage:1,PageCount:5}
+        /// </param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage NoTeamUserList([FromBody] UserListParameterModel para)
+        {
+            UserLogic userLogic = new UserLogic();
+            jsonResult = userLogic.NoTeamUserList(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
     }
 }

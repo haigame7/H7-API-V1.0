@@ -135,5 +135,37 @@ namespace HaiGame7.RestAPI.Controllers
             return returnResult;
         }
         #endregion
+
+        #region 我的赛事列表
+        /// <summary>
+        /// 我的赛事列表
+        /// </summary>
+        /// <param name="match">
+        /// 参数实例：{UserID:64,State:0,StartPage:1,PageCount:5}
+        /// </param>
+        /// <returns>
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage MyMatchList([FromBody] MatchParameter3Model match)
+        {
+            MatchLogic matchLogic = new MatchLogic();
+            jsonResult = matchLogic.MyMatchList(match);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 主播赛程列表
+        [HttpPost]
+        public HttpResponseMessage BoBoMatchList([FromBody] MatchParameter3Model match)
+        {
+            MatchLogic matchLogic = new MatchLogic();
+            jsonResult = matchLogic.BoBoMatchList(match);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
     }
 }

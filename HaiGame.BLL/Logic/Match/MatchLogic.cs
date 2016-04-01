@@ -189,5 +189,146 @@ namespace HaiGame7.BLL
             return result;
         }
         #endregion
+
+        #region 我的参赛列表
+        public string MyMatchList(MatchParameter3Model match)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+            List<MyMatchModel> myMatchList = new List<MyMatchModel>();
+
+            //主播列表
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                string teamID=Team.MyAllTeamID(match.UserID);
+                string sql;
+                if (match.State==0)
+                {
+                    sql = "SELECT" +
+                          " t1.ResultID as MatchID," +
+                          " t1.GameStage as MatchName," +
+                          " t1.HomeTeamID as STeamID," +
+                          " t2.TeamName as STeamName," +
+                          " t2.TeamPicture as STeamLogo," +
+                          " t1.CustomerTeamID as ETeamID," +
+                          " t3.TeamName as ETeamName," +
+                          " t3.TeamPicture as ETeamLogo," +
+                          "  CONVERT(varchar(100), t1.EndTime, 20) as EndTime," +
+                          " t1.Result " +
+                          " FROM db_FightResult t1" +
+                          " LEFT JOIN db_Team t2 ON t1.HomeTeamID=t2.TeamID" +
+                          " LEFT JOIN db_Team t3 ON t1.CustomerTeamID=t3.TeamID" +
+                          " WHERE (t1.HomeTeamID IN " + teamID +
+                          " OR t1.CustomerTeamID IN " + teamID + ")"+
+                          " AND t1.Result='未开赛' " +
+                          " ORDER BY t1.EndTime DESC";
+                }
+                else
+                {
+                    sql = "SELECT" +
+                          " t1.ResultID as MatchID," +
+                          " t1.GameStage as MatchName," +
+                          " t1.HomeTeamID as STeamID," +
+                          " t2.TeamName as STeamName," +
+                          " t2.TeamPicture as STeamLogo," +
+                          " t1.CustomerTeamID as ETeamID," +
+                          " t3.TeamName as ETeamName," +
+                          " t3.TeamPicture as ETeamLogo," +
+                          "  CONVERT(varchar(100), t1.EndTime, 20) as EndTime," +
+                          " t1.Result " +
+                          " FROM db_FightResult t1" +
+                          " LEFT JOIN db_Team t2 ON t1.HomeTeamID=t2.TeamID" +
+                          " LEFT JOIN db_Team t3 ON t1.CustomerTeamID=t3.TeamID" +
+                          " WHERE (t1.HomeTeamID IN " + teamID +
+                          " OR t1.CustomerTeamID IN " + teamID + ")" +
+                          " AND t1.Result<>'未开赛' " +
+                          " ORDER BY t1.EndTime DESC";
+                }
+                
+                myMatchList = context.Database.SqlQuery<MyMatchModel>(sql)
+                                 .Skip((match.StartPage - 1) * match.PageCount)
+                                 .Take(match.PageCount).ToList();
+            }
+            message.MessageCode = MESSAGE.OK_CODE;
+            message.Message = MESSAGE.OK;
+            returnResult.Add(message);
+            returnResult.Add(myMatchList);
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
+        #region 主播赛程列表
+        public string BoBoMatchList(MatchParameter3Model match)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+            List<MyMatchModel> myMatchList = new List<MyMatchModel>();
+
+            //主播赛程列表
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //
+                string teamID = Team.MyAllTeamID(match.UserID);
+                string sql;
+                if (match.State == 0)
+                {
+                    sql = "SELECT" +
+                          " t1.ResultID as MatchID," +
+                          " t1.GameStage as MatchName," +
+                          " t1.HomeTeamID as STeamID," +
+                          " t2.TeamName as STeamName," +
+                          " t2.TeamPicture as STeamLogo," +
+                          " t1.CustomerTeamID as ETeamID," +
+                          " t3.TeamName as ETeamName," +
+                          " t3.TeamPicture as ETeamLogo," +
+                          "  CONVERT(varchar(100), t1.EndTime, 20) as EndTime," +
+                          " t1.Result " +
+                          " FROM db_FightResult t1" +
+                          " LEFT JOIN db_Team t2 ON t1.HomeTeamID=t2.TeamID" +
+                          " LEFT JOIN db_Team t3 ON t1.CustomerTeamID=t3.TeamID" +
+                          " WHERE (t1.HomeTeamID IN " + teamID +
+                          " OR t1.CustomerTeamID IN " + teamID + ")" +
+                          " AND t1.Result='未开赛' " +
+                          " ORDER BY t1.EndTime DESC";
+                }
+                else
+                {
+                    sql = "SELECT" +
+                          " t1.ResultID as MatchID," +
+                          " t1.GameStage as MatchName," +
+                          " t1.HomeTeamID as STeamID," +
+                          " t2.TeamName as STeamName," +
+                          " t2.TeamPicture as STeamLogo," +
+                          " t1.CustomerTeamID as ETeamID," +
+                          " t3.TeamName as ETeamName," +
+                          " t3.TeamPicture as ETeamLogo," +
+                          "  CONVERT(varchar(100), t1.EndTime, 20) as EndTime," +
+                          " t1.Result " +
+                          " FROM db_FightResult t1" +
+                          " LEFT JOIN db_Team t2 ON t1.HomeTeamID=t2.TeamID" +
+                          " LEFT JOIN db_Team t3 ON t1.CustomerTeamID=t3.TeamID" +
+                          " WHERE (t1.HomeTeamID IN " + teamID +
+                          " OR t1.CustomerTeamID IN " + teamID + ")" +
+                          " AND t1.Result<>'未开赛' " +
+                          " ORDER BY t1.EndTime DESC";
+                }
+
+                myMatchList = context.Database.SqlQuery<MyMatchModel>(sql)
+                                 .Skip((match.StartPage - 1) * match.PageCount)
+                                 .Take(match.PageCount).ToList();
+            }
+            message.MessageCode = MESSAGE.OK_CODE;
+            message.Message = MESSAGE.OK;
+            returnResult.Add(message);
+            returnResult.Add(myMatchList);
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
     }
 }

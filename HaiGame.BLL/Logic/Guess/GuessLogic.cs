@@ -117,7 +117,8 @@ namespace HaiGame7.BLL
                           "  CONVERT(varchar(100), t1.GuessTime, 20) as GuessTime," + 
                           "  t1.BetMoney," +
                           "  t1.Odds,"+
-                          "  t4.TeamID as STeamID,"+
+                          "  t3.Result as Result," +
+                          "  t4.TeamID as STeamID," +
                           "  t4.TeamName as STeamName,"+
                           "  t4.TeamPicture as STeamLogo,"+
                           "  t5.TeamID as ETeamID,"+

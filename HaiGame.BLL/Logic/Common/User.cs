@@ -71,5 +71,67 @@ namespace HaiGame7.BLL.Logic.Common
             return false;
         }
         #endregion
+
+        #region 通过UserID获取三个擅长英雄
+        public static List<HeroModel> GetHeroImgeByUserID(int userID)
+        {
+            List<HeroModel> heroImage;
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //
+                var sql = "SELECT" +
+                      " TOP 3 t3.HeroImage" +
+                      " FROM" +
+                      " db_GameIDofUser t1" +
+                      " LEFT JOIN db_GameInfoofPlatform t2 ON t1.UGID = t2.UGID" +
+                      " LEFT JOIN db_CommonUseHero t3 ON t3.GamePlatformID = t2.GamePlatformID" +
+                      " WHERE t1.UserID = "+ userID+" AND t1.GameType = 'DOTA2'";
+
+                heroImage = context.Database.SqlQuery<HeroModel>(sql)
+                                 .ToList();
+            }
+            return heroImage;
+        }
+        #endregion
+
+        #region 通过UserID获取我的战斗力
+        public static int GetGamePowerByUserID(int userID)
+        {
+            GameModel gameInfo = new GameModel();
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //
+                // 获取用户游戏数据
+                var sql = "select t1.UserID,t1.GameID,t1.CertifyState,t2.GamePower,t1.CertifyName" +
+                        " from db_GameIDofUser t1" +
+                        " left join db_GameInfoofPlatform t2" +
+                        " on t1.UGID = t2.UGID" +
+                        " where t1.UserID = " + userID + " and t1.GameType = 'DOTA2'";
+
+                gameInfo = context.Database.SqlQuery<GameModel>(sql)
+                                 .FirstOrDefault();
+
+                if (gameInfo == null)
+                {
+                    //无游戏数据
+                    return 0;
+                }
+            }
+            return Convert.ToInt32(gameInfo.GamePower);
+        }
+        #endregion
+
+        #region 通过UserID获取我的财产
+        public static int? GetAssetByUserID(int userID)
+        {
+            int? asset;
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //获取用户总资产
+                asset = context.db_AssetRecord.Where(c => c.UserID == userID).Sum(c => c.VirtualMoney);
+            }
+            return asset;
+        }
+        #endregion
     }
 }

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace HaiGame7.Model.MyModel
 {
-    public class HeroModel
+    public class RecruitParameterModel
     {
-        public string HeroImage { get; set; }
+        public int TeamID { get; set; }
+        public string Content { get; set; }
     }
 }

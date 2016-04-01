@@ -18,5 +18,6 @@ namespace HaiGame7.Model.MyModel
         public Nullable<int> FollowCount { get; set; }
         public string Role { get; set; }
         public string CreateTime { get; set; }
+        public string RecruitContent { get; set; }
     }
 }

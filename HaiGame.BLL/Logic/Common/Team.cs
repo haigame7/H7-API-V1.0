@@ -11,19 +11,18 @@ namespace HaiGame7.BLL.Logic.Common
         #region 判断用户是否加入战队或创建战队
         public static bool IsCreateOrJoinTeam(int userID, HaiGame7Entities context)
         {
-            db_Team team=context.db_Team.
+            db_Team team = context.db_Team.
                 Where(c => c.CreateUserID == userID).
                 Where(c => c.State == 0).
                 FirstOrDefault();
-            if (team==null)
+            if (team == null)
             {
-                db_TeamUser teamUser=context.db_TeamUser.Where(c => c.UserID == userID).FirstOrDefault();
+                db_TeamUser teamUser = context.db_TeamUser.Where(c => c.UserID == userID).FirstOrDefault();
                 if (teamUser == null)
                 {
                     return false;
                 }
             }
-
             return true;
         }
         #endregion
@@ -45,13 +44,13 @@ namespace HaiGame7.BLL.Logic.Common
                 Where(c => c.TeamID == team.TeamID).
                 Where(c => c.State == 0).
                 FirstOrDefault();
-                if (team2!=null)
+                if (team2 != null)
                 {
                     myTeam.Asset = team2.Asset;
                     myTeam.TeamID = team2.TeamID;
                     myTeam.Creater = team2.CreateUserID;
                     myTeam.CreateTime = ((DateTime)team2.CreateTime).ToString("yyyy-MM-dd");
-                    myTeam.FightScore= team2.FightScore;
+                    myTeam.FightScore = team2.FightScore;
                     myTeam.FollowCount = team2.FollowCount;
                     myTeam.IsDeault = team2.IsDeault;
                     myTeam.LoseCount = team2.LoseCount;
@@ -61,6 +60,7 @@ namespace HaiGame7.BLL.Logic.Common
                     myTeam.TeamType = team2.TeamType;
                     myTeam.TeamDescription = team2.TeamDescription;
                     myTeam.WinCount = team2.WinCount;
+                    myTeam.RecruitContent = GetRecruitContentByTeamID(team2.TeamID);
                 }
             }
             else
@@ -79,6 +79,7 @@ namespace HaiGame7.BLL.Logic.Common
                 myTeam.TeamType = team.TeamType;
                 myTeam.TeamDescription = team.TeamDescription;
                 myTeam.WinCount = team.WinCount;
+                myTeam.RecruitContent = GetRecruitContentByTeamID(team.TeamID);
             }
 
             return myTeam;
@@ -93,13 +94,13 @@ namespace HaiGame7.BLL.Logic.Common
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
                 //获取db_Team表里的数据
-                var teamList=context.db_Team.Where(c => c.CreateUserID == userID).ToList();
+                var teamList = context.db_Team.Where(c => c.CreateUserID == userID).ToList();
 
                 //获取db_TeamUser表里的数据
                 if (teamList.Count == 0)
                 {
-                    var teamUser=context.db_TeamUser.Where(c => c.UserID == userID).FirstOrDefault();
-                    if (teamUser!=null)
+                    var teamUser = context.db_TeamUser.Where(c => c.UserID == userID).FirstOrDefault();
+                    if (teamUser != null)
                     {
                         myAllTeamID = "(" + teamUser.TeamID + ")";
                     }
@@ -107,16 +108,16 @@ namespace HaiGame7.BLL.Logic.Common
                 else
                 {
                     string temp = "";
-                    for (int i=0;i< teamList.Count;i++)
+                    for (int i = 0; i < teamList.Count; i++)
                     {
-                        if (i== teamList.Count-1)
+                        if (i == teamList.Count - 1)
                         {
                             temp = temp + teamList[i].TeamID.ToString();
                         }
                         else
                         {
-                            temp = temp + teamList[i].TeamID.ToString()+",";
-                        }  
+                            temp = temp + teamList[i].TeamID.ToString() + ",";
+                        }
                     }
                     myAllTeamID = "(" + temp + ")";
                 }
@@ -154,7 +155,7 @@ namespace HaiGame7.BLL.Logic.Common
                                   .Skip((para.StartPage - 1) * para.PageCount)
                                   .Take(para.PageCount).ToList();
             }
-            return teamList; 
+            return teamList;
         }
         #endregion
 
@@ -181,7 +182,7 @@ namespace HaiGame7.BLL.Logic.Common
                     " CONVERT(varchar(100), t1.CreateTime, 23) as CreateTime" +
                     " FROM" +
                     " db_Team t1" +
-                    
+
                     " ORDER BY t1.CreateTime " + para.Sort;
 
                 teamList = context.Database.SqlQuery<TeamModel>(sql)
@@ -199,22 +200,22 @@ namespace HaiGame7.BLL.Logic.Common
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
                 // 获取战队列表
-                var sql = "SELECT"+
-                    " t1.CreateUserID as Creater,"+
+                var sql = "SELECT" +
+                    " t1.CreateUserID as Creater," +
                     " t1.TeamID," +
                     " t1.TeamName," +
-                    " t1.TeamPicture as TeamLogo,"+
-                    " t1.TeamDescription,"+
-                    " t1.TeamType,"+
+                    " t1.TeamPicture as TeamLogo," +
+                    " t1.TeamDescription," +
+                    " t1.TeamType," +
                     " (CASE WHEN t1.FightScore IS NULL THEN 0 ELSE t1.FightScore END) as FightScore," +
                     " (CASE WHEN t1.Asset IS NULL THEN 0 ELSE t1.Asset END) as Asset," +
-                    " t1.IsDeault,"+
+                    " t1.IsDeault," +
                     " (CASE WHEN t1.WinCount IS NULL THEN 0 ELSE t1.WinCount END) as WinCount," +
                     " (CASE WHEN t1.LoseCount IS NULL THEN 0 ELSE t1.LoseCount END) as LoseCount," +
                     " (CASE WHEN t1.FollowCount IS NULL THEN 0 ELSE t1.FollowCount END) as FollowCount," +
-                    " CONVERT(varchar(100), t1.CreateTime, 23) as CreateTime"+
-                    " FROM"+
-                    " db_Team t1"+
+                    " CONVERT(varchar(100), t1.CreateTime, 23) as CreateTime" +
+                    " FROM" +
+                    " db_Team t1" +
                     " ORDER BY t1.CreateTime " + para.Sort;
 
                 teamList = context.Database.SqlQuery<TeamModel>(sql)
@@ -222,6 +223,22 @@ namespace HaiGame7.BLL.Logic.Common
                                   .Take(para.PageCount).ToList();
             }
             return teamList;
+        }
+        #endregion
+
+        #region 根据战队ID获取战队发布招募内容
+        public static string GetRecruitContentByTeamID(int teamID)
+        {
+            string RecruitContent="";
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                var Recruit = context.db_Recruit.Where(c => c.TeamID == teamID).FirstOrDefault();
+                if (Recruit != null)
+                {
+                    RecruitContent = Recruit.Content;
+                }
+            }
+            return RecruitContent;
         }
         #endregion
     }

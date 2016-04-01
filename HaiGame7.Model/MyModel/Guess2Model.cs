@@ -19,6 +19,7 @@ namespace HaiGame7.Model.MyModel
         public Nullable<int> BetTeamID { get; set; }
         public string BetTeamName { get; set; }
         public string BetTeamLogo { get; set; }
+        public string Result { get; set; }
         public string GuessTime { get; set; }
         public Nullable<decimal> Odds { get; set; }
         public Nullable<int> BetMoney { get; set; }

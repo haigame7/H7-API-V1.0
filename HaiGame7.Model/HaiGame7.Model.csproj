@@ -120,6 +120,9 @@
     <Compile Include="EFModel\db_QRCode.cs">
       <DependentUpon>HaiGame7.tt</DependentUpon>
     </Compile>
+    <Compile Include="EFModel\db_Recruit.cs">
+      <DependentUpon>HaiGame7.tt</DependentUpon>
+    </Compile>
     <Compile Include="EFModel\db_Report.cs">
       <DependentUpon>HaiGame7.tt</DependentUpon>
     </Compile>
@@ -156,6 +159,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>HaiGame7.edmx</DependentUpon>
     </Compile>
+    <Compile Include="MyModel\ApplyTeamParameterModel.cs" />
     <Compile Include="MyModel\AssetList.cs" />
     <Compile Include="MyModel\BoBoCountModel.cs" />
     <Compile Include="MyModel\BoBoModel.cs" />
@@ -169,18 +173,27 @@
     <Compile Include="MyModel\GuessParameterModel.cs" />
     <Compile Include="MyModel\GuessRecordModel.cs" />
     <Compile Include="MyModel\HeroModel.cs" />
+    <Compile Include="MyModel\InviteUserParameterModel.cs" />
     <Compile Include="MyModel\MatchModel.cs" />
     <Compile Include="MyModel\MatchParameter2Model.cs" />
+    <Compile Include="MyModel\MatchParameter3Model.cs" />
     <Compile Include="MyModel\MatchParameterModel.cs" />
     <Compile Include="MyModel\MessageModel.cs" />
+    <Compile Include="MyModel\MyApplyUserModel.cs" />
     <Compile Include="MyModel\MyAssetModel.cs" />
     <Compile Include="MyModel\MyBoBoModel.cs" />
+    <Compile Include="MyModel\MyMatchModel.cs" />
     <Compile Include="MyModel\RankParameterModel.cs" />
+    <Compile Include="MyModel\RecruitModel.cs" />
+    <Compile Include="MyModel\RecruitParameterModel.cs" />
     <Compile Include="MyModel\SimpleTeamModel.cs" />
+    <Compile Include="MyModel\MyApplyTeamModel.cs" />
     <Compile Include="MyModel\TeamListParameterModel.cs" />
     <Compile Include="MyModel\TeamModel.cs" />
     <Compile Include="MyModel\TeamRankModel.cs" />
     <Compile Include="MyModel\TotalAssetModel.cs" />
+    <Compile Include="MyModel\User2Model.cs" />
+    <Compile Include="MyModel\UserListParameterModel.cs" />
     <Compile Include="MyModel\UserModel.cs" />
     <Compile Include="MyModel\SimpleUserModel.cs" />
     <Compile Include="MyModel\UserRankModel.cs" />

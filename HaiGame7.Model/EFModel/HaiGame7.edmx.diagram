@@ -63,6 +63,8 @@
         <AssociationConnector Association="HaiGame7Model.FK_DB_TEAMU_REFERENCE_DB_TEAM" ManuallyRouted="false" />
         <EntityTypeShape EntityType="HaiGame7Model.db_MatchGuess" Width="1.5" PointX="7.5" PointY="57.125" />
         <AssociationConnector Association="HaiGame7Model.FK_DB_MATCH_REFERENCE_DB_FIGHT" />
+        <EntityTypeShape EntityType="HaiGame7Model.db_Recruit" Width="1.5" PointX="5.25" PointY="34.5" />
+        <AssociationConnector Association="HaiGame7Model.FK_DB_RECRU_REFERENCE_DB_TEAM" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

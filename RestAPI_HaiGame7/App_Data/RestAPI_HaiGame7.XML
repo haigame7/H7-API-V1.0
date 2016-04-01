@@ -678,6 +678,16 @@
             </param>
             <returns></returns>
         </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.MatchController.MyMatchList(HaiGame7.Model.MyModel.MatchParameter3Model)">
+            <summary>
+            我的赛事列表
+            </summary>
+            <param name="match">
+            参数实例：{UserID:64,State:0,StartPage:1,PageCount:5}
+            </param>
+            <returns>
+            </returns>
+        </member>
         <member name="T:HaiGame7.RestAPI.Controllers.TeamController">
             <summary>
             战队中心restful API，提供涉及到用户的服务。
@@ -724,6 +734,86 @@
             {"Creater":66,"TeamName":"平平一","TeamLogo":"http://images.haigame7.com/logo/20160229170559XXKqu4W0Z5j3PxEIK0zW6uUR3LY=.png","TeamDescription":"栽植有东西","TeamType":"DOTA2","FightScore":0,"Asset":0,"IsDeault":1,"WinCount":0,"LoseCount":0,"FollowCount":0,"Role":null,"CreateTime":"2016-02-29"},
             {"Creater":65,"TeamName":"bugbug","TeamLogo":"http://images.haigame7.com/logo/20160229170507XXKqu4W0Z5j3PxEIK0zW6uUR3LY=.png","TeamDescription":"DebugDebugDebugDebug","TeamType":"DOTA2","FightScore":0,"Asset":0,"IsDeault":1,"WinCount":0,"LoseCount":0,"FollowCount":0,"Role":null,"CreateTime":"2016-02-29"}]]
             </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.MyApplyTeamList(HaiGame7.Model.MyModel.ApplyTeamParameterModel)">
+            <summary>
+            我的申请列表
+            </summary>
+            <param name="para">
+            参数实例：{UserID:64,StartPage:1,PageCount:5}
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.MyInvitedTeamList(HaiGame7.Model.MyModel.ApplyTeamParameterModel)">
+            <summary>
+            我的受邀列表
+            </summary>
+            <param name="para">
+            参数实例：{UserID:64,StartPage:1,PageCount:5}
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.ApplyTeam(HaiGame7.Model.MyModel.ApplyTeamParameterModel)">
+            <summary>
+            申请加入
+            </summary>
+            <param name="para">
+            参数实例：{UserID:64,TeamID:146,StartPage:1,PageCount:5}
+            </param>
+            <returns>
+            加入成功：{"MessageCode":0,"Message":""}
+            已加入其它战队：{"MessageCode":20006,"Message":"already join other team"}
+            已向该战队发出过申请：{"MessageCode":20007,"Message":"already apply this team"}
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.RecruitList(HaiGame7.Model.MyModel.ApplyTeamParameterModel)">
+            <summary>
+            招募信息列表
+            </summary>
+            <param name="para">
+             参数实例：{UserID:64,TeamID:146,StartPage:1,PageCount:5}
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.SendRecruit(HaiGame7.Model.MyModel.RecruitParameterModel)">
+            <summary>
+            发布招募
+            </summary>
+            <param name="para">
+            参数实例：{TeamID:146,Content:"招募信息"}
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.InviteUser(HaiGame7.Model.MyModel.InviteUserParameterModel)">
+            <summary>
+            邀请队员
+            </summary>
+            <param name="para">
+            参数实例：{TeamID:146,UserID:64}
+            </param>
+            <returns>
+            
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.InvitedUserList(HaiGame7.Model.MyModel.ApplyTeamParameterModel)">
+            <summary>
+            发出邀请列表
+            </summary>
+            <param name="para">
+            参数实例：{TeamID:146,StartPage:1,PageCount:5}
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.ApplyUserList(HaiGame7.Model.MyModel.ApplyTeamParameterModel)">
+            <summary>
+            申请加入列表
+            </summary>
+            <param name="para">
+            参数实例：{TeamID:146,StartPage:1,PageCount:5}
+            </param>
+            <returns></returns>
         </member>
         <member name="T:HaiGame7.RestAPI.Controllers.UserController">
             <summary>
@@ -865,6 +955,15 @@
             <returns>
             返回值实例：[{"MessageCode":0,"Message":""},{"TotalAsset":"898","MyRank":"8"}]
             </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.UserController.NoTeamUserList(HaiGame7.Model.MyModel.UserListParameterModel)">
+            <summary>
+            未加入战队用户列表
+            </summary>
+            <param name="para">
+            {StartPage:1,PageCount:5}
+            </param>
+            <returns></returns>
         </member>
         <member name="T:HaiGame7.RestAPI.Filter.ExceptionFilter">
             <summary>

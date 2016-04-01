@@ -57,8 +57,24 @@ namespace HaiGame7.BLL.Enum
         public const string NOTEAM = "you are noteam";
 
         //您是队员，不能发起约战
-        public const int USERCHALLENGE_CODE = 20002;
+        public const int USERCHALLENGE_CODE = 20004;
         public const string USERCHALLENGE = "您是队员，不能发起约战";
+
+        //参数错误
+        public const int PARAERR_CODE = 20005;
+        public const string PARAERR = "parameter error";
+
+        //已经加入其它战队
+        public const int JIONTEAM_CODE = 20006;
+        public const string JIONTEAM = "already join other team";
+
+        //已经发出过申请
+        public const int JIONEDTEAM_CODE = 20007;
+        public const string JIONEDTEAM = "already apply this team";
+
+        //已经邀请过队员
+        public const int INVITEUSER_CODE = 20008;
+        public const string INVITEUSER = "already invite this user";
 
         //系统错误
         public const int SYSERR_CODE = 40001;

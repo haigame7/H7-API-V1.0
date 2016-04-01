@@ -107,6 +107,7 @@
           </Key>
           <Property Name="ResultID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GameID" Type="int" />
+          <Property Name="BoBoID" Type="int" />
           <Property Name="HomeTeamID" Type="int" />
           <Property Name="CustomerTeamID" Type="int" />
           <Property Name="Result" Type="varchar" MaxLength="8" />
@@ -298,6 +299,7 @@
           <Property Name="SendID" Type="int" />
           <Property Name="SendName" Type="varchar" MaxLength="256" />
           <Property Name="ReceiveID" Type="int" />
+          <Property Name="ReceiveName" Type="varchar" MaxLength="256" />
           <Property Name="Title" Type="varchar" MaxLength="256" />
           <Property Name="Content" Type="varchar" MaxLength="1024" />
           <Property Name="SendTime" Type="datetime" />
@@ -327,6 +329,16 @@
           <Property Name="CodeStr" Type="varchar" MaxLength="32" Nullable="false" />
           <Property Name="EndDate" Type="datetime" Nullable="false" />
           <Property Name="State" Type="int" Nullable="false" />
+          <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="db_Recruit">
+          <Key>
+            <PropertyRef Name="RID" />
+          </Key>
+          <Property Name="RID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TeamID" Type="int" />
+          <Property Name="Content" Type="varchar" MaxLength="256" />
+          <Property Name="RecruitTime" Type="datetime" />
           <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="db_Report">
@@ -714,6 +726,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DB_RECRU_REFERENCE_DB_TEAM">
+          <End Role="db_Team" Type="Self.db_Team" Multiplicity="0..1" />
+          <End Role="db_Recruit" Type="Self.db_Recruit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="db_Team">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="db_Recruit">
+              <PropertyRef Name="TeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DB_REPOR_REFERENCE_DB_USER">
           <End Role="db_User" Type="Self.db_User" Multiplicity="0..1" />
           <End Role="db_Report" Type="Self.db_Report" Multiplicity="*" />
@@ -798,6 +822,7 @@
           <EntitySet Name="db_Message" EntityType="Self.db_Message" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_MyCollection" EntityType="Self.db_MyCollection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_QRCode" EntityType="Self.db_QRCode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="db_Recruit" EntityType="Self.db_Recruit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_Report" EntityType="Self.db_Report" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_SysMessage" EntityType="Self.db_SysMessage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_Team" EntityType="Self.db_Team" Schema="dbo" store:Type="Tables" />
@@ -896,6 +921,10 @@
           <AssociationSet Name="FK_DB_QRCOD_REFERENCE_DB_DATEF" Association="Self.FK_DB_QRCOD_REFERENCE_DB_DATEF">
             <End Role="db_DateFight" EntitySet="db_DateFight" />
             <End Role="db_QRCode" EntitySet="db_QRCode" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DB_RECRU_REFERENCE_DB_TEAM" Association="Self.FK_DB_RECRU_REFERENCE_DB_TEAM">
+            <End Role="db_Team" EntitySet="db_Team" />
+            <End Role="db_Recruit" EntitySet="db_Recruit" />
           </AssociationSet>
           <AssociationSet Name="FK_DB_REPOR_REFERENCE_DB_USER" Association="Self.FK_DB_REPOR_REFERENCE_DB_USER">
             <End Role="db_User" EntitySet="db_User" />
@@ -1046,6 +1075,7 @@
           <Property Name="EndTime" Type="DateTime" Precision="3" />
           <Property Name="IDFromDota2" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="db_MatchGuess" Relationship="HaiGame7Model.FK_DB_MATCH_REFERENCE_DB_FIGHT" FromRole="db_FightResult" ToRole="db_MatchGuess" />
+          <Property Name="BoBoID" Type="Int32" />
         </EntityType>
         <EntityType Name="db_FightState">
           <Key>
@@ -1245,6 +1275,7 @@
           <Property Name="MessageType" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="SysTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="db_SysMessage" Relationship="Self.FK_DB_SYSME_REFERENCE_DB_MESSA" FromRole="db_Message" ToRole="db_SysMessage" />
+          <Property Name="ReceiveName" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="db_MyCollection">
           <Key>
@@ -1323,6 +1354,7 @@
           <NavigationProperty Name="db_GameRecord" Relationship="Self.FK_DB_GAMER_REFERENCE_DB_TEAM" FromRole="db_Team" ToRole="db_GameRecord" />
           <NavigationProperty Name="db_User" Relationship="Self.FK_DB_TEAM_REFERENCE_DB_USER" FromRole="db_Team" ToRole="db_User" />
           <NavigationProperty Name="db_TeamUser" Relationship="Self.FK_DB_TEAMU_REFERENCE_DB_TEAM" FromRole="db_Team" ToRole="db_TeamUser" />
+          <NavigationProperty Name="db_Recruit" Relationship="HaiGame7Model.FK_DB_RECRU_REFERENCE_DB_TEAM" FromRole="db_Team" ToRole="db_Recruit" />
         </EntityType>
         <EntityType Name="db_TeamBlog">
           <Key>
@@ -1865,6 +1897,11 @@
             <End Role="db_FightResult" EntitySet="db_FightResult" />
             <End Role="db_MatchGuess" EntitySet="db_MatchGuess" />
           </AssociationSet>
+          <EntitySet Name="db_Recruit" EntityType="HaiGame7Model.db_Recruit" />
+          <AssociationSet Name="FK_DB_RECRU_REFERENCE_DB_TEAM" Association="HaiGame7Model.FK_DB_RECRU_REFERENCE_DB_TEAM">
+            <End Role="db_Team" EntitySet="db_Team" />
+            <End Role="db_Recruit" EntitySet="db_Recruit" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="db_MatchGuess">
           <Key>
@@ -1888,6 +1925,29 @@
             </Principal>
             <Dependent Role="db_MatchGuess">
               <PropertyRef Name="ResultID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="db_Recruit">
+          <Key>
+            <PropertyRef Name="RID" />
+          </Key>
+          <Property Name="RID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TeamID" Type="Int32" />
+          <Property Name="Content" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="RecruitTime" Type="DateTime" Precision="3" />
+          <Property Name="SysTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="db_Team" Relationship="HaiGame7Model.FK_DB_RECRU_REFERENCE_DB_TEAM" FromRole="db_Recruit" ToRole="db_Team" />
+        </EntityType>
+        <Association Name="FK_DB_RECRU_REFERENCE_DB_TEAM">
+          <End Type="HaiGame7Model.db_Team" Role="db_Team" Multiplicity="0..1" />
+          <End Type="HaiGame7Model.db_Recruit" Role="db_Recruit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="db_Team">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="db_Recruit">
+              <PropertyRef Name="TeamID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2002,6 +2062,7 @@
           <EntitySetMapping Name="db_FightResult">
             <EntityTypeMapping TypeName="HaiGame7Model.db_FightResult">
               <MappingFragment StoreEntitySet="db_FightResult">
+                <ScalarProperty Name="BoBoID" ColumnName="BoBoID" />
                 <ScalarProperty Name="IDFromDota2" ColumnName="IDFromDota2" />
                 <ScalarProperty Name="EndTime" ColumnName="EndTime" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
@@ -2192,6 +2253,7 @@
           <EntitySetMapping Name="db_Message">
             <EntityTypeMapping TypeName="HaiGame7Model.db_Message">
               <MappingFragment StoreEntitySet="db_Message">
+                <ScalarProperty Name="ReceiveName" ColumnName="ReceiveName" />
                 <ScalarProperty Name="MID" ColumnName="MID" />
                 <ScalarProperty Name="SendID" ColumnName="SendID" />
                 <ScalarProperty Name="SendName" ColumnName="SendName" />
@@ -2357,6 +2419,17 @@
                 <ScalarProperty Name="GuessName" ColumnName="GuessName" />
                 <ScalarProperty Name="ResultID" ColumnName="ResultID" />
                 <ScalarProperty Name="GuessID" ColumnName="GuessID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="db_Recruit">
+            <EntityTypeMapping TypeName="HaiGame7Model.db_Recruit">
+              <MappingFragment StoreEntitySet="db_Recruit">
+                <ScalarProperty Name="SysTime" ColumnName="SysTime" />
+                <ScalarProperty Name="RecruitTime" ColumnName="RecruitTime" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="TeamID" ColumnName="TeamID" />
+                <ScalarProperty Name="RID" ColumnName="RID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

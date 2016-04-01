@@ -145,6 +145,7 @@ namespace HaiGame7.BLL.Logic.Common
         }
         #endregion
 
+        #region 将Base64字符串转换为图片
         /// <summary>
         /// 将Base64字符串转换为图片
         /// </summary>
@@ -162,5 +163,6 @@ namespace HaiGame7.BLL.Logic.Common
 
             return txtFileName.Replace(@"D:\HiGameImages\avatar\",@"http://images.haigame7.com/avatar/");
         }
+        #endregion
     }
 }

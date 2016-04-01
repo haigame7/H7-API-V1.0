@@ -115,5 +115,165 @@ namespace HaiGame7.RestAPI.Controllers
         }
         #endregion
 
+        #region 我的申请列表
+        /// <summary>
+        /// 我的申请列表
+        /// </summary>
+        /// <param name="para">
+        /// 参数实例：{UserID:64,StartPage:1,PageCount:5}
+        /// </param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage MyApplyTeamList([FromBody] ApplyTeamParameterModel para)
+        {
+            TeamLogic teamLogic = new TeamLogic();
+            jsonResult = teamLogic.ApplyTeamList(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 我的受邀列表
+        /// <summary>
+        /// 我的受邀列表
+        /// </summary>
+        /// <param name="para">
+        /// 参数实例：{UserID:64,StartPage:1,PageCount:5}
+        /// </param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage MyInvitedTeamList([FromBody] ApplyTeamParameterModel para)
+        {
+            TeamLogic teamLogic = new TeamLogic();
+            jsonResult = teamLogic.InvitedTeamList(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 申请加入
+        /// <summary>
+        /// 申请加入
+        /// </summary>
+        /// <param name="para">
+        /// 参数实例：{UserID:64,TeamID:146,StartPage:1,PageCount:5}
+        /// </param>
+        /// <returns>
+        /// 加入成功：{"MessageCode":0,"Message":""}
+        /// 已加入其它战队：{"MessageCode":20006,"Message":"already join other team"}
+        /// 已向该战队发出过申请：{"MessageCode":20007,"Message":"already apply this team"}
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage ApplyTeam([FromBody] ApplyTeamParameterModel para)
+        {
+            TeamLogic teamLogic = new TeamLogic();
+            jsonResult = teamLogic.ApplyTeam(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 招募信息列表
+        /// <summary>
+        /// 招募信息列表
+        /// </summary>
+        /// <param name="para">
+        ///  参数实例：{UserID:64,TeamID:146,StartPage:1,PageCount:5}
+        /// </param>
+        /// <returns>
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage RecruitList([FromBody] ApplyTeamParameterModel para)
+        {
+            TeamLogic teamLogic = new TeamLogic();
+            jsonResult = teamLogic.RecruitList(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 发布招募
+        /// <summary>
+        /// 发布招募
+        /// </summary>
+        /// <param name="para">
+        /// 参数实例：{TeamID:146,Content:"招募信息"}
+        /// </param>
+        /// <returns>
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage SendRecruit([FromBody] RecruitParameterModel para)
+        {
+            TeamLogic teamLogic = new TeamLogic();
+            jsonResult = teamLogic.SendRecruit(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 邀请队员
+        /// <summary>
+        /// 邀请队员
+        /// </summary>
+        /// <param name="para">
+        /// 参数实例：{TeamID:146,UserID:64}
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage InviteUser([FromBody] InviteUserParameterModel para)
+        {
+            TeamLogic teamLogic = new TeamLogic();
+            jsonResult = teamLogic.InviteUser(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 发出邀请列表
+        /// <summary>
+        /// 发出邀请列表
+        /// </summary>
+        /// <param name="para">
+        /// 参数实例：{TeamID:146,StartPage:1,PageCount:5}
+        /// </param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage InvitedUserList([FromBody] ApplyTeamParameterModel para)
+        {
+            TeamLogic teamLogic = new TeamLogic();
+            jsonResult = teamLogic.InvitedUserList(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 申请加入列表
+        /// <summary>
+        /// 申请加入列表
+        /// </summary>
+        /// <param name="para">
+        /// 参数实例：{TeamID:146,StartPage:1,PageCount:5}
+        /// </param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage ApplyUserList([FromBody] ApplyTeamParameterModel para)
+        {
+            TeamLogic teamLogic = new TeamLogic();
+            jsonResult = teamLogic.ApplyUserList(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
     }
 }
