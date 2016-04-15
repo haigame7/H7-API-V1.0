@@ -6,6 +6,7 @@ using System.Linq;
 using HaiGame7.BLL.Enum;
 using System;
 using HaiGame7.BLL.Logic.Common;
+using System.Web.Configuration;
 
 namespace HaiGame7.BLL
 {
@@ -97,7 +98,8 @@ namespace HaiGame7.BLL
                 var sql = "SELECT" +
                           " Count(t1.GameRecordID) as JoinCount" +
                           " FROM db_GameRecord t1" +
-                          " WHERE t1.GameID ="+ match.MatchID+ " AND t1.BoBoID=" + match.BoBoID;
+                          " LEFT JOIN db_Team t2 ON t1.TeamID=t2.TeamID" +
+                          " WHERE t2.State=0 AND t1.GameID =" + match.MatchID+ " AND t1.BoBoID=" + match.BoBoID;
 
                 joinCount = context.Database.SqlQuery<BoBoCountModel>(sql)
                                  .FirstOrDefault();
@@ -125,6 +127,10 @@ namespace HaiGame7.BLL
                 db_User user = User.GetUserByPhoneNumber(match.PhoneNumber);
                 if(user!=null)
                 {
+                    //判断是否队长，队员不可报名
+
+                    //判断队伍是否是否满5人
+                    //判断队伍是否已报名
                     db_GameRecord gameRecord = new db_GameRecord();
                     gameRecord.BoBoID = match.BoBoID;
                     gameRecord.GameID = match.MatchID;
@@ -135,11 +141,17 @@ namespace HaiGame7.BLL
                     gameRecord.State = 0;
                     context.db_GameRecord.Add(gameRecord);
                     context.SaveChanges();
+                    message.MessageCode = MESSAGE.OK_CODE;
+                    message.Message = MESSAGE.OK;
+                }
+                else
+                {
+                    //用户未存在
+                    message.MessageCode = MESSAGE.NOUSER_CODE;
+                    message.Message = MESSAGE.NOUSER;
                 }
                 
             }
-            message.MessageCode = MESSAGE.OK_CODE;
-            message.Message = MESSAGE.OK;
             returnResult.Add(message);
             result = jss.Serialize(returnResult);
             return result;
@@ -260,72 +272,100 @@ namespace HaiGame7.BLL
         }
         #endregion
 
-        #region 主播赛程列表
-        public string BoBoMatchList(MatchParameter3Model match)
+        #region 主播赛程日期列表
+        public string MatchDateList(MatchParameterModel para)
         {
             string result = "";
             MessageModel message = new MessageModel();
             JavaScriptSerializer jss = new JavaScriptSerializer();
             HashSet<object> returnResult = new HashSet<object>();
-            List<MyMatchModel> myMatchList = new List<MyMatchModel>();
+            List<MatchDateModel> dateList = new List<MatchDateModel>();
 
             //主播赛程列表
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
-                //
-                string teamID = Team.MyAllTeamID(match.UserID);
-                string sql;
-                if (match.State == 0)
-                {
-                    sql = "SELECT" +
-                          " t1.ResultID as MatchID," +
-                          " t1.GameStage as MatchName," +
-                          " t1.HomeTeamID as STeamID," +
-                          " t2.TeamName as STeamName," +
-                          " t2.TeamPicture as STeamLogo," +
-                          " t1.CustomerTeamID as ETeamID," +
-                          " t3.TeamName as ETeamName," +
-                          " t3.TeamPicture as ETeamLogo," +
-                          "  CONVERT(varchar(100), t1.EndTime, 20) as EndTime," +
-                          " t1.Result " +
-                          " FROM db_FightResult t1" +
-                          " LEFT JOIN db_Team t2 ON t1.HomeTeamID=t2.TeamID" +
-                          " LEFT JOIN db_Team t3 ON t1.CustomerTeamID=t3.TeamID" +
-                          " WHERE (t1.HomeTeamID IN " + teamID +
-                          " OR t1.CustomerTeamID IN " + teamID + ")" +
-                          " AND t1.Result='未开赛' " +
-                          " ORDER BY t1.EndTime DESC";
-                }
-                else
-                {
-                    sql = "SELECT" +
-                          " t1.ResultID as MatchID," +
-                          " t1.GameStage as MatchName," +
-                          " t1.HomeTeamID as STeamID," +
-                          " t2.TeamName as STeamName," +
-                          " t2.TeamPicture as STeamLogo," +
-                          " t1.CustomerTeamID as ETeamID," +
-                          " t3.TeamName as ETeamName," +
-                          " t3.TeamPicture as ETeamLogo," +
-                          "  CONVERT(varchar(100), t1.EndTime, 20) as EndTime," +
-                          " t1.Result " +
-                          " FROM db_FightResult t1" +
-                          " LEFT JOIN db_Team t2 ON t1.HomeTeamID=t2.TeamID" +
-                          " LEFT JOIN db_Team t3 ON t1.CustomerTeamID=t3.TeamID" +
-                          " WHERE (t1.HomeTeamID IN " + teamID +
-                          " OR t1.CustomerTeamID IN " + teamID + ")" +
-                          " AND t1.Result<>'未开赛' " +
-                          " ORDER BY t1.EndTime DESC";
-                }
+                var sql = "SELECT" +
+                        " CONVERT(varchar(100), t1.StartTime, 23) as StartTime" +
+                        " FROM db_FightResult t1" +
+                        " WHERE t1.BoBoID= " + para.BoBoID +
+                        " AND t1.GameID=" + para.MatchID +
+                        " GROUP BY CONVERT(varchar(100), t1.StartTime, 23)"+
+                        " ORDER BY CONVERT(varchar(100), t1.StartTime, 23)";
 
-                myMatchList = context.Database.SqlQuery<MyMatchModel>(sql)
-                                 .Skip((match.StartPage - 1) * match.PageCount)
-                                 .Take(match.PageCount).ToList();
+                dateList = context.Database.SqlQuery<MatchDateModel>(sql)
+                                    .ToList();
+
             }
             message.MessageCode = MESSAGE.OK_CODE;
             message.Message = MESSAGE.OK;
             returnResult.Add(message);
-            returnResult.Add(myMatchList);
+            returnResult.Add(dateList);
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
+        #region 主播赛程列表,通过主播ID、赛事ID、赛程日期获取赛事列表
+        public string BoBoMatchList(MatchParameterModel para)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+            List<MyMatchModel> boboMatchList = new List<MyMatchModel>();
+
+            //主播赛程列表2
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+
+                var sql2 = "SELECT" +
+                        " t1.ResultID as MatchID," +
+                        " t1.GameStage as MatchName," +
+                        " t1.HomeTeamID as STeamID," +
+                        " t2.TeamName as STeamName," +
+                        " t2.TeamPicture as STeamLogo," +
+                        " t1.CustomerTeamID as ETeamID," +
+                        " t3.TeamName as ETeamName," +
+                        " t3.TeamPicture as ETeamLogo," +
+                        "  CONVERT(varchar(100), t1.EndTime, 20) as EndTime," +
+                        " t1.Result " +
+                        " FROM db_FightResult t1" +
+                        " LEFT JOIN db_Team t2 ON t1.HomeTeamID=t2.TeamID" +
+                        " LEFT JOIN db_Team t3 ON t1.CustomerTeamID=t3.TeamID" +
+                        " WHERE t1.BoBoID= " + para.BoBoID +
+                        " AND t1.GameID=" + para.MatchID +
+                        " AND CONVERT(varchar(100), t1.EndTime, 23)=" + "'" + para.MatchTime + "'"+
+                        " ORDER BY t1.EndTime DESC";
+
+                boboMatchList = context.Database.SqlQuery<MyMatchModel>(sql2)
+                                .ToList();
+            }
+            message.MessageCode = MESSAGE.OK_CODE;
+            message.Message = MESSAGE.OK;
+            returnResult.Add(message);
+            returnResult.Add(boboMatchList);
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
+        #region 赛事状态
+        public string MatchState(MatchParameterModel para)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+
+
+            //主播赛程列表
+            MatchStateModel matchState=new MatchStateModel();
+            matchState.MatchState = Convert.ToInt32(WebConfigurationManager.AppSettings["name"]);
+
+            message.MessageCode = MESSAGE.OK_CODE;
+            message.Message = MESSAGE.OK;
+            returnResult.Add(message);
+            returnResult.Add(matchState);
             result = jss.Serialize(returnResult);
             return result;
         }

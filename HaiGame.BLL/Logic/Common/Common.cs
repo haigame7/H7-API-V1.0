@@ -164,5 +164,25 @@ namespace HaiGame7.BLL.Logic.Common
             return txtFileName.Replace(@"D:\HiGameImages\avatar\",@"http://images.haigame7.com/avatar/");
         }
         #endregion
+
+        #region 将Base64字符串转换为图片
+        /// <summary>
+        /// 将Base64字符串转换为图片
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public static string Base64ToTeamImage(string base64)
+        {
+            byte[] arr = Convert.FromBase64String(base64);
+            MemoryStream ms = new MemoryStream(arr);
+            Bitmap bmp = new Bitmap(ms);
+
+            string txtFileName = @"D:\HiGameImages\logo\" + DateTime.Now.ToString("yyyyMMddHHmmss") + HmacSha1(MathRandom(6), ENCRY.ENCRYSTR) + ".png";
+            bmp.Save(txtFileName, ImageFormat.Png);
+            ms.Close();
+
+            return txtFileName.Replace(@"D:\HiGameImages\logo\", @"http://images.haigame7.com/logo/");
+        }
+        #endregion
     }
 }

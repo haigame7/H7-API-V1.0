@@ -503,7 +503,8 @@
             传参：{GuessID:"1",UserID:"64",TeamID:"146",Money:"111",Odds:"1.5"}
             </param>
             <returns>
-            [{"MessageCode":0,"Message":""}]
+            正常：[{"MessageCode":0,"Message":""}]
+            氦金不足：[{"MessageCode":60001,"Message":"氦金不足"}]
             </returns>
         </member>
         <member name="M:RestAPI_HaiGame7.Controllers.GuessController.MyGuessList(HaiGame7.Model.MyModel.GuessParameterModel)">
@@ -556,9 +557,13 @@
             <summary>
             发起约战
             </summary>
-            <param name="para"></param>
+            <param name="para">
+            </param>
             <returns>
-            约战成功：{"MessageCode":0,"Message":""}
+            约战成功：[{"MessageCode":0,"Message":""}]
+            队员不能约战：[{"MessageCode":20004,"Message":"您是队员，不能发起约战"}]
+            超出每日限额：[{"MessageCode":20010,"Message":"超出约战限额，每天只可以约战一场"}]
+            氦金不足：[{"MessageCode":60001,"Message":"氦金不足"}]
             </returns>
         </member>
         <member name="M:HaiGame7.RestAPI.Controllers.FightController.MyFight(HaiGame7.Model.MyModel.FightParameterModel)">
@@ -572,6 +577,38 @@
             返回实例：[{"MessageCode":0,"Message":""},
             [{"DateID":168,"STeamID":125,"ETeamID":124,"STeamName":"通天塔战队","ETeamName":"訾1","Money":50,"FightAddress":null,"CurrentState":"已应战","StateTime":"\/Date(-62135596800000)\/","StateTimeStr":"2016-02-26 13:06:35"}]]
             </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.FightController.Reject(HaiGame7.Model.MyModel.FightParameter2Model)">
+            <summary>
+            认怂
+            </summary>
+            <param name="fight">
+            参数实例：{UserID:61,DateID:111,Money:50}
+            </param>
+            <returns>
+            返回实例：[{"MessageCode":0,"Message":""}]
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.FightController.Accept(HaiGame7.Model.MyModel.FightParameter2Model)">
+            <summary>
+            应战
+            </summary>
+            <param name="fight">
+            参数实例：{UserID:61,DateID:111,Money:50}
+            </param>
+            <returns>
+            返回实例：[{"MessageCode":0,"Message":""}]
+            氦金不足：[{"MessageCode":60001,"Message":"氦金不足"}]
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.FightController.UpdateGameID(HaiGame7.Model.MyModel.FightParameter2Model)">
+            <summary>
+            上传比赛ID
+            </summary>
+            <param name="fight">
+            参数实例：{DateID:61,SFightAddress:"11111111"}
+            </param>
+            <returns></returns>
         </member>
         <member name="T:HaiGame7.RestAPI.Controllers.RankController">
             <summary>
@@ -688,6 +725,35 @@
             <returns>
             </returns>
         </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.MatchController.MatchDateList(HaiGame7.Model.MyModel.MatchParameterModel)">
+            <summary>
+            主播赛程日期列表
+            </summary>
+            <param name="match">
+            参数实例：{MatchID:4,BoBoID:1}
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.MatchController.BoBoMatchList(HaiGame7.Model.MyModel.MatchParameterModel)">
+            <summary>
+            主播赛程列表
+            </summary>
+            <param name="match">
+            参数实例：{MatchID:4,BoBoID:1,MatchTime:"2016-02-01"}
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.MatchController.MatchState(HaiGame7.Model.MyModel.MatchParameterModel)">
+            <summary>
+            赛事状态
+            </summary>
+            <param name="match">
+            参数实例：{MatchID:4}
+            </param>
+            <returns></returns>
+        </member>
         <member name="T:HaiGame7.RestAPI.Controllers.TeamController">
             <summary>
             战队中心restful API，提供涉及到用户的服务。
@@ -698,11 +764,40 @@
             我的默认战队
             </summary>
             <param name="team">
-            参数实例：{Creater:"13439843883"}
+            参数实例：{CreatUserID:64}
             </param>
             <returns>
             返回值实例：[{"MessageCode":0,"Message":null},
             {"Creater":64,"TeamName":"訾1","TeamLogo":"http://images.haigame7.com/logo/20160215144709XXKqu4W0Z5j3PxEIK0zW6uUR3LY=.png","TeamDescription":"qqq","TeamType":"DOTA2","FightScore":0,"Asset":0,"IsDeault":0,"WinCount":null,"LoseCount":null,"FollowCount":null,"Role":"teamcreater","CreateTime":"2016-10-01/"}]
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.MyAllTeam(HaiGame7.Model.MyModel.SimpleTeamModel)">
+            <summary>
+            我的所有战队
+            </summary>
+            <param name="team">
+            参数实例：{CreatUserID:64}
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.GetTeambyID(HaiGame7.Model.MyModel.TeamParameterModel)">
+            <summary>
+            根据战队ID获取战队信息
+            </summary>
+            <param name="team">
+            参数实例：{TeamID:146}
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.SetDefaultTeam(HaiGame7.Model.MyModel.SimpleTeamModel)">
+            <summary>
+            设置默认战队
+            </summary>
+            <param name="team">
+            参数实例：{CreatUserID:65,TeamName:"氦7"}
+            </param>
+            <returns>
+            设置成功：{"MessageCode":0,"Message":""}
             </returns>
         </member>
         <member name="M:HaiGame7.RestAPI.Controllers.TeamController.Create(HaiGame7.Model.MyModel.SimpleTeamModel)">
@@ -710,12 +805,24 @@
             创建战队
             </summary>
             <param name="team">
-            参数实例：{Creater:"13439843883",TeamName:"氦7",TeamLogo:"图片url",TeamType:"DOTA2"}
+            参数实例：{CreatUserID:65,TeamName:"氦7",TeamLogo:"图片url",TeamType:"DOTA2"}
             </param>
             <returns>
             创建成功：{"MessageCode":0,"Message":""}
             战队名称已存在：{"MessageCode":20001,"Message":"team exist"}
             无权创建：{"MessageCode":20002,"Message":"you are teamuser"}
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.Delete(HaiGame7.Model.MyModel.SimpleTeamModel)">
+            <summary>
+            解散战队
+            </summary>
+            <param name="team">
+            {"CreatUserID":61,"TeamName":"ABC"}
+            </param>
+            <returns>
+            解散成功：{"MessageCode":0,"Message":""}
+            无权解散：{"MessageCode":20009,"Message":"you cannot delete team"}
             </returns>
         </member>
         <member name="M:HaiGame7.RestAPI.Controllers.TeamController.TeamList(HaiGame7.Model.MyModel.TeamListParameterModel)">
@@ -815,6 +922,26 @@
             </param>
             <returns></returns>
         </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.HandleMyInvited(HaiGame7.Model.MyModel.ApplyTeamParameter2Model)">
+            <summary>
+            我的受邀操作【同意or拒绝】
+            </summary>
+            <param name="para">
+            ISOK:0 同意，1 拒绝
+            参数实例：{TeamID:146,UserID:1,MessageID:5,ISOK:0}
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.HandleMyApply(HaiGame7.Model.MyModel.ApplyTeamParameter2Model)">
+            <summary>
+            申请加入操作【同意or拒绝】
+            </summary>
+            <param name="para">
+            ISOK:0 同意，1 拒绝
+            参数实例：{TeamID:146,UserID:1,MessageID:5,ISOK:0}
+            </param>
+            <returns></returns>
+        </member>
         <member name="T:HaiGame7.RestAPI.Controllers.UserController">
             <summary>
             用户中心restful API，提供涉及到用户的服务。
@@ -879,7 +1006,7 @@
             <param name="user"></param>
             <returns>
             返回值实例：[{"MessageCode":0,"Message":""},
-            {"UserID":64,"PhoneNumber":"13439843883","PassWord":null,"UserWebPicture":"http://images.haigame7.com/avatar/20160127162940WxExqw0paJXAo1AtXc4RzGYo2LE=.png","UserWebNickName":"不服","UserName":null,"Address":"北京-大兴区","Sex":"男","Birthday":"2016-03-18","Hobby":null}]
+            {"UserID":64,UserInfo,"PassWord":null,"UserWebPicture":"http://images.haigame7.com/avatar/20160127162940WxExqw0paJXAo1AtXc4RzGYo2LE=.png","UserWebNickName":"不服","UserName":null,"Address":"北京-大兴区","Sex":"男","Birthday":"2016-03-18","Hobby":null}]
             </returns>
         </member>
         <member name="M:HaiGame7.RestAPI.Controllers.UserController.UserInfoByNickName(HaiGame7.Model.MyModel.SimpleUserModel)">
@@ -963,6 +1090,22 @@
             <param name="para">
             {StartPage:1,PageCount:5}
             </param>
+            <returns></returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.UserController.MyMessage(HaiGame7.Model.MyModel.UserParameterModel)">
+            <summary>
+            我的消息
+            </summary>
+            <param name="para">
+            {UserID:64,StartPage:1,PageCount:5}
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.UserController.SetMessageRead(HaiGame7.Model.MyModel.MyMessageModel)">
+            <summary>
+            消息设为已读
+            </summary>
+            <param name="para"></param>
             <returns></returns>
         </member>
         <member name="T:HaiGame7.RestAPI.Filter.ExceptionFilter">

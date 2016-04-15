@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace HaiGame7.Model.MyModel
 {
-    public class MatchParameterModel
+    public class TeamParameterModel
     {
-        public int MatchID { get; set; }
-        public int BoBoID { get; set; }
-        public string MatchTime { get; set; }
+        public int TeamID { get; set; }
     }
 }

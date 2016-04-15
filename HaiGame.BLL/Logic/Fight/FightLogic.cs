@@ -81,16 +81,50 @@ namespace HaiGame7.BLL
 
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
-                message.Message = MESSAGE.OK;
-                message.MessageCode = MESSAGE.OK_CODE;
-
-               
-
+                //发起约战前提条件判断
+                message = Fight.IsChallenge(para.UserID,para.STeamID, para.Money);
                 if (message.MessageCode==0)
                 {
                     //向约战记录表插入一条数据
-                    //向约战状态表插入一条数据
+                    db_DateFight dateFight = new db_DateFight();
+                    dateFight.CurrentState = "发起挑战";
+                    dateFight.STeamID = para.STeamID;
+                    dateFight.ETeamID = para.ETEamID;
+                    dateFight.Money = para.Money;
+                    dateFight.FightTime = para.FightTime;
+                    context.db_DateFight.Add(dateFight);
+                    
+                    //资产表插入一条数据
+                    db_AssetRecord assetRecord = new db_AssetRecord();
+                    assetRecord.UserID = para.UserID;
+                    assetRecord.VirtualMoney = -para.Money;
+                    assetRecord.TrueMoney = 0;
+                    assetRecord.GainWay = ASSET.GAINWAY_CHALLENGE;
+                    assetRecord.GainTime = DateTime.Now;
+                    assetRecord.State = ASSET.MONEYSTATE_YES;
+                    //时间+操作+收入支出金额
+                    assetRecord.Remark = assetRecord.GainTime + " " +
+                                        assetRecord.GainWay + " "
+                                        + ASSET.PAY_OUT +
+                                        assetRecord.VirtualMoney.ToString();
+                    context.db_AssetRecord.Add(assetRecord);
+
                     //向信息表插入一条数据
+                    context.SaveChanges();
+
+                    //向约战状态表插入一条数据
+                    var fight=context.db_DateFight.Where(c => c.STeamID == para.STeamID)
+                                        .Where(c => c.ETeamID == para.ETEamID)
+                                        .OrderByDescending(c => c.FightTime).FirstOrDefault();
+                                        
+                    db_FightState fightState = new db_FightState();
+                    fightState.DateID = fight.DateID;
+                    fightState.State = "发起挑战";
+                    fightState.StateTime = DateTime.Now;
+                    
+                    context.db_FightState.Add(fightState);
+                    context.SaveChanges();
+
                 }
             }
                 
@@ -133,7 +167,9 @@ namespace HaiGame7.BLL
                     teamID=Team.MyAllTeamID(userInfo.UserID);
                 }
                 var sql = "SELECT" +
-                          " t1.DateID,t1.STeamID,t1.ETeamID,t1.Money,t1.FightAddress,t1.CurrentState," +
+                          " t1.DateID,t1.STeamID,t1.ETeamID,t1.Money,t1.FightAddress as SFightAddress,t1.FightAddress1 as EFightAddress,t1.CurrentState," +
+                          " CONVERT(varchar(100), t1.FightTime, 20) as FightTime," +
+                          " t5.PhoneNumber," +
                           " CONVERT(varchar(100), t2.StateTime, 20) as StateTimeStr," +
                           "　t3.TeamName as STeamName,t4.TeamName as ETeamName" +
                           " FROM" +
@@ -143,6 +179,8 @@ namespace HaiGame7.BLL
                           " ON t1.STeamID = t3.TeamID" +
                           " LEFT JOIN db_Team t4" +
                           " ON t1.ETeamID = t4.TeamID" +
+                          " LEFT JOIN db_User t5" +
+                          " ON t4.CreateUserID = t5.UserID" +
                           " WHERE t3.State=0 AND t4.State=0 AND t1.STeamID IN" + teamID +
                           " ORDER BY t2.StateTime DESC";
 
@@ -180,7 +218,9 @@ namespace HaiGame7.BLL
                     teamID=Team.MyAllTeamID(userInfo.UserID);
                 }
                 var sql = "SELECT" +
-                          " t1.DateID,t1.STeamID,t1.ETeamID,t1.Money,t1.FightAddress,t1.CurrentState," +
+                          " t1.DateID,t1.STeamID,t1.ETeamID,t1.Money,t1.FightAddress as SFightAddress,t1.FightAddress1 as EFightAddress,t1.CurrentState," +
+                          " CONVERT(varchar(100), t1.FightTime, 20) as FightTime," +
+                          " t5.PhoneNumber," +
                           " CONVERT(varchar(100), t2.StateTime, 20) as StateTimeStr," +
                           " t3.TeamName as STeamName,t4.TeamName as ETeamName" +
                           " FROM" +
@@ -190,6 +230,8 @@ namespace HaiGame7.BLL
                           " ON t1.STeamID = t3.TeamID" +
                           " LEFT JOIN db_Team t4" +
                           " ON t1.ETeamID = t4.TeamID" +
+                          " LEFT JOIN db_User t5" +
+                          " ON t3.CreateUserID = t5.UserID" +
                           " WHERE t3.State=0 AND t4.State=0 AND t1.ETeamID IN" + teamID +
                           " ORDER BY t2.StateTime DESC";
 
@@ -203,6 +245,115 @@ namespace HaiGame7.BLL
 
             returnResult.Add(message);
             returnResult.Add(fightReceiveList);
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
+        #region 认怂
+        public string Reject(FightParameter2Model fight)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            List<FightStateModel> fightStateList = new List<FightStateModel>();
+            HashSet<object> returnResult = new HashSet<object>();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //dategight表更改当前状态
+                var fightRecord=context.db_DateFight.Where(c => c.DateID == fight.DateID).FirstOrDefault();
+                fightRecord.CurrentState = "已认怂";
+                //fightstate表新增状态
+                db_FightState fightState = new db_FightState();
+                fightState.DateID = fight.DateID;
+                fightState.State = "已认怂";
+                fightState.StateTime = DateTime.Now;
+                context.db_FightState.Add(fightState);
+                context.SaveChanges();
+
+                message.Message = MESSAGE.OK;
+                message.MessageCode = MESSAGE.OK_CODE;
+            }
+
+            returnResult.Add(message);
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
+        #region 应战
+        public string Accept(FightParameter2Model fight)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            List<FightStateModel> fightStateList = new List<FightStateModel>();
+            HashSet<object> returnResult = new HashSet<object>();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //判断氦金是否充足
+                bool isEnoughMoney = Asset.IsEnoughMoney(fight.UserID, fight.Money);
+                //氦金不足
+                if (isEnoughMoney == false)
+                {
+                    message.Message = MESSAGE.NOMONEY;
+                    message.MessageCode = MESSAGE.NOMONEY_CODE;
+                }
+                else
+                {
+                    //dategight表更改当前状态
+                    var fightRecord = context.db_DateFight.Where(c => c.DateID == fight.DateID).FirstOrDefault();
+                    fightRecord.CurrentState = "已应战";
+                    //fightstate表新增状态
+                    db_FightState fightState = new db_FightState();
+                    fightState.DateID = fight.DateID;
+                    fightState.State = "已应战";
+                    fightState.StateTime = DateTime.Now;
+                    context.db_FightState.Add(fightState);
+                    context.SaveChanges();
+
+                    message.Message = MESSAGE.OK;
+                    message.MessageCode = MESSAGE.OK_CODE;
+                }  
+            }
+
+            returnResult.Add(message);
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
+        #region 上传比赛ID
+        public string UpdateGameID(FightParameter2Model fight)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            List<FightStateModel> fightStateList = new List<FightStateModel>();
+            HashSet<object> returnResult = new HashSet<object>();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //datefight表更改当前状态
+                db_DateFight fightRecord = new db_DateFight();
+                fightRecord = context.db_DateFight.Where(c => c.DateID == fight.DateID).FirstOrDefault();
+                if (fight.SFightAddress==null)
+                {
+                    fightRecord.FightAddress1 = fight.EFightAddress;
+                }
+                else
+                {
+                    fightRecord.FightAddress = fight.SFightAddress;
+                }
+                context.SaveChanges();
+
+                message.Message = MESSAGE.OK;
+                message.MessageCode = MESSAGE.OK_CODE;
+            }
+
+            returnResult.Add(message);
             result = jss.Serialize(returnResult);
             return result;
         }

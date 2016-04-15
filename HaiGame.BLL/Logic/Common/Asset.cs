@@ -66,5 +66,21 @@ namespace HaiGame7.BLL.Logic.Common
             
         }
         #endregion
+
+        #region 判断氦金是否充足
+        public static bool IsEnoughMoney(int userID,int Money)
+        {
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                int asset = Convert.ToInt32(context.db_AssetRecord.Where(c => c.UserID == userID).Sum(c => c.VirtualMoney));
+                //氦金不足
+                if (asset < Money)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        #endregion
     }
 }

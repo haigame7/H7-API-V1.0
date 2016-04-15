@@ -16,7 +16,6 @@ using System.Text;
 using System.Web.Http;
 using HaiGame7.RestAPI.Filter;
 using HaiGame7.BLL;
-using HaiGame7.Model.EFModel;
 using HaiGame7.Model.MyModel;
 
 namespace HaiGame7.RestAPI.Controllers
@@ -142,7 +141,7 @@ namespace HaiGame7.RestAPI.Controllers
         /// <param name="user"></param>
         /// <returns>
         /// 返回值实例：[{"MessageCode":0,"Message":""},
-        /// {"UserID":64,"PhoneNumber":"13439843883","PassWord":null,"UserWebPicture":"http://images.haigame7.com/avatar/20160127162940WxExqw0paJXAo1AtXc4RzGYo2LE=.png","UserWebNickName":"不服","UserName":null,"Address":"北京-大兴区","Sex":"男","Birthday":"2016-03-18","Hobby":null}]
+        /// {"UserID":64,UserInfo,"PassWord":null,"UserWebPicture":"http://images.haigame7.com/avatar/20160127162940WxExqw0paJXAo1AtXc4RzGYo2LE=.png","UserWebNickName":"不服","UserName":null,"Address":"北京-大兴区","Sex":"男","Birthday":"2016-03-18","Hobby":null}]
         /// </returns>
         [HttpPost]
         public HttpResponseMessage UserInfo([FromBody] SimpleUserModel user)
@@ -317,5 +316,40 @@ namespace HaiGame7.RestAPI.Controllers
         }
         #endregion
 
+        #region MyMessage 我的消息
+        /// <summary>
+        /// 我的消息
+        /// </summary>
+        /// <param name="para">
+        /// {UserID:64,StartPage:1,PageCount:5}
+        /// </param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage MyMessage([FromBody] UserParameterModel para)
+        {
+            UserLogic userLogic = new UserLogic();
+            jsonResult = userLogic.MyMessage(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 消息设为已读
+        /// <summary>
+        /// 消息设为已读
+        /// </summary>
+        /// <param name="para"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage SetMessageRead([FromBody] MyMessageModel para)
+        {
+            UserLogic userLogic = new UserLogic();
+            jsonResult = userLogic.SetMessageRead(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
     }
 }

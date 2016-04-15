@@ -8,6 +8,7 @@ namespace HaiGame7.Model.MyModel
 {
     public class User2Model
     {
+        public int MessageID { get; set; }
         public int UserID { get; set; }
         public string PhoneNumber { get; set; }
         public string PassWord { get; set; }

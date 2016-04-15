@@ -14,10 +14,6 @@
 using HaiGame7.BLL;
 using HaiGame7.Model.MyModel;
 using HaiGame7.RestAPI.Filter;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
@@ -41,7 +37,7 @@ namespace HaiGame7.RestAPI.Controllers
         /// 我的默认战队
         /// </summary>
         /// <param name="team">
-        /// 参数实例：{Creater:"13439843883"}
+        /// 参数实例：{CreatUserID:64}
         /// </param>
         /// <returns>
         /// 返回值实例：[{"MessageCode":0,"Message":null},
@@ -58,12 +54,71 @@ namespace HaiGame7.RestAPI.Controllers
         }
         #endregion
 
+        #region 我的所有战队
+        /// <summary>
+        /// 我的所有战队
+        /// </summary>
+        /// <param name="team">
+        /// 参数实例：{CreatUserID:64}
+        /// </param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage MyAllTeam([FromBody] SimpleTeamModel team)
+        {
+            TeamLogic teamLogic = new TeamLogic();
+            jsonResult = teamLogic.MyAllTeam(team);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 根据战队ID获取战队信息
+        /// <summary>
+        /// 根据战队ID获取战队信息
+        /// </summary>
+        /// <param name="team">
+        /// 参数实例：{TeamID:146}
+        /// </param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage GetTeambyID([FromBody]  TeamParameterModel team)
+        {
+            TeamLogic teamLogic = new TeamLogic();
+            jsonResult = teamLogic.GetTeambyID(team);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 设置默认战队
+        /// <summary>
+        /// 设置默认战队
+        /// </summary>
+        /// <param name="team">
+        /// 参数实例：{CreatUserID:65,TeamName:"氦7"}
+        /// </param>
+        /// <returns>
+        /// 设置成功：{"MessageCode":0,"Message":""}
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage SetDefaultTeam([FromBody]  SimpleTeamModel team)
+        {
+            TeamLogic teamLogic = new TeamLogic();
+            jsonResult = teamLogic.SetDefaultTeam(team);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
         #region 创建战队
         /// <summary>
         /// 创建战队
         /// </summary>
         /// <param name="team">
-        /// 参数实例：{Creater:"13439843883",TeamName:"氦7",TeamLogo:"图片url",TeamType:"DOTA2"}
+        /// 参数实例：{CreatUserID:65,TeamName:"氦7",TeamLogo:"图片url",TeamType:"DOTA2"}
         /// </param>
         /// <returns>
         /// 创建成功：{"MessageCode":0,"Message":""}
@@ -82,10 +137,37 @@ namespace HaiGame7.RestAPI.Controllers
         #endregion
 
         #region 更新战队信息
+        [HttpPost]
+        public HttpResponseMessage Update([FromBody]  SimpleTeamModel team)
+        {
+            TeamLogic teamLogic = new TeamLogic();
+            jsonResult = teamLogic.Delete(team);
 
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
         #endregion
 
         #region 解散战队
+        /// <summary>
+        /// 解散战队
+        /// </summary>
+        /// <param name="team">
+        /// {"CreatUserID":61,"TeamName":"ABC"}
+        /// </param>
+        /// <returns>
+        /// 解散成功：{"MessageCode":0,"Message":""}
+        /// 无权解散：{"MessageCode":20009,"Message":"you cannot delete team"}
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage Delete([FromBody]  SimpleTeamModel team)
+        {
+            TeamLogic teamLogic = new TeamLogic();
+            jsonResult = teamLogic.Delete(team);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
         #endregion
 
         #region 获取战队列表
@@ -269,6 +351,46 @@ namespace HaiGame7.RestAPI.Controllers
         {
             TeamLogic teamLogic = new TeamLogic();
             jsonResult = teamLogic.ApplyUserList(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 我的受邀操作【同意or拒绝】
+        /// <summary>
+        /// 我的受邀操作【同意or拒绝】
+        /// </summary>
+        /// <param name="para">
+        /// ISOK:0 同意，1 拒绝
+        /// 参数实例：{TeamID:146,UserID:1,MessageID:5,ISOK:0}
+        /// </param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage HandleMyInvited([FromBody] ApplyTeamParameter2Model para)
+        {
+            TeamLogic teamLogic = new TeamLogic();
+            jsonResult = teamLogic.HandleMyInvited(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 申请加入操作【同意or拒绝】
+        /// <summary>
+        /// 申请加入操作【同意or拒绝】
+        /// </summary>
+        /// <param name="para">
+        /// ISOK:0 同意，1 拒绝
+        /// 参数实例：{TeamID:146,UserID:1,MessageID:5,ISOK:0}
+        /// </param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage HandleMyApply([FromBody] ApplyTeamParameter2Model para)
+        {
+            TeamLogic teamLogic = new TeamLogic();
+            jsonResult = teamLogic.HandleMyApply(para);
 
             returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
             return returnResult;

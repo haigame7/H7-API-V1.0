@@ -13,10 +13,7 @@
 
 using HaiGame7.BLL;
 using HaiGame7.Model.MyModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+using HaiGame7.RestAPI.Filter;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
@@ -26,6 +23,8 @@ namespace HaiGame7.RestAPI.Controllers
     /// <summary>
     /// 赛事restful API，提供涉及到赛事的服务。
     /// </summary>
+    [AccessTokenFilter]
+    [ExceptionFilter]
     public class MatchController : ApiController
     {
         //初始化Response信息
@@ -156,12 +155,59 @@ namespace HaiGame7.RestAPI.Controllers
         }
         #endregion
 
-        #region 主播赛程列表
+        #region 主播赛程日期列表
+        /// <summary>
+        /// 主播赛程日期列表
+        /// </summary>
+        /// <param name="match">
+        /// 参数实例：{MatchID:4,BoBoID:1}
+        /// </param>
+        /// <returns>
+        /// </returns>
         [HttpPost]
-        public HttpResponseMessage BoBoMatchList([FromBody] MatchParameter3Model match)
+        public HttpResponseMessage MatchDateList([FromBody] MatchParameterModel match)
+        {
+            MatchLogic matchLogic = new MatchLogic();
+            jsonResult = matchLogic.MatchDateList(match);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 主播赛程列表
+        /// <summary>
+        /// 主播赛程列表
+        /// </summary>
+        /// <param name="match">
+        /// 参数实例：{MatchID:4,BoBoID:1,MatchTime:"2016-02-01"}
+        /// </param>
+        /// <returns>
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage BoBoMatchList([FromBody] MatchParameterModel match)
         {
             MatchLogic matchLogic = new MatchLogic();
             jsonResult = matchLogic.BoBoMatchList(match);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 赛事状态
+        /// <summary>
+        /// 赛事状态
+        /// </summary>
+        /// <param name="match">
+        /// 参数实例：{MatchID:4}
+        /// </param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage MatchState([FromBody] MatchParameterModel match)
+        {
+            MatchLogic matchLogic = new MatchLogic();
+            jsonResult = matchLogic.MatchState(match);
 
             returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
             return returnResult;

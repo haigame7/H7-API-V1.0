@@ -11,21 +11,20 @@
 
 ******************************************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using HaiGame7.BLL;
 using HaiGame7.Model.MyModel;
 using System.Text;
+using HaiGame7.RestAPI.Filter;
 
 namespace HaiGame7.RestAPI.Controllers
 {
     /// <summary>
     /// 排行restful API，提供涉及到排行的服务。
     /// </summary>
+    [AccessTokenFilter]
+    [ExceptionFilter]
     public class RankController : ApiController
     {
         //初始化Response信息

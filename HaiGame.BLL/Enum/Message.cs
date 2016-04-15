@@ -76,6 +76,22 @@ namespace HaiGame7.BLL.Enum
         public const int INVITEUSER_CODE = 20008;
         public const string INVITEUSER = "already invite this user";
 
+        //无权解散战队
+        public const int DELETETEAM_CODE = 20009;
+        public const string DELETETEAM = "you cannot delete team";
+
+        //超出约战限额，每天只可以约战一场
+        public const int DAILYCOUNT_CODE = 20010;
+        public const string DAILYCOUNT = "超出约战限额，每天只可以约战一场";
+
+        //战队成员已满，不能加入
+        public const int USERFULL_CODE = 20011;
+        public const string USERFULL = "战队成员已满，不能加入";
+
+        //用户已经加入其它战队
+        public const int USERJOINOTHERTEAM_CODE = 20012;
+        public const string USERJOINOTHERTEAM = "用户已经加入其它战队";
+
         //系统错误
         public const int SYSERR_CODE = 40001;
         public const string SYSERR = "system error";
@@ -91,5 +107,9 @@ namespace HaiGame7.BLL.Enum
         //无报名信息
         public const int NOJOINMATCH_CODE = 50001;
         public const string NOJOINMATCH = "no joinmatch";
+
+        //氦金不足
+        public const int NOMONEY_CODE = 60001;
+        public const string NOMONEY = "氦金不足";
     }
 }

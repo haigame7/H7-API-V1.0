@@ -13,10 +13,7 @@
 
 using HaiGame7.BLL;
 using HaiGame7.Model.MyModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+using HaiGame7.RestAPI.Filter;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
@@ -26,6 +23,8 @@ namespace RestAPI_HaiGame7.Controllers
     /// <summary>
     /// 竞猜restful API，提供涉及到竞猜的服务。
     /// </summary>
+    [AccessTokenFilter]
+    [ExceptionFilter]
     public class GuessController : ApiController
     {
         //初始化Response信息
@@ -60,7 +59,8 @@ namespace RestAPI_HaiGame7.Controllers
         /// 传参：{GuessID:"1",UserID:"64",TeamID:"146",Money:"111",Odds:"1.5"}
         /// </param>
         /// <returns>
-        /// [{"MessageCode":0,"Message":""}]
+        /// 正常：[{"MessageCode":0,"Message":""}]
+        /// 氦金不足：[{"MessageCode":60001,"Message":"氦金不足"}]
         /// </returns>
         [HttpPost]
         public HttpResponseMessage Bet([FromBody] GuessRecordModel guess)

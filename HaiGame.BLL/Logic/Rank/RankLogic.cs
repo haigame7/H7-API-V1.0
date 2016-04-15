@@ -1,4 +1,5 @@
 ﻿using HaiGame7.BLL.Enum;
+using HaiGame7.BLL.Logic.Common;
 using HaiGame7.Model.EFModel;
 using HaiGame7.Model.MyModel;
 using System.Collections.Generic;
@@ -21,6 +22,10 @@ namespace HaiGame7.BLL
             {
                 //联合查询
                 var sql = "select" +
+                          " t1.UserID as UserID," +
+                          " t1.Address as Address," +
+                          " t1.Sex as Sex," +
+                          " CONVERT(varchar(100), t1.RegisterDate, 20) as RegDate," +
                           " t1.UserWebNickName as NickName," +
                           " t1.UserWebPicture as UserPicture,"+
                           " t1.Hobby," +
@@ -48,6 +53,12 @@ namespace HaiGame7.BLL
                 }
                 else
                 {
+                    //循环user，添加擅长英雄图标
+                    for (int i = 0; i < userRank.Count; i++)
+                    {
+                        //擅长英雄
+                        userRank[i].HeroImage = User.GetHeroImgeByUserID(userRank[i].UserID);
+                    }
                     message.Message = MESSAGE.OK;
                     message.MessageCode = MESSAGE.OK_CODE;
                 }
@@ -71,9 +82,17 @@ namespace HaiGame7.BLL
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
                 var sql = "SELECT" +
+                          " t.TeamID," +
                           " t.TeamName," +
                           " t.TeamDescription," +
                           " t.TeamPicture," +
+                          " (CASE WHEN t.WinCount IS NULL THEN 0 ELSE t.WinCount END) as WinCount," +
+                          " (CASE WHEN t.LoseCount IS NULL THEN 0 ELSE t.LoseCount END) as LoseCount," +
+                          " (CASE WHEN t.FollowCount IS NULL THEN 0 ELSE t.FollowCount END) as FollowCount," +
+                          " CONVERT(varchar(100), t.CreateTime, 20) as CreateTime," +
+                          " t3.Content as RecruitContent," +
+                          " t.CreateUserID," +
+                          " t2.UserWebPicture as CreateUserLogo," +
                           " (CASE WHEN t.FightScore IS NULL THEN 0 ELSE t.FightScore END) as FightScore," +
                           " (CASE WHEN t.Asset IS NULL THEN 0 ELSE t.Asset END) as Asset," +
                           " (" +
@@ -84,6 +103,8 @@ namespace HaiGame7.BLL
                           " (CASE WHEN t.FightScore IS NULL THEN 0 ELSE t.FightScore END)+" +
                           " (CASE WHEN t.Asset IS NULL THEN 0 ELSE t.Asset END))/ 3 as HotScore" +
                           " FROM db_Team t" +
+                          " LEFT JOIN db_User t2 ON t.CreateUserID=t2.UserID" +
+                          " LEFT JOIN db_Recruit t3 ON t.TeamID=t3.TeamID" +
                           " WHERE t.State = 0" +
                           " ORDER BY " + rank.RankType + " " + rank.RankSort + ", t.SysTime";
 
@@ -99,6 +120,12 @@ namespace HaiGame7.BLL
                 }
                 else
                 {
+                    //循环team，添加战队成员图标
+                    for (int i = 0; i < teamRank.Count; i++)
+                    {
+                        //战队成员图标
+                        teamRank[i].UserImage = Team.GetTeamUserPictureByUserID(teamRank[i].TeamID);
+                    }
                     message.Message = MESSAGE.OK;
                     message.MessageCode = MESSAGE.OK_CODE;
                 }

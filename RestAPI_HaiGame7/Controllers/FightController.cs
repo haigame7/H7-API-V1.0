@@ -13,10 +13,7 @@
 
 using HaiGame7.BLL;
 using HaiGame7.Model.MyModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+using HaiGame7.RestAPI.Filter;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
@@ -26,6 +23,8 @@ namespace HaiGame7.RestAPI.Controllers
     /// <summary>
     /// 约战restful API，提供涉及到约战的服务。
     /// </summary>
+    [AccessTokenFilter]
+    [ExceptionFilter]
     public class FightController : ApiController
     {
         //初始化Response信息
@@ -71,9 +70,13 @@ namespace HaiGame7.RestAPI.Controllers
         /// <summary>
         /// 发起约战
         /// </summary>
-        /// <param name="para"></param>
+        /// <param name="para">
+        /// </param>
         /// <returns>
-        /// 约战成功：{"MessageCode":0,"Message":""}
+        /// 约战成功：[{"MessageCode":0,"Message":""}]
+        /// 队员不能约战：[{"MessageCode":20004,"Message":"您是队员，不能发起约战"}]
+        /// 超出每日限额：[{"MessageCode":20010,"Message":"超出约战限额，每天只可以约战一场"}]
+        /// 氦金不足：[{"MessageCode":60001,"Message":"氦金不足"}]
         /// </returns>
         [HttpPost]
         public HttpResponseMessage MakeChallenge([FromBody] ChallengeParameterModel para)
@@ -102,6 +105,68 @@ namespace HaiGame7.RestAPI.Controllers
         {
             FightLogic fightLogic = new FightLogic();
             jsonResult = fightLogic.MyFight(fight);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 认怂
+        /// <summary>
+        /// 认怂
+        /// </summary>
+        /// <param name="fight">
+        /// 参数实例：{UserID:61,DateID:111,Money:50}
+        /// </param>
+        /// <returns>
+        /// 返回实例：[{"MessageCode":0,"Message":""}]
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage Reject([FromBody] FightParameter2Model fight)
+        {
+            FightLogic fightLogic = new FightLogic();
+            jsonResult = fightLogic.Reject(fight);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 应战
+        /// <summary>
+        /// 应战
+        /// </summary>
+        /// <param name="fight">
+        /// 参数实例：{UserID:61,DateID:111,Money:50}
+        /// </param>
+        /// <returns>
+        /// 返回实例：[{"MessageCode":0,"Message":""}]
+        /// 氦金不足：[{"MessageCode":60001,"Message":"氦金不足"}]
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage Accept([FromBody] FightParameter2Model fight)
+        {
+            FightLogic fightLogic = new FightLogic();
+            jsonResult = fightLogic.Accept(fight);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 上传比赛ID
+        /// <summary>
+        /// 上传比赛ID
+        /// </summary>
+        /// <param name="fight">
+        /// 参数实例：{DateID:61,SFightAddress:"11111111"}
+        /// </param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage UpdateGameID([FromBody] FightParameter2Model fight)
+        {
+            FightLogic fightLogic = new FightLogic();
+            jsonResult = fightLogic.UpdateGameID(fight);
 
             returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
             return returnResult;

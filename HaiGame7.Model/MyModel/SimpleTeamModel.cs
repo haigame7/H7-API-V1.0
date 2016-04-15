@@ -8,7 +8,7 @@ namespace HaiGame7.Model.MyModel
 {
     public class SimpleTeamModel
     {
-        public string Creater { get; set; }
+        public int CreatUserID { get; set; }
         public string TeamName { get; set; }
         public string TeamLogo { get; set; }
         public string TeamType { get; set; }

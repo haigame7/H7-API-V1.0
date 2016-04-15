@@ -92,6 +92,7 @@
           <Property Name="Money" Type="int" />
           <Property Name="FightTime" Type="datetime" />
           <Property Name="FightAddress" Type="varchar" MaxLength="512" />
+          <Property Name="FightAddress1" Type="varchar" MaxLength="512" />
           <Property Name="FightIntroduce" Type="varchar" MaxLength="512" />
           <Property Name="FightResult" Type="varchar" MaxLength="512" />
           <Property Name="WinTeamID" Type="int" />
@@ -289,6 +290,7 @@
           <Property Name="STeamOdds" Type="decimal" Precision="10" Scale="2" />
           <Property Name="ETeamOdds" Type="decimal" Precision="10" Scale="2" />
           <Property Name="Remark" Type="varchar" MaxLength="256" />
+          <Property Name="State" Type="int" />
           <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="db_Message">
@@ -1058,6 +1060,7 @@
           <NavigationProperty Name="db_Follow" Relationship="Self.FK_DB_FOLLO_REFERENCE_DB_DATEF" FromRole="db_DateFight" ToRole="db_Follow" />
           <NavigationProperty Name="db_QRCode" Relationship="Self.FK_DB_QRCOD_REFERENCE_DB_DATEF" FromRole="db_DateFight" ToRole="db_QRCode" />
           <NavigationProperty Name="db_UnAnswer" Relationship="Self.FK_DB_UNANS_REFERENCE_DB_DATEF" FromRole="db_DateFight" ToRole="db_UnAnswer" />
+          <Property Name="FightAddress1" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="db_FightResult">
           <Key>
@@ -1915,6 +1918,7 @@
           <Property Name="Remark" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="SysTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="db_FightResult" Relationship="HaiGame7Model.FK_DB_MATCH_REFERENCE_DB_FIGHT" FromRole="db_MatchGuess" ToRole="db_FightResult" />
+          <Property Name="State" Type="Int32" />
         </EntityType>
         <Association Name="FK_DB_MATCH_REFERENCE_DB_FIGHT">
           <End Type="HaiGame7Model.db_FightResult" Role="db_FightResult" Multiplicity="0..1" />
@@ -2042,6 +2046,7 @@
           <EntitySetMapping Name="db_DateFight">
             <EntityTypeMapping TypeName="HaiGame7Model.db_DateFight">
               <MappingFragment StoreEntitySet="db_DateFight">
+                <ScalarProperty Name="FightAddress1" ColumnName="FightAddress1" />
                 <ScalarProperty Name="DateID" ColumnName="DateID" />
                 <ScalarProperty Name="STeamID" ColumnName="STeamID" />
                 <ScalarProperty Name="ETeamID" ColumnName="ETeamID" />
@@ -2412,6 +2417,7 @@
           <EntitySetMapping Name="db_MatchGuess">
             <EntityTypeMapping TypeName="HaiGame7Model.db_MatchGuess">
               <MappingFragment StoreEntitySet="db_MatchGuess">
+                <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="SysTime" ColumnName="SysTime" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="ETeamOdds" ColumnName="ETeamOdds" />

@@ -21,6 +21,7 @@ namespace HaiGame7.Model.EFModel
         public Nullable<decimal> ETeamOdds { get; set; }
         public string Remark { get; set; }
         public byte[] SysTime { get; set; }
+        public Nullable<int> State { get; set; }
     
         public virtual db_FightResult db_FightResult { get; set; }
     }

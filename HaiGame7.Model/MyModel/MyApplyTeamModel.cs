@@ -8,6 +8,7 @@ namespace HaiGame7.Model.MyModel
 {
     public class MyApplyTeamModel
     {
+        public int MessageID { get; set; }
         public int TeamID { get; set; }
         public string TeamName { get; set; }
         public string TeamLogo { get; set; }

@@ -7,6 +7,7 @@ using HaiGame7.BLL.Logic.Common;
 using System.Web.Script.Serialization;
 using System;
 using System.Security.Cryptography;
+using System.Web;
 
 namespace HaiGame7.BLL
 {
@@ -119,6 +120,9 @@ namespace HaiGame7.BLL
                     //返回发送结果
                     if (ret["statusCode"].ToString() == "000000")
                     {
+                        //手机号，验证码存储到session
+                        
+                        
                         //获取验证码成功
                         message.MessageCode = MESSAGE.OK_CODE;
                         message.Message = verifyCode;
@@ -159,6 +163,10 @@ namespace HaiGame7.BLL
                 {
                     db_AssetRecord assetRecord = new db_AssetRecord();
                     db_User userRecord = new db_User();
+
+                    //判断验证码是否正确
+
+                    //判断验证码是否过期
 
                     //添加信息到User表
                     userRecord.PhoneNumber = user.PhoneNumber;
@@ -589,6 +597,70 @@ namespace HaiGame7.BLL
             }
             returnResult.Add(message);
             returnResult.Add(userInfo);
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
+        #region 我的消息
+        public string MyMessage(UserParameterModel para)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+            List<MyMessageModel> messageInfo;
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //查询条件：user表中没有战队信息的user信息，按注册日期排序
+                var sql = "SELECT" +
+                          " t1.MID as MessageID,t1.Title,t1.Content,'未读' as State," +
+                          " CONVERT(varchar(100), t1.SendTime, 20) as Time" +
+                          " FROM" +
+                          " db_Message t1" +
+                          " left JOIN db_SysMessage t2 ON t1.MID = t2.MID" +
+                          " WHERE t1.SendID = 0 or t1.ReceiveID ="+ para.UserID;
+
+                messageInfo = context.Database.SqlQuery<MyMessageModel>(sql)
+                                 .Skip((para.StartPage - 1) * para.PageCount)
+                                 .Take(para.PageCount).ToList();
+                message.Message = "2";
+                message.MessageCode = MESSAGE.OK_CODE;
+            }
+            returnResult.Add(message);
+            returnResult.Add(messageInfo);
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
+        #region 消息设为已读
+        public string SetMessageRead(MyMessageModel para)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+            List<MyMessageModel> messageInfo;
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //查询条件：user表中没有战队信息的user信息，按注册日期排序
+                //var sql = "SELECT" +
+                //          " t1.MID as MessageID,t1.Title,t1.Content,'已读' as State," +
+                //          " CONVERT(varchar(100), t1.SendTime, 20) as Time" +
+                //          " FROM" +
+                //          " db_Message t1" +
+                //          " left JOIN db_SysMessage t2 ON t1.MID = t2.MID" +
+                //          " WHERE t1.SendID = 0 or t1.ReceiveID =" + para.UserID;
+
+                //messageInfo = context.Database.SqlQuery<MyMessageModel>(sql)
+                //                 .Skip((para.StartPage - 1) * para.PageCount)
+                //                 .Take(para.PageCount).ToList();
+                message.Message = "";
+                message.MessageCode = MESSAGE.OK_CODE;
+            }
+            returnResult.Add(message);
+            //returnResult.Add(messageInfo);
             result = jss.Serialize(returnResult);
             return result;
         }
