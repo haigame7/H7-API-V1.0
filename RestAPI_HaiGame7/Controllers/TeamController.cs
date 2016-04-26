@@ -137,11 +137,21 @@ namespace HaiGame7.RestAPI.Controllers
         #endregion
 
         #region 更新战队信息
+        /// <summary>
+        /// 更新战队信息
+        /// </summary>
+        /// <param name="para">
+        /// 参数实例：{TeamID:65,TeamName:"氦7",TeamLogo:"Base64字符",TeamDescription:"XXXX"}
+        /// </param>
+        /// <returns>
+        /// 更新成功：[{"MessageCode":0,"Message":""}]
+        /// 战队名被占用：[{"MessageCode":200001,"Message":"team exist"}]
+        /// </returns>
         [HttpPost]
-        public HttpResponseMessage Update([FromBody]  SimpleTeamModel team)
+        public HttpResponseMessage Update([FromBody]  SimpleTeam2Model para)
         {
             TeamLogic teamLogic = new TeamLogic();
-            jsonResult = teamLogic.Delete(team);
+            jsonResult = teamLogic.Update(para);
 
             returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
             return returnResult;
@@ -391,6 +401,25 @@ namespace HaiGame7.RestAPI.Controllers
         {
             TeamLogic teamLogic = new TeamLogic();
             jsonResult = teamLogic.HandleMyApply(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 移出战队
+        /// <summary>
+        /// 移出战队
+        /// </summary>
+        /// <param name="para">
+        /// 参数实例：{TeamID:146,UserID:1}
+        /// </param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage RemoveUser([FromBody] ApplyTeamParameter2Model para)
+        {
+            TeamLogic teamLogic = new TeamLogic();
+            jsonResult = teamLogic.RemoveUser(para);
 
             returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
             return returnResult;

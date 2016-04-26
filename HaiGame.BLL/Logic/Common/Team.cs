@@ -46,48 +46,48 @@ namespace HaiGame7.BLL.Logic.Common
                 FirstOrDefault();
                 if (team2 != null)
                 {
-                    myTeam.Asset = team2.Asset;
+                    myTeam.Asset = team2.Asset == null ? 0 : team2.Asset; ;
                     myTeam.TeamID = team2.TeamID;
                     myTeam.Creater = team2.CreateUserID;
                     myTeam.CreateTime = ((DateTime)team2.CreateTime).ToString("yyyy-MM-dd");
-                    myTeam.FightScore = team2.FightScore;
-                    myTeam.FollowCount = team2.FollowCount;
+                    myTeam.FightScore = team2.FightScore == null ? 0 : team2.FightScore; ;
+                    myTeam.FollowCount = team2.FollowCount == null ? 0 : team2.FollowCount;
                     myTeam.IsDeault = team2.IsDeault;
-                    myTeam.LoseCount = team2.LoseCount;
+                    myTeam.LoseCount = team2.LoseCount == null ? 0 : team2.LoseCount;
                     myTeam.Role = "teamuser";
                     myTeam.TeamLogo = team2.TeamPicture;
                     myTeam.TeamName = team2.TeamName;
                     myTeam.TeamType = team2.TeamType;
                     myTeam.TeamDescription = team2.TeamDescription;
-                    myTeam.WinCount = team2.WinCount;
+                    myTeam.WinCount = team2.WinCount == null ? 0 : team2.WinCount;
                     myTeam.RecruitContent = GetRecruitContentByTeamID(team2.TeamID);
                     myTeam.UserCount= GetTeamUserCountByTeamID(team2.TeamID);
                     //添加战队成员图标
-                    myTeam.TeamUserPicture = GetTeamUserPictureByUserID(team2.TeamID);
+                    myTeam.TeamUser = GetTeamUserByUserID(team2.TeamID);
                     //添加战队队长图标
-                    myTeam.CreaterPicture = GetUserPictureByUserID(team.CreateUserID);
+                    myTeam.CreaterPicture = GetUserPictureByUserID(team2.CreateUserID);
                 }
             }
             else
             {
-                myTeam.Asset = team.Asset;
+                myTeam.Asset = team.Asset == null ? 0 : team.Asset;
                 myTeam.Creater = team.CreateUserID;
                 myTeam.TeamID = team.TeamID;
                 myTeam.CreateTime = ((DateTime)team.CreateTime).ToString("yyyy-MM-dd");
-                myTeam.FightScore = team.FightScore;
-                myTeam.FollowCount = team.FollowCount;
+                myTeam.FightScore = team.FightScore==null?0:team.FightScore;
+                myTeam.FollowCount = team.FollowCount == null ? 0 : team.FollowCount;
                 myTeam.IsDeault = team.IsDeault;
-                myTeam.LoseCount = team.LoseCount;
+                myTeam.LoseCount = team.LoseCount == null ? 0 : team.LoseCount;
                 myTeam.Role = "teamcreater";
                 myTeam.TeamLogo = team.TeamPicture;
                 myTeam.TeamName = team.TeamName;
                 myTeam.TeamType = team.TeamType;
                 myTeam.TeamDescription = team.TeamDescription;
-                myTeam.WinCount = team.WinCount;
+                myTeam.WinCount = team.WinCount == null ? 0 : team.WinCount;
                 myTeam.RecruitContent = GetRecruitContentByTeamID(team.TeamID);
                 myTeam.UserCount = context.db_TeamUser.Where(c => c.TeamID == team.TeamID).ToList().Count;
                 //添加战队成员图标
-                myTeam.TeamUserPicture = GetTeamUserPictureByUserID(team.TeamID);
+                myTeam.TeamUser = GetTeamUserByUserID(team.TeamID);
                 //添加战队队长图标
                 myTeam.CreaterPicture = GetUserPictureByUserID(team.CreateUserID);
             }
@@ -139,7 +139,7 @@ namespace HaiGame7.BLL.Logic.Common
         }
         #endregion
 
-        #region 根据战队名称获取战队信息
+        #region 根据战队ID获取战队信息
         public static TeamModel GetTeambyID(int teamID)
         {
             using (HaiGame7Entities context = new HaiGame7Entities())
@@ -167,10 +167,31 @@ namespace HaiGame7.BLL.Logic.Common
                     myTeam.WinCount = team.WinCount;
                     myTeam.RecruitContent = GetRecruitContentByTeamID(team.TeamID);
                     myTeam.CreaterPicture = GetUserPictureByUserID(team.CreateUserID);
-                    myTeam.TeamUserPicture = GetTeamUserPictureByUserID(team.TeamID);
+                    myTeam.TeamUser = GetTeamUserByUserID(team.TeamID);
                 }
                 return myTeam;
             }
+        }
+        #endregion
+
+        #region 判断战队名称是否存在
+        public static bool IsTeamNameExist(SimpleTeam2Model para)
+        {
+            bool isTeamNameExist = false;
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                TeamModel myTeam = new TeamModel();
+
+                db_Team team = context.db_Team.
+                                Where(c => c.TeamName == para.TeamName.Trim()).
+                                Where(c => c.TeamID != para.TeamID).
+                                FirstOrDefault();
+                if (team != null)
+                {
+                    isTeamNameExist = true;
+                }
+            }
+            return isTeamNameExist;
         }
         #endregion
 
@@ -351,7 +372,7 @@ namespace HaiGame7.BLL.Logic.Common
         #endregion
 
         #region 根据TeamID获取队员头像
-        public static List<TeamUserModel> GetTeamUserPictureByUserID(int teamID)
+        public static List<TeamUserModel> GetTeamUserByUserID(int teamID)
         {
             List<db_TeamUser> teamUser;
             List<TeamUserModel> teamUserList=new List<TeamUserModel>();
@@ -365,7 +386,17 @@ namespace HaiGame7.BLL.Logic.Common
                     {
                         TeamUserModel teamUserModel=new TeamUserModel();
                         var user = User.GetUserModelByUserID(Convert.ToInt32(teamUser[i].UserID));
-                        teamUserModel.UserPicture = user.UserWebPicture;
+                        teamUserModel.UserPicture = user.UserWebPicture;//人像
+                        teamUserModel.UserID = user.UserID;//性别
+                        teamUserModel.PhoneNumber = user.PhoneNumber;
+                        teamUserModel.UserNickName = user.UserWebNickName;
+                        teamUserModel.Sex = user.Sex;
+                        teamUserModel.Address = user.Address;
+                        teamUserModel.Birthday = user.Birthday;
+                        teamUserModel.Hobby = user.Hobby;
+                        teamUserModel.Asset = User.GetAssetByUserID(user.UserID);
+                        teamUserModel.FightScore=User.GetGamePowerByUserID(user.UserID);
+                        teamUserModel.HeroImage = User.GetHeroImgeByUserID(user.UserID);
                         teamUserList.Add(teamUserModel);
                     }
                 }
@@ -385,6 +416,27 @@ namespace HaiGame7.BLL.Logic.Common
                 teamUserCount = context.db_TeamUser.Where(c => c.TeamID == teamID).ToList().Count;
             }
             return teamUserCount;
+        }
+        #endregion
+
+        #region 根据主播ID判断报名人数是否已满
+        public static bool IsBoBoFull(MatchParameter2Model match)
+        {
+            bool isOK = true;
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                var boboCount = context.db_GameRecord.Where(c => c.BoBoID == match.BoBoID)
+                                                         .Where(c => c.GameID == match.MatchID)
+                                                         .ToList().Count;
+                var bobo = context.db_GameBoBo.Where(c => c.BoBoID == match.BoBoID)
+                                              .Where(c => c.GameID == match.MatchID)
+                                              .FirstOrDefault();
+                if (boboCount>= bobo.Count)
+                {
+                    isOK = false;
+                }
+            }
+            return isOK;
         }
         #endregion
     }

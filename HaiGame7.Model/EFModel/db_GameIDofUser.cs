@@ -28,6 +28,7 @@ namespace HaiGame7.Model.EFModel
         public Nullable<int> CertifyState { get; set; }
         public string CertifyName { get; set; }
         public byte[] System { get; set; }
+        public Nullable<System.DateTime> ApplyCertifyTime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<db_GameInfoofPlatform> db_GameInfoofPlatform { get; set; }

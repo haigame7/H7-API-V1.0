@@ -20,7 +20,7 @@ namespace HaiGame7.BLL
             MessageModel message = new MessageModel();
             JavaScriptSerializer jss = new JavaScriptSerializer();
             HashSet<object> returnResult = new HashSet<object>();
-
+            List<GuessModel> guessList = new List<GuessModel>();
             //获取竞猜列表
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
@@ -33,21 +33,29 @@ namespace HaiGame7.BLL
                           "  t3.TeamName as STeamName,"+
                           "  t3.TeamPicture as STeamLogo," +
                           " t4.TeamName as ETeamName," +
-                          " t4.TeamPicture as ETeaLogo," +
+                          " t4.TeamPicture as ETeamLogo," +
                           " CONVERT(varchar(100), t2.EndTime, 20) as MatchTime," +
                           " t1.GuessName as GuessType,"+
                           " t1.STeamOdds as STeamOdds,"+
                           " t1.ETeamOdds as ETeamOdds,"+
                           " (SELECT COUNT(s.GuessRecordID) FROM db_GuessRecord s WHERE s.GuessID = t1.GuessID) as AllUser,"+
-                          " (SELECT SUM(s.BetMoney) FROM db_GuessRecord s WHERE s.GuessID = t1.GuessID) as AllMoney"+
+                          " ((CASE WHEN (SELECT SUM(s.BetMoney) FROM db_GuessRecord s WHERE s.GuessID = t1.GuessID) IS NUll THEN 0 ELSE (SELECT SUM(s.BetMoney) FROM db_GuessRecord s WHERE s.GuessID = t1.GuessID) END)) as AllMoney" +
                           " FROM"+
                           " db_MatchGuess t1"+
                           " LEFT JOIN db_FightResult t2 ON t1.ResultID = t2.ResultID" +
                           " LEFT JOIN db_Team t3 ON t2.HomeTeamID = t3.TeamID" +
                           " LEFT JOIN db_Team t4 ON t2.CustomerTeamID = t4.TeamID"+
                           " WHERE t1.State=0";
-                var guessList = context.Database.SqlQuery<GuessModel>(sql)
+                try
+                {
+                    guessList = context.Database.SqlQuery<GuessModel>(sql)
                                  .ToList();
+                }
+                catch (Exception ex)
+                {
+                    
+                }
+                
 
                 message.Message = MESSAGE.OK;
                 message.MessageCode = MESSAGE.OK_CODE;
@@ -153,7 +161,7 @@ namespace HaiGame7.BLL
                           "  t4.TeamPicture as STeamLogo,"+
                           "  t5.TeamID as ETeamID,"+
                           "  t5.TeamName as ETeamName,"+
-                          "  t5.TeamPicture as STeamLogo,"+
+                          "  t5.TeamPicture as ETeamLogo,"+
                           "  t6.TeamID as BetTeamID,"+
                           "  t6.TeamName as BetTeamName,"+
                           "  t6.TeamPicture as BetTeamLogo"+

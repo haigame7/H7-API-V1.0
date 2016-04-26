@@ -121,7 +121,7 @@ namespace HaiGame7.BLL
         #endregion
 
         #region 更新战队
-        public string Update(SimpleUserModel user)
+        public string Update(SimpleTeam2Model para)
         {
             string result = "";
             MessageModel message = new MessageModel();
@@ -130,8 +130,29 @@ namespace HaiGame7.BLL
 
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
-                //判断战队名称是否存在
-                //判断是否有权限创建
+                //更新战队信息
+                db_Team team = context.db_Team.Where(c => c.TeamID == para.TeamID).FirstOrDefault();
+                if (team != null)
+                {
+                    if (Team.IsTeamNameExist(para) ==true)
+                    {
+                        message.Message = MESSAGE.TEAMEXIST;
+                        message.MessageCode = MESSAGE.TEAMEXIST_CODE;
+                    }
+                    else
+                    {
+                        team.TeamName = para.TeamName.Trim();
+                        if (para.TeamLogo!=null && para.TeamLogo !="")
+                        {
+                            team.TeamPicture = Common.Base64ToTeamImage(para.TeamLogo);
+                        }
+                        
+                        team.TeamDescription = para.TeamDescription;
+                        context.SaveChanges();
+                        message.Message = MESSAGE.OK;
+                        message.MessageCode = MESSAGE.OK_CODE;
+                    }
+                }
             }
             returnResult.Add(message);
             result = jss.Serialize(returnResult);
@@ -769,6 +790,57 @@ namespace HaiGame7.BLL
                     }
                 }
                 context.SaveChanges();
+            }
+            returnResult.Add(message);
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
+        #region 移出战队
+        public string RemoveUser(ApplyTeamParameter2Model para)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //获取战队信息
+                db_Team team = context.db_Team.Where(c => c.TeamID == para.TeamID).FirstOrDefault();
+                if (team!=null)
+                {
+                    //删除TeamUser表记录
+                    db_TeamUser teamUser= context.db_TeamUser.
+                                          Where(c => c.TeamID == para.TeamID).
+                                          Where(c => c.UserID == para.UserID).
+                                          FirstOrDefault();
+                    context.db_TeamUser.Remove(teamUser);
+
+                    //Message表添加记录
+                    db_Message msg = new db_Message();
+                    msg.SendID = para.TeamID;
+                    msg.ReceiveID = para.UserID;
+                    msg.SendName = team.TeamName;
+                    msg.Title = "移出战队";
+                    msg.MessageType = "移出战队";
+                    msg.SendTime = DateTime.Now;
+                    msg.State = 0;
+                    msg.Content = "你已被移出战队【"+ team.TeamName+"】,感谢一起战斗的岁月";
+                    context.db_Message.Add(msg);
+
+                    //TeamRemoveUser表添加记录
+                    db_TeamRemoveUser teamRemoveUser = new db_TeamRemoveUser();
+                    teamRemoveUser.RemoveTime= DateTime.Now;
+                    teamRemoveUser.TeamID= para.TeamID;
+                    teamRemoveUser.UserID = para.UserID;
+                    context.db_TeamRemoveUser.Add(teamRemoveUser);
+                    context.SaveChanges();
+
+                    message.MessageCode = MESSAGE.OK_CODE;
+                    message.Message = MESSAGE.OK;
+                }
             }
             returnResult.Add(message);
             result = jss.Serialize(returnResult);

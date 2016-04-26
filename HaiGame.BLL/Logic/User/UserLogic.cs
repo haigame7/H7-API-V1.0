@@ -121,8 +121,6 @@ namespace HaiGame7.BLL
                     if (ret["statusCode"].ToString() == "000000")
                     {
                         //手机号，验证码存储到session
-                        
-                        
                         //获取验证码成功
                         message.MessageCode = MESSAGE.OK_CODE;
                         message.Message = verifyCode;
@@ -173,6 +171,8 @@ namespace HaiGame7.BLL
                     MD5 md5Hash = MD5.Create();
                     userRecord.UserPassWord = Common.GetMd5Hash(md5Hash, user.PassWord);
                     userRecord.RegisterDate = DateTime.Now;
+                    userRecord.UserWebPicture = @"http://images.haigame7.com/avatar/20160127125552WxExqw0paJXAo1AtXc4RzGYo2LE=.png";
+
                     context.db_User.Add(userRecord);
                     context.SaveChanges();
 
@@ -501,8 +501,9 @@ namespace HaiGame7.BLL
                     gameIDofUser.UserID = userInfo.UserID;   
                     gameIDofUser.GameID = user.GameID;
                     gameIDofUser.GameType = "DOTA2";
-                    gameIDofUser.CertifyState = 0;
+                    gameIDofUser.CertifyState = 2;//正在认证
                     gameIDofUser.CertifyName = "氦七"+Common.MathRandom(6);
+                    gameIDofUser.ApplyCertifyTime = DateTime.Now;
                     context.db_GameIDofUser.Add(gameIDofUser);
                     context.SaveChanges();
 
@@ -541,8 +542,9 @@ namespace HaiGame7.BLL
                                     FirstOrDefault();
 
                     gameIDofUser.GameID = user.GameID;
-                    gameIDofUser.CertifyState = 0;
+                    gameIDofUser.CertifyState = 2;//正在认证
                     gameIDofUser.CertifyName = "氦七" + Common.MathRandom(6);
+                    gameIDofUser.ApplyCertifyTime = DateTime.Now;
                     context.SaveChanges();
                     //返回认证昵称
                     message.Message = gameIDofUser.CertifyName;
@@ -579,7 +581,8 @@ namespace HaiGame7.BLL
                          "  db_User t1"+
                          "  LEFT JOIN db_Team t2 ON t1.UserID = t2.CreateUserID"+
                          "  LEFT JOIN db_TeamUser t3 ON t1.UserID = t3.UserID"+
-                         "  WHERE t2.CreateUserID IS NULL AND t3.UserID IS NULL";
+                         "  LEFT JOIN db_GameIDofUser t4 ON t1.UserID = t4.UserID" +
+                         "  WHERE t2.CreateUserID IS NULL AND t3.UserID IS NULL AND t4.CertifyState=1";
 
                 userInfo = context.Database.SqlQuery<User2Model>(sql)
                                  .Skip((para.StartPage - 1) * para.PageCount)
@@ -661,6 +664,33 @@ namespace HaiGame7.BLL
             }
             returnResult.Add(message);
             //returnResult.Add(messageInfo);
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
+        #region 删除微信支付订单
+        public string DeleteAssetRecord(AssetModel para)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+            
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                db_AssetRecord asset = context.db_AssetRecord.Where(c => c.OutTradeno == para.OutTradeno)
+                                        .Where(c => c.TransactionID == "")
+                                        .Where(c => c.VirtualMoney == 0).FirstOrDefault();
+                if (asset!=null)
+                {
+                    context.db_AssetRecord.Remove(asset);
+                    context.SaveChanges();
+                    message.Message = MESSAGE.OK;
+                    message.MessageCode = MESSAGE.OK_CODE;
+                }
+            }
+            returnResult.Add(message);
             result = jss.Serialize(returnResult);
             return result;
         }

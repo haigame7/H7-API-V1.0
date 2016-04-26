@@ -150,5 +150,6 @@ namespace HaiGame7.BLL.Logic.Common
             return asset;
         }
         #endregion
+
     }
 }

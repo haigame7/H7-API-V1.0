@@ -129,20 +129,30 @@ namespace HaiGame7.BLL
                 {
                     //判断是否队长，队员不可报名
 
-                    //判断队伍是否是否满5人
-                    //判断队伍是否已报名
-                    db_GameRecord gameRecord = new db_GameRecord();
-                    gameRecord.BoBoID = match.BoBoID;
-                    gameRecord.GameID = match.MatchID;
-                    gameRecord.TeamID = match.TeamID;
-                    gameRecord.ApplyTIme = DateTime.Now;
-                    gameRecord.UserID = user.UserID;
-                    gameRecord.IsCancel = 0;
-                    gameRecord.State = 0;
-                    context.db_GameRecord.Add(gameRecord);
-                    context.SaveChanges();
-                    message.MessageCode = MESSAGE.OK_CODE;
-                    message.Message = MESSAGE.OK;
+                    //判断队伍是否满5人
+                    //判断报名队伍数是否已满
+                    if (Team.IsBoBoFull(match)==true)
+                    {
+                        //判断队伍是否已报名
+                        db_GameRecord gameRecord = new db_GameRecord();
+                        gameRecord.BoBoID = match.BoBoID;
+                        gameRecord.GameID = match.MatchID;
+                        gameRecord.TeamID = match.TeamID;
+                        gameRecord.ApplyTIme = DateTime.Now;
+                        gameRecord.UserID = user.UserID;
+                        gameRecord.IsCancel = 0;
+                        gameRecord.State = 0;
+                        context.db_GameRecord.Add(gameRecord);
+                        context.SaveChanges();
+                        message.MessageCode = MESSAGE.OK_CODE;
+                        message.Message = MESSAGE.OK;
+                    }
+                    else
+                    {
+                        //名额已满
+                        message.MessageCode = MESSAGE.MATCHFULL_CODE;
+                        message.Message = MESSAGE.MATCHFULL;
+                    }
                 }
                 else
                 {
@@ -151,6 +161,36 @@ namespace HaiGame7.BLL
                     message.Message = MESSAGE.NOUSER;
                 }
                 
+            }
+            returnResult.Add(message);
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
+        #region 取消报名参赛
+        public string QuitMatch(MatchParameter2Model match)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+
+            //取消报名参赛
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                db_GameRecord gameRecord = context.db_GameRecord.
+                                            Where(c => c.GameID == match.MatchID).
+                                            Where(c => c.TeamID == match.TeamID).FirstOrDefault();
+
+                //删除队伍已报名信息
+                if (gameRecord!=null)
+                {
+                    context.db_GameRecord.Remove(gameRecord);
+                    context.SaveChanges();
+                }  
+                message.MessageCode = MESSAGE.OK_CODE;
+                message.Message = MESSAGE.OK;
             }
             returnResult.Add(message);
             result = jss.Serialize(returnResult);
@@ -360,7 +400,7 @@ namespace HaiGame7.BLL
 
             //主播赛程列表
             MatchStateModel matchState=new MatchStateModel();
-            matchState.MatchState = Convert.ToInt32(WebConfigurationManager.AppSettings["name"]);
+            matchState.MatchState = Convert.ToInt32(WebConfigurationManager.AppSettings["matchstate"]);
 
             message.MessageCode = MESSAGE.OK_CODE;
             message.Message = MESSAGE.OK;

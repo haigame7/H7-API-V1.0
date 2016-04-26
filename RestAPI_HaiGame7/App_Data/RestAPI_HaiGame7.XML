@@ -524,6 +524,19 @@
             {"EndTime":null,"MatchName":"精英小组赛一轮","STeamID":146,"STeamName":"伐木高","STeamLogo":"http://images.haigame7.com/logo/20160323173550XXKqu4W0Z5j3PxEIK0zW6uUR3LY=.png","ETeamID":141,"ETeamName":"bugbug","ETeamLogo":null,"BetTeamID":117,"BetTeamName":"type","BetTeamLogo":"http://images.haigame7.com/logo/20160127164454XXKqu4W0Z5j3PxEIK0zW6uUR3LY=.png","GuessTime":"2016-03-26 22:06:14","Odds":2.10,"BetMoney":0}]]
             </returns>
         </member>
+        <member name="T:RestAPI_HaiGame7.Controllers.VersionController">
+            <summary>
+            版本API
+            </summary>
+        </member>
+        <member name="M:RestAPI_HaiGame7.Controllers.VersionController.CurrentVersion">
+            <summary>
+            当前App版本
+            </summary>
+            <returns>
+            返回值：{"MessageCode":0,"Message":"版本号"}
+            </returns>
+        </member>
         <member name="T:HaiGame7.RestAPI.Controllers.FightController">
             <summary>
             约战restful API，提供涉及到约战的服务。
@@ -703,6 +716,18 @@
             参数实例：{matchid:"4",boboid:"4",TeamID:"11",PhoneNumber:"13439843883"}
             </param>
             <returns>
+            报名成功：[{"MessageCode":0,"Message":""}]
+            名额已满：[{"MessageCode":50002,"Message":"名额已满"}]
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.MatchController.QuitMatch(HaiGame7.Model.MyModel.MatchParameter2Model)">
+            <summary>
+            取消报名参赛
+            </summary>
+            <param name="match">
+            参数实例：{matchid:"4",boboid:"4",TeamID:"11",PhoneNumber:"13439843883"}
+            </param>
+            <returns>
             返回实例：[{"MessageCode":0,"Message":""}]
             </returns>
         </member>
@@ -811,6 +836,18 @@
             创建成功：{"MessageCode":0,"Message":""}
             战队名称已存在：{"MessageCode":20001,"Message":"team exist"}
             无权创建：{"MessageCode":20002,"Message":"you are teamuser"}
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.Update(HaiGame7.Model.MyModel.SimpleTeam2Model)">
+            <summary>
+            更新战队信息
+            </summary>
+            <param name="para">
+            参数实例：{TeamID:65,TeamName:"氦7",TeamLogo:"Base64字符",TeamDescription:"XXXX"}
+            </param>
+            <returns>
+            更新成功：[{"MessageCode":0,"Message":""}]
+            战队名被占用：[{"MessageCode":200001,"Message":"team exist"}]
             </returns>
         </member>
         <member name="M:HaiGame7.RestAPI.Controllers.TeamController.Delete(HaiGame7.Model.MyModel.SimpleTeamModel)">
@@ -939,6 +976,15 @@
             <param name="para">
             ISOK:0 同意，1 拒绝
             参数实例：{TeamID:146,UserID:1,MessageID:5,ISOK:0}
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.TeamController.RemoveUser(HaiGame7.Model.MyModel.ApplyTeamParameter2Model)">
+            <summary>
+            移出战队
+            </summary>
+            <param name="para">
+            参数实例：{TeamID:146,UserID:1}
             </param>
             <returns></returns>
         </member>
@@ -1106,6 +1152,15 @@
             消息设为已读
             </summary>
             <param name="para"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.UserController.DeleteAssetRecord(HaiGame7.Model.MyModel.AssetModel)">
+            <summary>
+            删除微信支付订单
+            </summary>
+            <param name="para">
+            {OutTradeno:"133333333333333"}
+            </param>
             <returns></returns>
         </member>
         <member name="T:HaiGame7.RestAPI.Filter.ExceptionFilter">

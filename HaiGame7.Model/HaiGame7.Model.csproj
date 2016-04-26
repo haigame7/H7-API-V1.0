@@ -69,6 +69,9 @@
     <Compile Include="EFModel\db_DateFight.cs">
       <DependentUpon>HaiGame7.tt</DependentUpon>
     </Compile>
+    <Compile Include="EFModel\db_DateFightScore.cs">
+      <DependentUpon>HaiGame7.tt</DependentUpon>
+    </Compile>
     <Compile Include="EFModel\db_FightResult.cs">
       <DependentUpon>HaiGame7.tt</DependentUpon>
     </Compile>
@@ -135,6 +138,9 @@
     <Compile Include="EFModel\db_TeamBlog.cs">
       <DependentUpon>HaiGame7.tt</DependentUpon>
     </Compile>
+    <Compile Include="EFModel\db_TeamRemoveUser.cs">
+      <DependentUpon>HaiGame7.tt</DependentUpon>
+    </Compile>
     <Compile Include="EFModel\db_TeamUser.cs">
       <DependentUpon>HaiGame7.tt</DependentUpon>
     </Compile>
@@ -161,6 +167,7 @@
     </Compile>
     <Compile Include="MyModel\ApplyTeamParameter2Model.cs" />
     <Compile Include="MyModel\ApplyTeamParameterModel.cs" />
+    <Compile Include="MyModel\AssetModel.cs" />
     <Compile Include="MyModel\AssetList.cs" />
     <Compile Include="MyModel\BoBoCountModel.cs" />
     <Compile Include="MyModel\BoBoModel.cs" />
@@ -172,6 +179,7 @@
     <Compile Include="MyModel\GameModel.cs" />
     <Compile Include="MyModel\Guess2Model.cs" />
     <Compile Include="MyModel\GuessModel.cs" />
+    <Compile Include="MyModel\SimpleTeam2Model.cs" />
     <Compile Include="MyModel\UserParameterModel.cs" />
     <Compile Include="MyModel\GuessParameterModel.cs" />
     <Compile Include="MyModel\GuessRecordModel.cs" />

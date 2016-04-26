@@ -60,7 +60,7 @@
           <Property Name="UserPicture" Type="varchar" MaxLength="512" />
           <Property Name="Sex" Type="varchar" MaxLength="8" />
           <Property Name="Birthday" Type="datetime" />
-          <Property Name="Introduce" Type="varchar" MaxLength="512" />
+          <Property Name="Introduce" Type="varchar" MaxLength="5120" />
           <Property Name="备注" Type="varchar" MaxLength="512" />
           <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
@@ -101,6 +101,19 @@
           <Property Name="LiveLink" Type="varchar" MaxLength="1024" />
           <Property Name="HomeShow" Type="int" />
           <Property Name="Systime" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="db_DateFightScore">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateID" Type="int" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="DOTA2ID" Type="varchar" MaxLength="512" />
+          <Property Name="UserScore" Type="int" />
+          <Property Name="UserSign" Type="varchar" MaxLength="512" />
+          <Property Name="JudgeTime" Type="datetime" />
+          <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="db_FightResult">
           <Key>
@@ -175,6 +188,7 @@
           <Property Name="GameType" Type="varchar" MaxLength="128" />
           <Property Name="CertifyState" Type="int" />
           <Property Name="CertifyName" Type="varchar" MaxLength="128" />
+          <Property Name="ApplyCertifyTime" Type="datetime" />
           <Property Name="System" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="db_GameInfoofPlatform">
@@ -403,6 +417,16 @@
           <Property Name="ArticleCount" Type="int" />
           <Property Name="Label" Type="varchar" MaxLength="256" />
           <Property Name="Remark" Type="varchar" MaxLength="32" />
+          <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="db_TeamRemoveUser">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="TeamID" Type="int" />
+          <Property Name="RemoveTime" Type="datetime" />
           <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="db_TeamUser">
@@ -807,6 +831,7 @@
           <EntitySet Name="db_BoBo" EntityType="Self.db_BoBo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_CommonUseHero" EntityType="Self.db_CommonUseHero" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_DateFight" EntityType="Self.db_DateFight" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="db_DateFightScore" EntityType="Self.db_DateFightScore" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_FightResult" EntityType="Self.db_FightResult" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_FightState" EntityType="Self.db_FightState" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_Follow" EntityType="Self.db_Follow" Schema="dbo" store:Type="Tables" />
@@ -829,6 +854,7 @@
           <EntitySet Name="db_SysMessage" EntityType="Self.db_SysMessage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_Team" EntityType="Self.db_Team" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_TeamBlog" EntityType="Self.db_TeamBlog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="db_TeamRemoveUser" EntityType="Self.db_TeamRemoveUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_TeamUser" EntityType="Self.db_TeamUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_UnAnswer" EntityType="Self.db_UnAnswer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_User" EntityType="Self.db_User" Schema="dbo" store:Type="Tables" />
@@ -1012,7 +1038,7 @@
           <Property Name="UserPicture" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
           <Property Name="Sex" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="Birthday" Type="DateTime" Precision="3" />
-          <Property Name="Introduce" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
+          <Property Name="Introduce" Type="String" MaxLength="5120" FixedLength="false" Unicode="false" />
           <Property Name="备注" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
           <Property Name="SysTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="db_GameBoBo" Relationship="Self.FK_DB_GAMEB_REFERENCE_DB_BOBO" FromRole="db_BoBo" ToRole="db_GameBoBo" />
@@ -1147,6 +1173,7 @@
           <Property Name="System" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="db_GameInfoofPlatform" Relationship="Self.FK_DB_GAMEI_REFERENCE_DB_GAMEI" FromRole="db_GameIDofUser" ToRole="db_GameInfoofPlatform" />
           <NavigationProperty Name="db_User" Relationship="Self.FK_DB_GAMEI_REFERENCE_DB_USER" FromRole="db_GameIDofUser" ToRole="db_User" />
+          <Property Name="ApplyCertifyTime" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="db_GameInfoofPlatform">
           <Key>
@@ -1905,6 +1932,8 @@
             <End Role="db_Team" EntitySet="db_Team" />
             <End Role="db_Recruit" EntitySet="db_Recruit" />
           </AssociationSet>
+          <EntitySet Name="db_TeamRemoveUser" EntityType="HaiGame7Model.db_TeamRemoveUser" />
+          <EntitySet Name="db_DateFightScore" EntityType="HaiGame7Model.db_DateFightScore" />
         </EntityContainer>
         <EntityType Name="db_MatchGuess">
           <Key>
@@ -1955,6 +1984,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="db_TeamRemoveUser">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="TeamID" Type="Int32" />
+          <Property Name="RemoveTime" Type="DateTime" Precision="3" />
+          <Property Name="SysTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="db_DateFightScore">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateID" Type="Int32" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="DOTA2ID" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
+          <Property Name="UserScore" Type="Int32" />
+          <Property Name="UserSign" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
+          <Property Name="JudgeTime" Type="DateTime" Precision="3" />
+          <Property Name="SysTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2134,6 +2186,7 @@
           <EntitySetMapping Name="db_GameIDofUser">
             <EntityTypeMapping TypeName="HaiGame7Model.db_GameIDofUser">
               <MappingFragment StoreEntitySet="db_GameIDofUser">
+                <ScalarProperty Name="ApplyCertifyTime" ColumnName="ApplyCertifyTime" />
                 <ScalarProperty Name="UGID" ColumnName="UGID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="GameID" ColumnName="GameID" />
@@ -2436,6 +2489,31 @@
                 <ScalarProperty Name="Content" ColumnName="Content" />
                 <ScalarProperty Name="TeamID" ColumnName="TeamID" />
                 <ScalarProperty Name="RID" ColumnName="RID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="db_TeamRemoveUser">
+            <EntityTypeMapping TypeName="HaiGame7Model.db_TeamRemoveUser">
+              <MappingFragment StoreEntitySet="db_TeamRemoveUser">
+                <ScalarProperty Name="SysTime" ColumnName="SysTime" />
+                <ScalarProperty Name="RemoveTime" ColumnName="RemoveTime" />
+                <ScalarProperty Name="TeamID" ColumnName="TeamID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="db_DateFightScore">
+            <EntityTypeMapping TypeName="HaiGame7Model.db_DateFightScore">
+              <MappingFragment StoreEntitySet="db_DateFightScore">
+                <ScalarProperty Name="SysTime" ColumnName="SysTime" />
+                <ScalarProperty Name="JudgeTime" ColumnName="JudgeTime" />
+                <ScalarProperty Name="UserSign" ColumnName="UserSign" />
+                <ScalarProperty Name="UserScore" ColumnName="UserScore" />
+                <ScalarProperty Name="DOTA2ID" ColumnName="DOTA2ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="DateID" ColumnName="DateID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

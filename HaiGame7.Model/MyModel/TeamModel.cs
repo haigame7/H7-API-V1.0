@@ -22,6 +22,6 @@ namespace HaiGame7.Model.MyModel
         public string CreateTime { get; set; }
         public string RecruitContent { get; set; }
         public string CreaterPicture { get; set; }
-        public List<TeamUserModel> TeamUserPicture { get; set; }
+        public List<TeamUserModel> TeamUser { get; set; }
     }
 }

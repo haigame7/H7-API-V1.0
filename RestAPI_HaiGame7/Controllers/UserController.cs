@@ -335,7 +335,7 @@ namespace HaiGame7.RestAPI.Controllers
         }
         #endregion
 
-        #region 消息设为已读
+        #region SetMessageRead 消息设为已读
         /// <summary>
         /// 消息设为已读
         /// </summary>
@@ -346,6 +346,25 @@ namespace HaiGame7.RestAPI.Controllers
         {
             UserLogic userLogic = new UserLogic();
             jsonResult = userLogic.SetMessageRead(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region DeleteAssetRecord 删除微信支付订单
+        /// <summary>
+        /// 删除微信支付订单
+        /// </summary>
+        /// <param name="para">
+        /// {OutTradeno:"133333333333333"}
+        /// </param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage DeleteAssetRecord([FromBody] AssetModel para)
+        {
+            UserLogic userLogic = new UserLogic();
+            jsonResult = userLogic.DeleteAssetRecord(para);
 
             returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
             return returnResult;

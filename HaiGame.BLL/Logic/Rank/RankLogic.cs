@@ -124,7 +124,7 @@ namespace HaiGame7.BLL
                     for (int i = 0; i < teamRank.Count; i++)
                     {
                         //战队成员图标
-                        teamRank[i].UserImage = Team.GetTeamUserPictureByUserID(teamRank[i].TeamID);
+                        teamRank[i].UserImage = Team.GetTeamUserByUserID(teamRank[i].TeamID);
                     }
                     message.Message = MESSAGE.OK;
                     message.MessageCode = MESSAGE.OK_CODE;

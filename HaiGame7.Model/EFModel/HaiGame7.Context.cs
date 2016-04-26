@@ -57,5 +57,7 @@ namespace HaiGame7.Model.EFModel
         public virtual DbSet<db_User> db_User { get; set; }
         public virtual DbSet<db_MatchGuess> db_MatchGuess { get; set; }
         public virtual DbSet<db_Recruit> db_Recruit { get; set; }
+        public virtual DbSet<db_TeamRemoveUser> db_TeamRemoveUser { get; set; }
+        public virtual DbSet<db_DateFightScore> db_DateFightScore { get; set; }
     }
 }

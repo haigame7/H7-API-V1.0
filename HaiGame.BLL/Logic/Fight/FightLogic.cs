@@ -312,6 +312,22 @@ namespace HaiGame7.BLL
                     fightState.State = "已应战";
                     fightState.StateTime = DateTime.Now;
                     context.db_FightState.Add(fightState);
+
+                    //扣除约战氦金，资产表插入一条数据
+                    db_AssetRecord assetRecord = new db_AssetRecord();
+                    assetRecord.UserID = fight.UserID;
+                    assetRecord.VirtualMoney = -fight.Money;
+                    assetRecord.TrueMoney = 0;
+                    assetRecord.GainWay = ASSET.GAINWAY_ACCEPT;
+                    assetRecord.GainTime = DateTime.Now;
+                    assetRecord.State = ASSET.MONEYSTATE_YES;
+                    //时间+操作+收入支出金额
+                    assetRecord.Remark = assetRecord.GainTime + " " +
+                                        assetRecord.GainWay + " "
+                                        + ASSET.PAY_OUT +
+                                        assetRecord.VirtualMoney.ToString();
+                    context.db_AssetRecord.Add(assetRecord);
+
                     context.SaveChanges();
 
                     message.Message = MESSAGE.OK;

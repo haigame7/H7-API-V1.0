@@ -27,7 +27,7 @@ namespace HaiGame7.BLL.Logic.Common
 
                 totalCount = context.Database.SqlQuery<TotalAssetModel>(sql)
                                  .Where(c => c.TotalAsset >= myAsset)
-                                 .Where(c => c.RegisterDate <= regDate)
+                                 
                                  .ToList().Count();
             }
             return totalCount;

@@ -108,6 +108,10 @@ namespace HaiGame7.BLL.Enum
         public const int NOJOINMATCH_CODE = 50001;
         public const string NOJOINMATCH = "no joinmatch";
 
+        //无报名信息
+        public const int MATCHFULL_CODE = 50002;
+        public const string MATCHFULL = "名额已满";
+
         //氦金不足
         public const int NOMONEY_CODE = 60001;
         public const string NOMONEY = "氦金不足";

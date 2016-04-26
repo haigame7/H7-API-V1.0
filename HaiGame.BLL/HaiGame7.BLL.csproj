@@ -92,6 +92,7 @@
     <Compile Include="Logic\Rank\RankLogic.cs" />
     <Compile Include="Logic\Team\TeamLogic.cs" />
     <Compile Include="Logic\User\UserLogic.cs" />
+    <Compile Include="Logic\Version\VersionLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -103,13 +103,35 @@ namespace HaiGame7.RestAPI.Controllers
         /// 参数实例：{matchid:"4",boboid:"4",TeamID:"11",PhoneNumber:"13439843883"}
         /// </param>
         /// <returns>
-        /// 返回实例：[{"MessageCode":0,"Message":""}]
+        /// 报名成功：[{"MessageCode":0,"Message":""}]
+        /// 名额已满：[{"MessageCode":50002,"Message":"名额已满"}]
         /// </returns>
         [HttpPost]
         public HttpResponseMessage JoinMatch([FromBody] MatchParameter2Model match)
         {
             MatchLogic matchLogic = new MatchLogic();
             jsonResult = matchLogic.JoinMatch(match);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 取消报名参赛
+        /// <summary>
+        /// 取消报名参赛
+        /// </summary>
+        /// <param name="match">
+        /// 参数实例：{matchid:"4",boboid:"4",TeamID:"11",PhoneNumber:"13439843883"}
+        /// </param>
+        /// <returns>
+        /// 返回实例：[{"MessageCode":0,"Message":""}]
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage QuitMatch([FromBody] MatchParameter2Model match)
+        {
+            MatchLogic matchLogic = new MatchLogic();
+            jsonResult = matchLogic.QuitMatch(match);
 
             returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
             return returnResult;

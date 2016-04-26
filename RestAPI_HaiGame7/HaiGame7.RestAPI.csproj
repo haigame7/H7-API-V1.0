@@ -169,6 +169,7 @@
     <Compile Include="Controllers\MatchController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\VersionController.cs" />
     <Compile Include="Filter\AccessTokenFilter.cs" />
     <Compile Include="Filter\ExceptionFilter.cs" />
     <Compile Include="Global.asax.cs">
