@@ -165,6 +165,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>HaiGame7.edmx</DependentUpon>
     </Compile>
+    <Compile Include="EFModel\View_TeamUserGamePower.cs">
+      <DependentUpon>HaiGame7.tt</DependentUpon>
+    </Compile>
     <Compile Include="MyModel\ApplyTeamParameter2Model.cs" />
     <Compile Include="MyModel\ApplyTeamParameterModel.cs" />
     <Compile Include="MyModel\AssetModel.cs" />

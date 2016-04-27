@@ -476,6 +476,18 @@
           <Property Name="Hobby" Type="varchar" MaxLength="64" />
           <Property Name="SysTime" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“HiGameTest.dbo.View_TeamUserGamePower”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="View_TeamUserGamePower">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="TeamID" Type="int" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="GameID" Type="varchar" MaxLength="128" />
+          <Property Name="GamePower" Type="varchar" MaxLength="32" />
+        </EntityType>
         <Association Name="FK_DB_ARTIC_REFERENCE_DB_ARTIC">
           <End Role="db_Article" Type="Self.db_Article" Multiplicity="0..1" />
           <End Role="db_ArticleComment" Type="Self.db_ArticleComment" Multiplicity="*" />
@@ -858,6 +870,15 @@
           <EntitySet Name="db_TeamUser" EntityType="Self.db_TeamUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_UnAnswer" EntityType="Self.db_UnAnswer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="db_User" EntityType="Self.db_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="View_TeamUserGamePower" EntityType="Self.View_TeamUserGamePower" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_TeamUserGamePower].[ID] AS [ID], 
+    [View_TeamUserGamePower].[TeamID] AS [TeamID], 
+    [View_TeamUserGamePower].[UserID] AS [UserID], 
+    [View_TeamUserGamePower].[GameID] AS [GameID], 
+    [View_TeamUserGamePower].[GamePower] AS [GamePower]
+    FROM [dbo].[View_TeamUserGamePower] AS [View_TeamUserGamePower]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_DB_ARTIC_REFERENCE_DB_ARTIC" Association="Self.FK_DB_ARTIC_REFERENCE_DB_ARTIC">
             <End Role="db_Article" EntitySet="db_Article" />
             <End Role="db_ArticleComment" EntitySet="db_ArticleComment" />
@@ -1784,7 +1805,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="HaiGame7Entities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="HaiGame7Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="db_Article" EntityType="Self.db_Article" />
           <EntitySet Name="db_ArticleComment" EntityType="Self.db_ArticleComment" />
           <EntitySet Name="db_AssetRecord" EntityType="Self.db_AssetRecord" />
@@ -1934,6 +1955,7 @@
           </AssociationSet>
           <EntitySet Name="db_TeamRemoveUser" EntityType="HaiGame7Model.db_TeamRemoveUser" />
           <EntitySet Name="db_DateFightScore" EntityType="HaiGame7Model.db_DateFightScore" />
+          <EntitySet Name="View_TeamUserGamePower" EntityType="HaiGame7Model.View_TeamUserGamePower" />
         </EntityContainer>
         <EntityType Name="db_MatchGuess">
           <Key>
@@ -2007,12 +2029,22 @@
           <Property Name="JudgeTime" Type="DateTime" Precision="3" />
           <Property Name="SysTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="View_TeamUserGamePower">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="TeamID" Type="Int32" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="GameID" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="GamePower" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="HaiGame7ModelStoreContainer" CdmEntityContainer="HaiGame7Entities1">
+        <EntityContainerMapping StorageEntityContainer="HaiGame7ModelStoreContainer" CdmEntityContainer="HaiGame7Entities">
           <EntitySetMapping Name="db_Article">
             <EntityTypeMapping TypeName="HaiGame7Model.db_Article">
               <MappingFragment StoreEntitySet="db_Article">
@@ -2513,6 +2545,17 @@
                 <ScalarProperty Name="DOTA2ID" ColumnName="DOTA2ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="DateID" ColumnName="DateID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_TeamUserGamePower">
+            <EntityTypeMapping TypeName="HaiGame7Model.View_TeamUserGamePower">
+              <MappingFragment StoreEntitySet="View_TeamUserGamePower">
+                <ScalarProperty Name="GamePower" ColumnName="GamePower" />
+                <ScalarProperty Name="GameID" ColumnName="GameID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="TeamID" ColumnName="TeamID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

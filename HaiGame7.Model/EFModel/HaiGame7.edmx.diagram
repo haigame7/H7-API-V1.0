@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="1d7767ac9449499aa65bc1f592ad96f8" Name="Diagram1">
+      <Diagram DiagramId="1d7767ac9449499aa65bc1f592ad96f8" Name="Diagram1" ZoomLevel="74">
         <EntityTypeShape EntityType="HaiGame7Model.db_Article" Width="1.5" PointX="0.75" PointY="16.125" IsExpanded="true" />
         <EntityTypeShape EntityType="HaiGame7Model.db_ArticleComment" Width="1.5" PointX="3" PointY="20.25" IsExpanded="true" />
         <EntityTypeShape EntityType="HaiGame7Model.db_AssetRecord" Width="1.5" PointX="3" PointY="10" IsExpanded="true" />
@@ -67,6 +67,7 @@
         <AssociationConnector Association="HaiGame7Model.FK_DB_RECRU_REFERENCE_DB_TEAM" />
         <EntityTypeShape EntityType="HaiGame7Model.db_TeamRemoveUser" Width="1.5" PointX="8.375" PointY="4.75" />
         <EntityTypeShape EntityType="HaiGame7Model.db_DateFightScore" Width="1.5" PointX="8.375" PointY="7.75" />
+        <EntityTypeShape EntityType="HaiGame7Model.View_TeamUserGamePower" Width="1.5" PointX="5.375" PointY="9.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

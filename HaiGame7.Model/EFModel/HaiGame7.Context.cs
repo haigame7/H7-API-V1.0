@@ -18,7 +18,6 @@ namespace HaiGame7.Model.EFModel
         public HaiGame7Entities()
             : base("name=HaiGame7Entities")
         {
-            Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -59,5 +58,6 @@ namespace HaiGame7.Model.EFModel
         public virtual DbSet<db_Recruit> db_Recruit { get; set; }
         public virtual DbSet<db_TeamRemoveUser> db_TeamRemoveUser { get; set; }
         public virtual DbSet<db_DateFightScore> db_DateFightScore { get; set; }
+        public virtual DbSet<View_TeamUserGamePower> View_TeamUserGamePower { get; set; }
     }
 }
