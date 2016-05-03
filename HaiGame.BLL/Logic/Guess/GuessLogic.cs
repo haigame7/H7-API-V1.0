@@ -171,7 +171,7 @@ namespace HaiGame7.BLL
                           "  LEFT JOIN db_FightResult t3 ON t1.ResultID = t3.ResultID"+
                           "  LEFT JOIN db_Team t4 ON t3.HomeTeamID = t4.TeamID"+
                           "  LEFT JOIN db_Team t5 ON t3.CustomerTeamID = t5.TeamID"+
-                          "  LEFT JOIN db_Team t6 ON t2.OptionID = t6.TeamID" + where;
+                          "  LEFT JOIN db_Team t6 ON t2.OptionID = t6.TeamID" + where+ "ORDER BY t2.GuessTime DESC";
 
                 var guessList = context.Database.SqlQuery<Guess2Model>(sql)
                                  .Skip((guess.StartPage - 1) * guess.PageCount)

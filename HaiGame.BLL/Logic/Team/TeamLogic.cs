@@ -35,6 +35,20 @@ namespace HaiGame7.BLL
                     var existCount = context.db_TeamUser.Where(c => c.UserID == team.CreatUserID).ToList().Count;
                     if(existCount==0)
                     {
+                        //判断队长拥有战队数量
+                        var existTeam = context.db_Team.
+                            Where(c => c.CreateUserID == team.CreatUserID).
+                            Where(c => c.State == 0)
+                            .ToList().Count;
+                        if (existTeam>=2)
+                        {
+                            //最多只可创建2只战队
+                            message.Message = MESSAGE.TEAMCOUNT;
+                            message.MessageCode = MESSAGE.TEAMCOUNT_CODE;
+                            returnResult.Add(message);
+                            result = jss.Serialize(returnResult);
+                            return result;
+                        }
                         db_Team teamInsert = new db_Team();
                         teamInsert.CreateUserID = team.CreatUserID;
                         teamInsert.TeamName = team.TeamName.Trim();
@@ -54,6 +68,14 @@ namespace HaiGame7.BLL
                         {
                             teamList[i].IsDeault = 1;
                         }
+                        context.SaveChanges();
+
+                        //氦金账户同步
+                        var defaultTeam = context.db_Team.Where(c => c.CreateUserID == team.CreatUserID).
+                                                          Where(c => c.State == 0).
+                                                          Where(c => c.IsDeault == 0).
+                                                          FirstOrDefault();
+                        defaultTeam.Asset = User.GetAssetByUserID(team.CreatUserID);
                         context.SaveChanges();
                     }
                     else
@@ -195,7 +217,6 @@ namespace HaiGame7.BLL
                     context.SaveChanges();
                     //向队员发送解散信息
 
-                    
 
                 }
             }
@@ -423,6 +444,7 @@ namespace HaiGame7.BLL
                     //判断是否向该战队发出过申请
                     int applyCount=context.db_Message.Where(c => c.SendID == para.UserID)
                                       .Where(c => c.ReceiveID == para.TeamID)
+                                      .Where(c => c.State == 1)
                                       .ToList().Count;
                     //申请加入
                     if (applyCount>0)
@@ -584,6 +606,7 @@ namespace HaiGame7.BLL
                 //判断是否发出过邀请
                 int inviteCount = context.db_Message.Where(c => c.SendID == para.TeamID)
                                       .Where(c => c.ReceiveID == para.UserID)
+                                      .Where(c => c.State == 2)
                                       .ToList().Count;
                 if (inviteCount > 0)
                 {
@@ -714,6 +737,8 @@ namespace HaiGame7.BLL
                 if (para.ISOK==1)
                 {
                     msg.MessageType = "加入失败";
+                    message.MessageCode = MESSAGE.OK_CODE;
+                    message.Message = "已拒绝";
                 }
                 else
                 {
@@ -735,12 +760,16 @@ namespace HaiGame7.BLL
                         teamUser.TeamID = para.TeamID;
                         teamUser.UserID = para.UserID;
                         context.db_TeamUser.Add(teamUser);
+                        context.SaveChanges();
+                        //重新计算战队战斗力
+                        db_Team joinTeam = context.db_Team.Where(c => c.TeamID == para.TeamID).FirstOrDefault();
+                        joinTeam.FightScore = Team.GetFightScoreByTeamID(joinTeam.TeamID);
+                        context.SaveChanges();
 
                         message.MessageCode = MESSAGE.OK_CODE;
-                        message.Message = MESSAGE.OK;
+                        message.Message = "加入成功";
                     }
                 }
-                context.SaveChanges();
             }
             returnResult.Add(message);
             result = jss.Serialize(returnResult);
@@ -763,6 +792,8 @@ namespace HaiGame7.BLL
                 if (para.ISOK == 1)
                 {
                     msg.MessageType = "招募失败";
+                    message.MessageCode = MESSAGE.OK_CODE;
+                    message.Message = "已拒绝";
                 }
                 else
                 {
@@ -784,12 +815,17 @@ namespace HaiGame7.BLL
                         teamUser.TeamID = para.TeamID;
                         teamUser.UserID = para.UserID;
                         context.db_TeamUser.Add(teamUser);
+                        context.SaveChanges();
+
+                        //重新计算战队战斗力
+                        db_Team joinTeam = context.db_Team.Where(c => c.TeamID == para.TeamID).FirstOrDefault();
+                        joinTeam.FightScore = Team.GetFightScoreByTeamID(joinTeam.TeamID);
+                        context.SaveChanges();
 
                         message.MessageCode = MESSAGE.OK_CODE;
-                        message.Message = MESSAGE.OK;
+                        message.Message = "已同意";
                     }
                 }
-                context.SaveChanges();
             }
             returnResult.Add(message);
             result = jss.Serialize(returnResult);
@@ -836,6 +872,21 @@ namespace HaiGame7.BLL
                     teamRemoveUser.TeamID= para.TeamID;
                     teamRemoveUser.UserID = para.UserID;
                     context.db_TeamRemoveUser.Add(teamRemoveUser);
+                    context.SaveChanges();
+
+                    //重新计算战队战斗力
+                    db_Team joinTeam = context.db_Team.Where(c => c.TeamID == para.TeamID).FirstOrDefault();
+                    joinTeam.FightScore = Team.GetFightScoreByTeamID(joinTeam.TeamID);
+
+                    //message表删除申请记录
+                    var applyMessage = context.db_Message.Where(c => c.SendID == para.UserID)
+                                      .Where(c => c.ReceiveID == para.TeamID)
+                                      .Where(c => c.State == 1)
+                                      .FirstOrDefault();
+                    if (applyMessage!=null)
+                    {
+                        context.db_Message.Remove(applyMessage);
+                    }
                     context.SaveChanges();
 
                     message.MessageCode = MESSAGE.OK_CODE;

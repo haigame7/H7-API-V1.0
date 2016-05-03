@@ -363,7 +363,7 @@ namespace HaiGame7.BLL
         #endregion
 
         #region 获取我的资产列表
-        public string MyAssetList(SimpleUserModel user)
+        public string MyAssetList(UserParameterModel user)
         {
             string result = "";
             MessageModel message = new MessageModel();
@@ -372,16 +372,14 @@ namespace HaiGame7.BLL
             //获取我的资产
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
-                //获取用户
-                db_User userInfo = User.GetUserByPhoneNumber(user.PhoneNumber);
                 //获取用户资产列表
-                // 获取用户游戏数据
                 var sql = "SELECT t1.VirtualMoney,CONVERT(varchar(100), t1.GainTime, 23) as GainTime,t1.GainWay,t1.Remark" +
                           " FROM db_AssetRecord t1" +
-                          " WHERE t1.UserID = " + userInfo.UserID + "ORDER BY t1.GainTime DESC";
+                          " WHERE t1.UserID = " + user.UserID + "ORDER BY t1.GainTime DESC";
 
                 var assetList = context.Database.SqlQuery<AssetList>(sql)
-                                 .ToList();
+                                 .Skip((user.StartPage - 1) * user.PageCount)
+                                 .Take(user.PageCount).ToList();
 
                 message.Message = MESSAGE.OK;
                 message.MessageCode = MESSAGE.OK_CODE;
@@ -406,7 +404,7 @@ namespace HaiGame7.BLL
             {
                 //获取用户
                 db_User userInfo = User.GetUserByPhoneNumber(user.PhoneNumber);
-                if (userInfo!=null)
+                if (userInfo!=null && user.PhoneNumber!=null)
                 {
                     //获取用户总资产
                     var asset = context.db_AssetRecord.Where(c => c.UserID == userInfo.UserID).Sum(c => c.VirtualMoney);
@@ -615,19 +613,41 @@ namespace HaiGame7.BLL
             List<MyMessageModel> messageInfo;
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
-                //查询条件：user表中没有战队信息的user信息，按注册日期排序
+
+                //单发消息
                 var sql = "SELECT" +
-                          " t1.MID as MessageID,t1.Title,t1.Content,'未读' as State," +
-                          " CONVERT(varchar(100), t1.SendTime, 20) as Time" +
-                          " FROM" +
-                          " db_Message t1" +
-                          " left JOIN db_SysMessage t2 ON t1.MID = t2.MID" +
-                          " WHERE t1.SendID = 0 or t1.ReceiveID ="+ para.UserID;
+                            " t1.MID as MessageID,t1.Title,t1.Content," +
+                            " (CASE WHEN t1.State = 0 then '未读' else '已读' end) as State," +
+                            " CONVERT(varchar(100), t1.SendTime, 20) as Time" +
+                            " FROM" +
+                            " db_Message t1" +
+                            " WHERE t1.State in (0,99) AND t1.ReceiveID =" + para.UserID;
+                            //" union" +
+                            ////群发消息
+                            //" SELECT" +
+                            //" t1.MID as MessageID,t1.Title,t1.Content," +
+                            //" (CASE WHEN t2.SysState IS NULL then '未读' else '已读' end) as State," +
+                            //" CONVERT(varchar(100), t1.SendTime, 20) as Time" +
+                            //" FROM" +
+                            //" db_Message t1" +
+                            //" left JOIN db_SysMessage t2 ON t1.MID = t2.MID" +
+                            //" WHERE t1.SendID = 0";
 
                 messageInfo = context.Database.SqlQuery<MyMessageModel>(sql)
                                  .Skip((para.StartPage - 1) * para.PageCount)
                                  .Take(para.PageCount).ToList();
-                message.Message = "2";
+                var sqlCount = "SELECT" +
+                            " t1.MID as MessageID,t1.Title,t1.Content," +
+                            " (CASE WHEN t1.State = 0 then '未读' else '已读' end) as State," +
+                            " CONVERT(varchar(100), t1.SendTime, 20) as Time" +
+                            " FROM" +
+                            " db_Message t1" +
+                            " WHERE t1.State =0 AND t1.ReceiveID =" + para.UserID;
+
+                var messageInfoCount = context.Database.SqlQuery<MyMessageModel>(sqlCount)
+                                 .ToList().Count;
+
+                message.Message = messageInfoCount.ToString();
                 message.MessageCode = MESSAGE.OK_CODE;
             }
             returnResult.Add(message);
@@ -644,26 +664,15 @@ namespace HaiGame7.BLL
             MessageModel message = new MessageModel();
             JavaScriptSerializer jss = new JavaScriptSerializer();
             HashSet<object> returnResult = new HashSet<object>();
-            List<MyMessageModel> messageInfo;
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
-                //查询条件：user表中没有战队信息的user信息，按注册日期排序
-                //var sql = "SELECT" +
-                //          " t1.MID as MessageID,t1.Title,t1.Content,'已读' as State," +
-                //          " CONVERT(varchar(100), t1.SendTime, 20) as Time" +
-                //          " FROM" +
-                //          " db_Message t1" +
-                //          " left JOIN db_SysMessage t2 ON t1.MID = t2.MID" +
-                //          " WHERE t1.SendID = 0 or t1.ReceiveID =" + para.UserID;
-
-                //messageInfo = context.Database.SqlQuery<MyMessageModel>(sql)
-                //                 .Skip((para.StartPage - 1) * para.PageCount)
-                //                 .Take(para.PageCount).ToList();
+                var myMessage=context.db_Message.Where(c => c.MID == para.MessageID).FirstOrDefault();
+                myMessage.State = 99;
+                context.SaveChanges();
                 message.Message = "";
                 message.MessageCode = MESSAGE.OK_CODE;
             }
             returnResult.Add(message);
-            //returnResult.Add(messageInfo);
             result = jss.Serialize(returnResult);
             return result;
         }

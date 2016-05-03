@@ -147,5 +147,45 @@ namespace HaiGame7.BLL.Logic.Common
             return message;
         }
         #endregion
+
+        #region 根据约战ID更改Team表胜负场
+        public static void UpdateTeamByDateID(FightParameter2Model fight, HaiGame7Entities context)
+        {
+            db_DateFight dateFight = context.db_DateFight.Where(c => c.DateID == fight.DateID).FirstOrDefault();
+            db_Team sTeam = context.db_Team.Where(c => c.TeamID == dateFight.STeamID).FirstOrDefault();
+            db_Team eTeam = context.db_Team.Where(c => c.TeamID == dateFight.ETeamID).FirstOrDefault();
+            //挑战方胜场加1
+            if(sTeam.WinCount== null)
+            {
+                sTeam.WinCount = 1;
+            }
+            else
+            {
+                sTeam.WinCount = sTeam.WinCount + 1;
+            }
+            //认怂方认怂数加1
+            if (eTeam.FollowCount == null)
+            {
+                eTeam.FollowCount = 1;
+            }
+            else
+            {
+                eTeam.FollowCount = eTeam.FollowCount + 1;
+            }
+            //归还挑战方押金
+            db_AssetRecord assetRecord = new db_AssetRecord();
+            assetRecord.UserID = sTeam.CreateUserID;
+            assetRecord.VirtualMoney = fight.Money;
+            assetRecord.TrueMoney = 0;
+            assetRecord.GainWay = ASSET.GAINWAY_BACK;
+            assetRecord.GainTime = DateTime.Now;
+            assetRecord.State = ASSET.MONEYSTATE_YES;
+            assetRecord.Remark = assetRecord.GainTime + " " +
+                                assetRecord.GainWay + " "
+                                + ASSET.PAY_IN +
+                                assetRecord.VirtualMoney.ToString();
+            context.db_AssetRecord.Add(assetRecord);
+        }
+        #endregion
     }
 }

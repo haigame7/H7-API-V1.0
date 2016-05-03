@@ -1103,11 +1103,13 @@
             提交成功：{"MessageCode":0,"Message":返回认证昵称}
             </returns>
         </member>
-        <member name="M:HaiGame7.RestAPI.Controllers.UserController.MyAssetList(HaiGame7.Model.MyModel.SimpleUserModel)">
+        <member name="M:HaiGame7.RestAPI.Controllers.UserController.MyAssetList(HaiGame7.Model.MyModel.UserParameterModel)">
             <summary>
             我的资产列表
             </summary>
-            <param name="user"></param>
+            <param name="user">
+            参数实例：{UserID:184,StartPage:1,PageCount:10}
+            </param>
             <returns>
             返回值实例：[{"MessageCode":0,"Message":""},
             [{"VirtualMoney":0,"GainTime":"2016-02-27","GainWay":"现金充值","Remark":"2016/2/27 12:38:35 现金充值 获得虚拟币：0"},

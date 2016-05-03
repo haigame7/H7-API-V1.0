@@ -92,6 +92,14 @@ namespace HaiGame7.BLL.Enum
         public const int USERJOINOTHERTEAM_CODE = 20012;
         public const string USERJOINOTHERTEAM = "用户已经加入其它战队";
 
+        //每人最多2支战队
+        public const int TEAMCOUNT_CODE = 20013;
+        public const string TEAMCOUNT = "最多只可创建2支战队";
+
+        //战队不足5人，无法报名
+        public const int TEAMUSERNOTENOUGH_CODE = 20014;
+        public const string TEAMUSERNOTENOUGH = "战队不足5人，无法报名";
+
         //系统错误
         public const int SYSERR_CODE = 40001;
         public const string SYSERR = "system error";
@@ -108,9 +116,17 @@ namespace HaiGame7.BLL.Enum
         public const int NOJOINMATCH_CODE = 50001;
         public const string NOJOINMATCH = "no joinmatch";
 
-        //无报名信息
+        //名额已满
         public const int MATCHFULL_CODE = 50002;
         public const string MATCHFULL = "名额已满";
+
+        //队员无权报名
+        public const int CANNOTJOINMATCH_CODE = 50003;
+        public const string CANNOTJOINMATCH = "队员无权报名";
+
+        //队员无权取消
+        public const int CANNOTQUITMATCH_CODE = 50003;
+        public const string CANNOTQUITMATCH = "队员无权取消";
 
         //氦金不足
         public const int NOMONEY_CODE = 60001;

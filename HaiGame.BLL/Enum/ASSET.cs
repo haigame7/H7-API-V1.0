@@ -25,6 +25,8 @@ namespace HaiGame7.BLL.Enum
         public const string GAINWAY_PLAY = "申请陪玩";
         public const string GAINWAY_CHALLENGE = "发起挑战";
         public const string GAINWAY_ACCEPT = "接受挑战";
+        public const string GAINWAY_REJECT = "认怂金";
+        public const string GAINWAY_BACK = "归还挑战金";
         public const string GAINWAY_CHALLENGE_SUCCESS = "挑战成功";
         public const string GAINWAY_CHALLENGE_FAIL = "挑战失败";
         #endregion
@@ -38,6 +40,7 @@ namespace HaiGame7.BLL.Enum
         public const string MONEYSTATE_YES = "正常记录";
         public const string SIGN_YES = "今日已签到";
         #endregion
+
         #region 定义竞猜结果
         public const string QUIZ_WIN = "获胜";
         public const string QUIZ_LOSE = "失败";

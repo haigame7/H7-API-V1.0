@@ -255,7 +255,9 @@ namespace HaiGame7.RestAPI.Controllers
         /// <summary>
         /// 我的资产列表
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="user">
+        /// 参数实例：{UserID:184,StartPage:1,PageCount:10}
+        /// </param>
         /// <returns>
         /// 返回值实例：[{"MessageCode":0,"Message":""},
         /// [{"VirtualMoney":0,"GainTime":"2016-02-27","GainWay":"现金充值","Remark":"2016/2/27 12:38:35 现金充值 获得虚拟币：0"},
@@ -268,7 +270,7 @@ namespace HaiGame7.RestAPI.Controllers
         /// ]
         /// </returns>
         [HttpPost]
-        public HttpResponseMessage MyAssetList([FromBody] SimpleUserModel user)
+        public HttpResponseMessage MyAssetList([FromBody] UserParameterModel user)
         {
             UserLogic userLogic = new UserLogic();
             jsonResult = userLogic.MyAssetList(user);

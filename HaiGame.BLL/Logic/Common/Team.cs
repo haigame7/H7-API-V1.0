@@ -14,6 +14,7 @@ namespace HaiGame7.BLL.Logic.Common
             db_Team team = context.db_Team.
                 Where(c => c.CreateUserID == userID).
                 Where(c => c.State == 0).
+                Where(c => c.IsDeault == 0).
                 FirstOrDefault();
             if (team == null)
             {
@@ -437,6 +438,25 @@ namespace HaiGame7.BLL.Logic.Common
                 }
             }
             return isOK;
+        }
+        #endregion
+
+        #region 根据TeamID获取战队战斗力
+        public static int GetFightScoreByTeamID(int teamID)
+        {
+            int fightScore = 0;
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+
+                var team = context.View_TeamUserGamePower.Where(c => c.TeamID == teamID)
+                                                         .OrderByDescending(c => c.GamePower)
+                                                         .Take(5).ToList();
+                for (int i=0;i< team.Count;i++)
+                {
+                    fightScore = fightScore +Convert.ToInt32(team[i].GamePower);
+                }
+            }
+            return fightScore;
         }
         #endregion
     }

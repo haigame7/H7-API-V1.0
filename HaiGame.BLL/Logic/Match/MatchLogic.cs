@@ -128,30 +128,49 @@ namespace HaiGame7.BLL
                 if(user!=null)
                 {
                     //判断是否队长，队员不可报名
-
-                    //判断队伍是否满5人
-                    //判断报名队伍数是否已满
-                    if (Team.IsBoBoFull(match)==true)
+                    var team=context.db_Team.Where(c => c.TeamID == match.TeamID).
+                                    Where(c => c.CreateUserID == user.UserID).
+                                    FirstOrDefault();
+                    if (team==null)
                     {
-                        //判断队伍是否已报名
-                        db_GameRecord gameRecord = new db_GameRecord();
-                        gameRecord.BoBoID = match.BoBoID;
-                        gameRecord.GameID = match.MatchID;
-                        gameRecord.TeamID = match.TeamID;
-                        gameRecord.ApplyTIme = DateTime.Now;
-                        gameRecord.UserID = user.UserID;
-                        gameRecord.IsCancel = 0;
-                        gameRecord.State = 0;
-                        context.db_GameRecord.Add(gameRecord);
-                        context.SaveChanges();
-                        message.MessageCode = MESSAGE.OK_CODE;
-                        message.Message = MESSAGE.OK;
+                        message.MessageCode = MESSAGE.CANNOTJOINMATCH_CODE;
+                        message.Message = MESSAGE.CANNOTJOINMATCH;
                     }
                     else
                     {
-                        //名额已满
-                        message.MessageCode = MESSAGE.MATCHFULL_CODE;
-                        message.Message = MESSAGE.MATCHFULL;
+                        //判断队伍是否满5人
+                        var teamCount = context.db_TeamUser.Where(c => c.TeamID == match.TeamID).ToList().Count;
+                        if (teamCount<4)
+                        {
+                            message.MessageCode = MESSAGE.TEAMUSERNOTENOUGH_CODE;
+                            message.Message = MESSAGE.TEAMUSERNOTENOUGH;
+                        }
+                        else
+                        {
+                            //判断报名队伍数是否已满
+                            if (Team.IsBoBoFull(match) == true)
+                            {
+                                //判断队伍是否已报名
+                                db_GameRecord gameRecord = new db_GameRecord();
+                                gameRecord.BoBoID = match.BoBoID;
+                                gameRecord.GameID = match.MatchID;
+                                gameRecord.TeamID = match.TeamID;
+                                gameRecord.ApplyTIme = DateTime.Now;
+                                gameRecord.UserID = user.UserID;
+                                gameRecord.IsCancel = 0;
+                                gameRecord.State = 0;
+                                context.db_GameRecord.Add(gameRecord);
+                                context.SaveChanges();
+                                message.MessageCode = MESSAGE.OK_CODE;
+                                message.Message = MESSAGE.OK;
+                            }
+                            else
+                            {
+                                //名额已满
+                                message.MessageCode = MESSAGE.MATCHFULL_CODE;
+                                message.Message = MESSAGE.MATCHFULL;
+                            }
+                        }
                     }
                 }
                 else
@@ -179,18 +198,31 @@ namespace HaiGame7.BLL
             //取消报名参赛
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
-                db_GameRecord gameRecord = context.db_GameRecord.
+                db_User user = User.GetUserByPhoneNumber(match.PhoneNumber);
+                //判断是否队长，队员不可报名
+                var team = context.db_Team.Where(c => c.TeamID == match.TeamID).
+                                Where(c => c.CreateUserID == user.UserID).
+                                FirstOrDefault();
+                if (team == null)
+                {
+                    message.MessageCode = MESSAGE.CANNOTQUITMATCH_CODE;
+                    message.Message = MESSAGE.CANNOTQUITMATCH;
+                }
+                else
+                {
+                    db_GameRecord gameRecord = context.db_GameRecord.
                                             Where(c => c.GameID == match.MatchID).
                                             Where(c => c.TeamID == match.TeamID).FirstOrDefault();
 
-                //删除队伍已报名信息
-                if (gameRecord!=null)
-                {
-                    context.db_GameRecord.Remove(gameRecord);
-                    context.SaveChanges();
-                }  
-                message.MessageCode = MESSAGE.OK_CODE;
-                message.Message = MESSAGE.OK;
+                    //删除队伍已报名信息
+                    if (gameRecord != null)
+                    {
+                        context.db_GameRecord.Remove(gameRecord);
+                        context.SaveChanges();
+                    }
+                    message.MessageCode = MESSAGE.OK_CODE;
+                    message.Message = MESSAGE.OK;
+                }
             }
             returnResult.Add(message);
             result = jss.Serialize(returnResult);

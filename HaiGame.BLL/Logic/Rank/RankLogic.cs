@@ -21,25 +21,54 @@ namespace HaiGame7.BLL
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
                 //联合查询
-                var sql = "select" +
+                string sql;
+                if (rank.RankType == "Asset")
+                {
+                    sql = "select" +
                           " t1.UserID as UserID," +
                           " t1.Address as Address," +
                           " t1.Sex as Sex," +
                           " CONVERT(varchar(100), t1.RegisterDate, 20) as RegDate," +
                           " t1.UserWebNickName as NickName," +
-                          " t1.UserWebPicture as UserPicture,"+
+                          " t1.UserWebPicture as UserPicture," +
                           " t1.Hobby," +
                           " t2.GameID," +
                           " t3.GamePower," +
                           " t3.GameGrade," +
-                          " (select sum(t4.VirtualMoney) from" +
-                          " db_AssetRecord t4 where t4.UserID = t1.UserID) as Asset" +
+                          " (CASE WHEN(select sum(t4.VirtualMoney) from" +
+                          " db_AssetRecord t4 where t4.UserID = t1.UserID) IS NULL THEN 0 ELSE (select sum(t4.VirtualMoney) from" +
+                          " db_AssetRecord t4 where t4.UserID = t1.UserID) END) as Asset" +
                           " from db_User t1 left join" +
                           " db_GameIDofUser t2 on t1.UserID = t2.UserID" +
                           " left join db_GameInfoofPlatform t3" +
                           " on t2.UGID = t3.UGID" +
-                          " where t2.GameType = 'DOTA2'"+
-                          " order by "+ rank.RankType+ " "+rank.RankSort+",t1.RegisterDate ";
+                          " where t2.GameType = 'DOTA2'" +
+                          " order by " + rank.RankType  +" "+ rank.RankSort + ",t1.RegisterDate ";
+                }
+                else
+                {
+                    sql = "select" +
+                          " t1.UserID as UserID," +
+                          " t1.Address as Address," +
+                          " t1.Sex as Sex," +
+                          " CONVERT(varchar(100), t1.RegisterDate, 20) as RegDate," +
+                          " t1.UserWebNickName as NickName," +
+                          " t1.UserWebPicture as UserPicture," +
+                          " t1.Hobby," +
+                          " t2.GameID," +
+                          " t3.GamePower," +
+                          " t3.GameGrade," +
+                          " (CASE WHEN(select sum(t4.VirtualMoney) from" +
+                          " db_AssetRecord t4 where t4.UserID = t1.UserID) IS NULL THEN 0 ELSE (select sum(t4.VirtualMoney) from" +
+                          " db_AssetRecord t4 where t4.UserID = t1.UserID) END) as Asset" +
+                          " from db_User t1 left join" +
+                          " db_GameIDofUser t2 on t1.UserID = t2.UserID" +
+                          " left join db_GameInfoofPlatform t3" +
+                          " on t2.UGID = t3.UGID" +
+                          " where t2.GameType = 'DOTA2'" +
+                          " order by cast(" + rank.RankType + " as int) " +" "+ rank.RankSort + ",t1.RegisterDate ";
+                }
+                
 
                  var  userRank = context.Database.SqlQuery<UserRankModel>(sql)
                                   .Skip((rank.StartPage - 1) * rank.PageCount)

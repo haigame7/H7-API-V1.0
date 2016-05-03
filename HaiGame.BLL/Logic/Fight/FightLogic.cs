@@ -261,15 +261,39 @@ namespace HaiGame7.BLL
 
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
-                //dategight表更改当前状态
+                //1.dategight表更改当前状态
                 var fightRecord=context.db_DateFight.Where(c => c.DateID == fight.DateID).FirstOrDefault();
                 fightRecord.CurrentState = "已认怂";
-                //fightstate表新增状态
+                //2.fightstate表新增状态
                 db_FightState fightState = new db_FightState();
                 fightState.DateID = fight.DateID;
                 fightState.State = "已认怂";
                 fightState.StateTime = DateTime.Now;
                 context.db_FightState.Add(fightState);
+
+                //3.扣取一认怂金，资产表插入一条数据
+                db_AssetRecord assetRecord = new db_AssetRecord();
+                assetRecord.UserID = fight.UserID;
+                assetRecord.VirtualMoney = -1;
+                assetRecord.TrueMoney = 0;
+                assetRecord.GainWay = ASSET.GAINWAY_REJECT;
+                assetRecord.GainTime = DateTime.Now;
+                assetRecord.State = ASSET.MONEYSTATE_YES;
+                assetRecord.Remark = assetRecord.GainTime + " " +
+                                    assetRecord.GainWay + " "
+                                    + ASSET.PAY_OUT +
+                                    assetRecord.VirtualMoney.ToString();
+                context.db_AssetRecord.Add(assetRecord);
+
+                //4.本方Team表认怂数+1,挑战方Team表胜利数+1，归还扣押挑战金
+                Fight.UpdateTeamByDateID(fight, context);
+
+                //5.认怂表新增数据
+                db_Follow follow = new db_Follow();
+                follow.DateID = fight.DateID;
+                follow.FollowMoney = 1;
+                follow.FollowTime = DateTime.Now;
+                context.db_Follow.Add(follow);
                 context.SaveChanges();
 
                 message.Message = MESSAGE.OK;
