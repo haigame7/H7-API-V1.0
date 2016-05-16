@@ -2,8 +2,10 @@
 using HaiGame7.BLL.Logic.Common;
 using HaiGame7.Model.EFModel;
 using HaiGame7.Model.MyModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Configuration;
 using System.Web.Script.Serialization;
 
 namespace HaiGame7.BLL
@@ -18,7 +20,7 @@ namespace HaiGame7.BLL
             JavaScriptSerializer jss = new JavaScriptSerializer();
             HashSet<object> returnResult = new HashSet<object>();
 
-            message.Message = "1.0.0";
+            message.Message = WebConfigurationManager.AppSettings["verson"].ToString();
             message.MessageCode = 0;
             returnResult.Add(message);
             result = jss.Serialize(returnResult);

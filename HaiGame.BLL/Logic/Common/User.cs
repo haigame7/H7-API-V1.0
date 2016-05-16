@@ -46,11 +46,18 @@ namespace HaiGame7.BLL.Logic.Common
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
                 var sql = "SELECT t1.UserID,t1.PhoneNumber,t1.UserWebNickName," +
+                         " CONVERT(varchar(100), t1.RegisterDate, 20) as RegDate," +
                          "  t1.UserWebPicture,t1.UserName,t1.Address,t1.Sex,CONVERT(varchar(100), t1.Birthday, 23) as Birthday,t1.Hobby" +
                          "  FROM db_User t1 WHERE t1.UserID= " + userID + "";
 
                 user = context.Database.SqlQuery<UserModel>(sql)
                                  .FirstOrDefault();
+                if (user!=null)
+                {
+                    //添加擅长英雄图标
+                    user.HeroImage = User.GetHeroImgeByUserID(user.UserID);
+                }
+                
             }
             return user;
         }

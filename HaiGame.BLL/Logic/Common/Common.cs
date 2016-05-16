@@ -151,16 +151,17 @@ namespace HaiGame7.BLL.Logic.Common
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public static string Base64ToImage(string base64)
+        public static string Base64ToImage(string base64,string userID)
         {
             byte[] arr = Convert.FromBase64String(base64);
             MemoryStream ms = new MemoryStream(arr);
             Bitmap bmp = new Bitmap(ms);
 
-            string txtFileName = @"D:\HiGameImages\avatar\"+DateTime.Now.ToString("yyyyMMddHHmmss") + HmacSha1(MathRandom(6), ENCRY.ENCRYSTR) + ".png";
+            string txtFileName = @"D:\HiGameImages\avatar\"+ userID+"_"+DateTime.Now.ToString("yyyyMMddHHmmss")  + ".png";
             bmp.Save(txtFileName, ImageFormat.Png);
             ms.Close();
-
+            ms.Dispose();
+            bmp.Dispose();
             return txtFileName.Replace(@"D:\HiGameImages\avatar\",@"http://images.haigame7.com/avatar/");
         }
         #endregion
@@ -171,16 +172,17 @@ namespace HaiGame7.BLL.Logic.Common
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public static string Base64ToTeamImage(string base64)
+        public static string Base64ToTeamImage(string base64, string userID)
         {
             byte[] arr = Convert.FromBase64String(base64);
             MemoryStream ms = new MemoryStream(arr);
             Bitmap bmp = new Bitmap(ms);
 
-            string txtFileName = @"D:\HiGameImages\logo\" + DateTime.Now.ToString("yyyyMMddHHmmss") + HmacSha1(MathRandom(6), ENCRY.ENCRYSTR) + ".png";
+            string txtFileName = @"D:\HiGameImages\logo\" + userID + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".png";
             bmp.Save(txtFileName, ImageFormat.Png);
             ms.Close();
-
+            ms.Dispose();
+            bmp.Dispose();
             return txtFileName.Replace(@"D:\HiGameImages\logo\", @"http://images.haigame7.com/logo/");
         }
         #endregion

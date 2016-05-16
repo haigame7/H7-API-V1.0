@@ -13,6 +13,7 @@ namespace HaiGame7.Model.MyModel
         public string Address { get; set; }
         public string Sex { get; set; }
         public string Birthday { get; set; }
+        public string RegDate { get; set; }
         public string Hobby { get; set; }
         public List<HeroModel> HeroImage { get; set; }
     }

@@ -1065,6 +1065,17 @@
             {"UserID":64,"PhoneNumber":"13439843883","PassWord":null,"UserWebPicture":"http://images.haigame7.com/avatar/20160127162940WxExqw0paJXAo1AtXc4RzGYo2LE=.png","UserWebNickName":"不服","UserName":null,"Address":"北京-大兴区","Sex":"男","Birthday":"2016-03-18","Hobby":null}]
             </returns>
         </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.UserController.UserInfoByUserID(HaiGame7.Model.MyModel.UserParameterModel)">
+            <summary>
+            根据昵称获取个人信息
+            </summary>
+            <param name="user">
+            {"UserID":184,"Message":""}
+            </param>
+            <returns>
+            返回值实例：[{"MessageCode":0,"Message":""}]
+            </returns>
+        </member>
         <member name="M:HaiGame7.RestAPI.Controllers.UserController.UpdateUserInfo(HaiGame7.Model.MyModel.UserModel)">
             <summary>
             更改个人信息，传入手机号和要更改的字段，不更改字段不要传
@@ -1164,6 +1175,30 @@
             {OutTradeno:"133333333333333"}
             </param>
             <returns></returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.UserController.SignIn(HaiGame7.Model.MyModel.UserParameterModel)">
+            <summary>
+            每日签到奖励1氦金
+            </summary>
+            <param name="para">
+            {UserID:184}
+            </param>
+            <returns>
+            签到成功：[{"MessageCode":0,"Message":""}]
+            今日已签到：[{"MessageCode":60002,"Message":"今日已签到"}]
+            </returns>
+        </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.UserController.IsSignIn(HaiGame7.Model.MyModel.UserParameterModel)">
+            <summary>
+            判断今日是否签到
+            </summary>
+            <param name="para">
+            {UserID:184}
+            </param>
+            <returns>
+            今日未签到：[{"MessageCode":60003,"Message":"今日未签到"}]
+            今日已签到：[{"MessageCode":60002,"Message":"今日已签到"}]
+            </returns>
         </member>
         <member name="T:HaiGame7.RestAPI.Filter.ExceptionFilter">
             <summary>

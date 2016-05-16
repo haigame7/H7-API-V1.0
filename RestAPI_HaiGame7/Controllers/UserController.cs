@@ -17,9 +17,10 @@ using System.Web.Http;
 using HaiGame7.RestAPI.Filter;
 using HaiGame7.BLL;
 using HaiGame7.Model.MyModel;
+using log4net;
 
 namespace HaiGame7.RestAPI.Controllers
-{
+{  
     /// <summary>
     /// 用户中心restful API，提供涉及到用户的服务。
     /// </summary>
@@ -27,6 +28,7 @@ namespace HaiGame7.RestAPI.Controllers
     [ExceptionFilter]
     public class UserController : ApiController
     {
+        readonly private static ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         //初始化Response信息
         HttpResponseMessage returnResult = new HttpResponseMessage();
         //初始化返回结果
@@ -129,6 +131,7 @@ namespace HaiGame7.RestAPI.Controllers
             UserLogic userLogic = new UserLogic();
             jsonResult = userLogic.ResetPassWord(user);
 
+            logger.Error("验证码获取失败" + user.PassWord);
             returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
             return returnResult;
         }
@@ -168,6 +171,27 @@ namespace HaiGame7.RestAPI.Controllers
         {
             UserLogic userLogic = new UserLogic();
             jsonResult = userLogic.UserInfoByNickName(user);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region UserInfoByUserID 根据UserID获取个人信息
+        /// <summary>
+        /// 根据昵称获取个人信息
+        /// </summary>
+        /// <param name="user">
+        /// {"UserID":184,"Message":""}
+        /// </param>
+        /// <returns>
+        /// 返回值实例：[{"MessageCode":0,"Message":""}]
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage UserInfoByUserID([FromBody] UserParameterModel user)
+        {
+            UserLogic userLogic = new UserLogic();
+            jsonResult = userLogic.UserInfoByUserID(user);
 
             returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
             return returnResult;
@@ -367,6 +391,50 @@ namespace HaiGame7.RestAPI.Controllers
         {
             UserLogic userLogic = new UserLogic();
             jsonResult = userLogic.DeleteAssetRecord(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 每日签到奖励1氦金
+        /// <summary>
+        /// 每日签到奖励1氦金
+        /// </summary>
+        /// <param name="para">
+        /// {UserID:184}
+        /// </param>
+        /// <returns>
+        /// 签到成功：[{"MessageCode":0,"Message":""}]
+        /// 今日已签到：[{"MessageCode":60002,"Message":"今日已签到"}]
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage SignIn([FromBody] UserParameterModel para)
+        {
+            UserLogic userLogic = new UserLogic();
+            jsonResult = userLogic.SignIn(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
+        #region 判断今日是否签到
+        /// <summary>
+        /// 判断今日是否签到
+        /// </summary>
+        /// <param name="para">
+        /// {UserID:184}
+        /// </param>
+        /// <returns>
+        /// 今日未签到：[{"MessageCode":60003,"Message":"今日未签到"}]
+        /// 今日已签到：[{"MessageCode":60002,"Message":"今日已签到"}]
+        /// </returns>
+        [HttpPost]
+        public HttpResponseMessage IsSignIn([FromBody] UserParameterModel para)
+        {
+            UserLogic userLogic = new UserLogic();
+            jsonResult = userLogic.IsSignIn(para);
 
             returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
             return returnResult;

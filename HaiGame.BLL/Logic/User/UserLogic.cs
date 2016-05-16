@@ -292,6 +292,36 @@ namespace HaiGame7.BLL
         }
         #endregion
 
+        #region 根据UserID获取个人信息
+        public string UserInfoByUserID(UserParameterModel user)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                //获取用户
+                UserModel userInfo = User.GetUserModelByUserID(user.UserID);
+                if (userInfo != null)
+                {
+                    message.Message = MESSAGE.OK;
+                    message.MessageCode = MESSAGE.OK_CODE;
+                }
+                else
+                {
+                    message.Message = MESSAGE.NOUSER;
+                    message.MessageCode = MESSAGE.NOUSER_CODE;
+                }
+                returnResult.Add(message);
+                returnResult.Add(userInfo);
+            }
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
         #region 更改个人信息
         public string UpdateUserInfo(UserModel user)
         {
@@ -343,7 +373,7 @@ namespace HaiGame7.BLL
                     }
                     if (user.UserWebPicture != null)
                     {
-                        userInfo.UserWebPicture = Common.Base64ToImage(user.UserWebPicture);
+                        userInfo.UserWebPicture = Common.Base64ToImage(user.UserWebPicture, userInfo.UserID.ToString());
                     }
                     #endregion
                     context.SaveChanges();
@@ -572,15 +602,25 @@ namespace HaiGame7.BLL
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
                 //查询条件：user表中没有战队信息的user信息，按注册日期排序
+                //var sql = "SELECT t1.UserID,t1.PhoneNumber,t1.UserWebNickName," +
+                //         "  t1.UserWebPicture,t1.UserName,t1.Address,"+
+                //         "  t1.Sex,CONVERT(varchar(100), t1.Birthday, 23) as Birthday,t1.Hobby" +
+                //         "  FROM"+
+                //         "  db_User t1"+
+                //         "  LEFT JOIN db_Team t2 ON t1.UserID = t2.CreateUserID"+
+                //         "  LEFT JOIN db_TeamUser t3 ON t1.UserID = t3.UserID"+
+                //         "  LEFT JOIN db_GameIDofUser t4 ON t1.UserID = t4.UserID" +
+                //         "  WHERE t2.CreateUserID IS NULL AND t3.UserID IS NULL AND t4.CertifyState=1";
+
                 var sql = "SELECT t1.UserID,t1.PhoneNumber,t1.UserWebNickName," +
-                         "  t1.UserWebPicture,t1.UserName,t1.Address,"+
+                         "  t1.UserWebPicture,t1.UserName,t1.Address," +
                          "  t1.Sex,CONVERT(varchar(100), t1.Birthday, 23) as Birthday,t1.Hobby" +
-                         "  FROM"+
-                         "  db_User t1"+
-                         "  LEFT JOIN db_Team t2 ON t1.UserID = t2.CreateUserID"+
-                         "  LEFT JOIN db_TeamUser t3 ON t1.UserID = t3.UserID"+
+                         "  FROM" +
+                         "  db_User t1" +
+                         "  LEFT JOIN db_Team t2 ON t1.UserID = t2.CreateUserID" +
+                         "  LEFT JOIN db_TeamUser t3 ON t1.UserID = t3.UserID" +
                          "  LEFT JOIN db_GameIDofUser t4 ON t1.UserID = t4.UserID" +
-                         "  WHERE t2.CreateUserID IS NULL AND t3.UserID IS NULL AND t4.CertifyState=1";
+                         "  WHERE t2.CreateUserID IS NULL AND t3.UserID IS NULL ";
 
                 userInfo = context.Database.SqlQuery<User2Model>(sql)
                                  .Skip((para.StartPage - 1) * para.PageCount)
@@ -697,6 +737,91 @@ namespace HaiGame7.BLL
                     context.SaveChanges();
                     message.Message = MESSAGE.OK;
                     message.MessageCode = MESSAGE.OK_CODE;
+                }
+            }
+            returnResult.Add(message);
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
+        #region 每日签到获取1氦金
+        public string SignIn(UserParameterModel para)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                db_AssetRecord asset = context.db_AssetRecord.
+                                        Where(c => c.UserID == para.UserID)
+                                        .Where(c => c.GainWay == ASSET.GAINWAY_SIGN)
+                                        .Where(c => c.GainTime.Value.Year == DateTime.Now.Year &&
+                                        c.GainTime.Value.Month == DateTime.Now.Month &&
+                                        c.GainTime.Value.Day == DateTime.Now.Day).FirstOrDefault();
+                if (asset == null)
+                {
+                    db_AssetRecord assetRecord = new db_AssetRecord();
+
+                    assetRecord.UserID = para.UserID;
+                    assetRecord.VirtualMoney = ASSET.MONEY_SIGN;
+                    assetRecord.TrueMoney = 0;
+                    assetRecord.GainWay = ASSET.GAINWAY_SIGN;
+                    assetRecord.GainTime = DateTime.Now;
+                    assetRecord.State = ASSET.MONEYSTATE_YES;
+                    //时间+操作+收入支出金额
+                    assetRecord.Remark = assetRecord.GainTime + " " +
+                                        assetRecord.GainWay + " "
+                                        + ASSET.PAY_IN +
+                                        assetRecord.VirtualMoney.ToString();
+
+                    //将充值记录加入资产记录表
+                    context.db_AssetRecord.Add(assetRecord);
+                    context.SaveChanges();
+                    message.Message = MESSAGE.OK;
+                    message.MessageCode = MESSAGE.OK_CODE;
+                }
+                else
+                {
+                    //今日已签到
+                    message.Message = MESSAGE.SIGN;
+                    message.MessageCode = MESSAGE.SIGN_CODE;
+                }
+            }
+            returnResult.Add(message);
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
+        #region 判断今日是否签到
+        public string IsSignIn(UserParameterModel para)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                db_AssetRecord asset = context.db_AssetRecord.
+                                        Where(c => c.UserID == para.UserID)
+                                        .Where(c => c.GainWay == ASSET.GAINWAY_SIGN)
+                                        .Where(c => c.GainTime.Value.Year == DateTime.Now.Year &&
+                                        c.GainTime.Value.Month == DateTime.Now.Month &&
+                                        c.GainTime.Value.Day == DateTime.Now.Day).FirstOrDefault();
+                if (asset == null)
+                {
+                    message.Message = MESSAGE.NOTSIGN;
+                    message.MessageCode = MESSAGE.NOTSIGN_CODE;
+                }
+                else
+                {
+                    //今日已签到
+                    message.Message = MESSAGE.SIGN;
+                    message.MessageCode = MESSAGE.SIGN_CODE;
                 }
             }
             returnResult.Add(message);

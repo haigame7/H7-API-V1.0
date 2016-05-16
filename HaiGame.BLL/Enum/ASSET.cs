@@ -11,8 +11,8 @@ namespace HaiGame7.BLL.Enum
         #region 定义金额
         //注册默认虚拟币50个
         public const int MONEY_REG = 50;
-        //每日签到虚拟币5个
-        public const int MONEY_SIGN = 5;
+        //每日签到虚拟币1个
+        public const int MONEY_SIGN = 1;
         #endregion
 
         #region 定义获取或消费途径

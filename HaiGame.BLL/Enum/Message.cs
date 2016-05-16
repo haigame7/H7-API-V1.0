@@ -131,5 +131,13 @@ namespace HaiGame7.BLL.Enum
         //氦金不足
         public const int NOMONEY_CODE = 60001;
         public const string NOMONEY = "氦金不足";
+
+        //今日已签到
+        public const int SIGN_CODE = 60002;
+        public const string SIGN = "今日已签到";
+
+        //今日未签到
+        public const int NOTSIGN_CODE = 60003;
+        public const string NOTSIGN = "今日未签到";
     }
 }

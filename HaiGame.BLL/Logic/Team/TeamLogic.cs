@@ -52,7 +52,7 @@ namespace HaiGame7.BLL
                         db_Team teamInsert = new db_Team();
                         teamInsert.CreateUserID = team.CreatUserID;
                         teamInsert.TeamName = team.TeamName.Trim();
-                        teamInsert.TeamPicture =Common.Base64ToTeamImage(team.TeamLogo);
+                        teamInsert.TeamPicture =Common.Base64ToTeamImage(team.TeamLogo, team.CreatUserID.ToString());
                         teamInsert.TeamType = team.TeamType;
                         teamInsert.State = 0;
                         teamInsert.CreateTime = DateTime.Now;
@@ -166,7 +166,7 @@ namespace HaiGame7.BLL
                         team.TeamName = para.TeamName.Trim();
                         if (para.TeamLogo!=null && para.TeamLogo !="")
                         {
-                            team.TeamPicture = Common.Base64ToTeamImage(para.TeamLogo);
+                            team.TeamPicture = Common.Base64ToTeamImage(para.TeamLogo, team.CreateUserID.ToString());
                         }
                         
                         team.TeamDescription = para.TeamDescription;
@@ -194,7 +194,9 @@ namespace HaiGame7.BLL
             {
                 //判断是否有权解散战队
                 var deleteTeam=context.db_Team.Where(c => c.CreateUserID == team.CreatUserID)
-                               .Where(c => c.TeamName == team.TeamName).FirstOrDefault();
+                               .Where(c => c.TeamName == team.TeamName)
+                               .Where(c => c.State==0).
+                               FirstOrDefault();
                 if (deleteTeam==null)
                 {
                     //无权解散战队
@@ -208,16 +210,38 @@ namespace HaiGame7.BLL
                     //如果还有其他战队，将注册时间最晚的战队设为默认战队
                     var otherTeam = context.db_Team.Where(c => c.CreateUserID == team.CreatUserID)
                                            .Where(c => c.TeamName != team.TeamName)
+                                           .Where(c => c.State == 0)
                                            .OrderByDescending(c=>c.CreateTime)
                                            .FirstOrDefault();
                     if (otherTeam!=null)
                     {
                         otherTeam.IsDeault = 0;
                     }
-                    context.SaveChanges();
-                    //向队员发送解散信息
+                    //删除teamuser表数据
+                    var teamUsers = context.db_TeamUser.Where(c => c.TeamID == deleteTeam.TeamID)
+                                           .ToList();
+                    if (teamUsers != null)
+                    {
+                        for (int i=0;i< teamUsers.Count;i++)
+                        {
+                            //移出队员
+                            context.db_TeamUser.Remove(teamUsers[i]);
 
-
+                            //向队员发送解散信息
+                            //Message表添加记录
+                            db_Message msg = new db_Message();
+                            msg.SendID = teamUsers[i].TeamID;
+                            msg.ReceiveID = teamUsers[i].UserID;
+                            msg.SendName = team.TeamName;
+                            msg.Title = "解散战队";
+                            msg.MessageType = "解散战队";
+                            msg.SendTime = DateTime.Now;
+                            msg.State = 0;
+                            msg.Content = "战队【" + team.TeamName + "】已解散,感谢一起战斗的岁月";
+                            context.db_Message.Add(msg);
+                        }
+                    }     
+                    context.SaveChanges(); 
                 }
             }
             returnResult.Add(message);
@@ -400,9 +424,22 @@ namespace HaiGame7.BLL
                 }
                 else
                 {
-                    string teamID = Team.MyAllTeamID(para.UserID);
+                    //string teamID = Team.MyAllTeamID(para.UserID);
                     
                     //战队名称，战队logo，申请日期，战斗力，氦金，状态
+                    //sql = "SELECT" +
+                    //          " t2.TeamID as TeamID," +
+                    //          " t2.TeamName as TeamName," +
+                    //          " t2.TeamPicture as TeamLogo," +
+                    //          " t2.TeamDescription as TeamDescription," +
+                    //          " t2.FightScore," +
+                    //          " CONVERT(varchar(100), t1.RecruitTime, 20) as RecruitTime," +
+                    //          " t1.Content as RecruitContent" +
+                    //          " FROM db_Recruit t1 " +
+                    //          " LEFT JOIN db_Team t2 on t1.TeamID = t2.TeamID" +
+                    //          " WHERE t2.State = 0 AND t1.TeamID NOT IN " + teamID +
+                    //          " ORDER BY t1.RecruitTime DESC ";
+
                     sql = "SELECT" +
                               " t2.TeamID as TeamID," +
                               " t2.TeamName as TeamName," +
@@ -413,7 +450,7 @@ namespace HaiGame7.BLL
                               " t1.Content as RecruitContent" +
                               " FROM db_Recruit t1 " +
                               " LEFT JOIN db_Team t2 on t1.TeamID = t2.TeamID" +
-                              " WHERE t2.State = 0 AND t1.TeamID NOT IN " + teamID +
+                              " WHERE t2.State = 0 " +
                               " ORDER BY t1.RecruitTime DESC ";
                 }
                 recruitList = context.Database.SqlQuery<RecruitModel>(sql)
@@ -499,7 +536,7 @@ namespace HaiGame7.BLL
                           " t2.TeamName as TeamName," +
                           " t2.TeamPicture as TeamLogo," +
                           " t2.TeamDescription as TeamDescription," +
-                          " t2.FightScore," +
+                          " (CASE WHEN t2.FightScore IS NULL THEN 0 ELSE t2.FightScore END) as FightScore," +
                           " CONVERT(varchar(100), t1.SendTime, 20) as SendTime," +
                           " t2.Asset" +
                           " FROM db_Message t1 " +
@@ -770,6 +807,7 @@ namespace HaiGame7.BLL
                         message.Message = "加入成功";
                     }
                 }
+                context.SaveChanges();
             }
             returnResult.Add(message);
             result = jss.Serialize(returnResult);
@@ -826,6 +864,7 @@ namespace HaiGame7.BLL
                         message.Message = "已同意";
                     }
                 }
+                context.SaveChanges();
             }
             returnResult.Add(message);
             result = jss.Serialize(returnResult);
