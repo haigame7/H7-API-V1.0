@@ -12,6 +12,7 @@ namespace HaiGame7.Model.MyModel
         public Nullable<int> Asset { get; set; }
         public int FightScore { get; set; }
         public string UserPicture { get; set; }
+        public string RegDate { get; set; }
         public string PhoneNumber { get; set; }
         public string UserNickName { get; set; }
         public string UserName { get; set; }

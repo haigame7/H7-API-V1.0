@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace HaiGame7.Model.MyModel
 {
@@ -15,6 +16,8 @@ namespace HaiGame7.Model.MyModel
         public string Birthday { get; set; }
         public string RegDate { get; set; }
         public string Hobby { get; set; }
+        public int GamePower { get; set; }
+        public Nullable<int> Asset { get; set; }
         public List<HeroModel> HeroImage { get; set; }
     }
 }

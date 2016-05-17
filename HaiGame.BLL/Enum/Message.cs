@@ -90,7 +90,7 @@ namespace HaiGame7.BLL.Enum
 
         //用户已经加入其它战队
         public const int USERJOINOTHERTEAM_CODE = 20012;
-        public const string USERJOINOTHERTEAM = "用户已经加入其它战队";
+        public const string USERJOINOTHERTEAM = "该队员已加入其它战队";
 
         //每人最多2支战队
         public const int TEAMCOUNT_CODE = 20013;
@@ -99,6 +99,10 @@ namespace HaiGame7.BLL.Enum
         //战队不足5人，无法报名
         public const int TEAMUSERNOTENOUGH_CODE = 20014;
         public const string TEAMUSERNOTENOUGH = "战队不足5人，无法报名";
+
+        //你已经加入其它战队
+        public const int YOUJOINOTHERTEAM_CODE = 20014;
+        public const string YOUJOINOTHERTEAM = "你已加入其它战队";
 
         //系统错误
         public const int SYSERR_CODE = 40001;

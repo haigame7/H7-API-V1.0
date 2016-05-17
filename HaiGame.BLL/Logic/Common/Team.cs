@@ -392,6 +392,7 @@ namespace HaiGame7.BLL.Logic.Common
                         teamUserModel.PhoneNumber = user.PhoneNumber;
                         teamUserModel.UserNickName = user.UserWebNickName;
                         teamUserModel.Sex = user.Sex;
+                        teamUserModel.RegDate = user.RegDate;
                         teamUserModel.Address = user.Address;
                         teamUserModel.Birthday = user.Birthday;
                         teamUserModel.Hobby = user.Hobby;

@@ -576,7 +576,7 @@ namespace HaiGame7.BLL
                           " t2.TeamName as TeamName," +
                           " t2.TeamPicture as TeamLogo," +
                           " t2.TeamDescription as TeamDescription," +
-                          " t2.FightScore," +
+                          " (CASE WHEN t2.FightScore IS NULL THEN 0 ELSE t2.FightScore END) as FightScore," +
                           " CONVERT(varchar(100), t1.SendTime, 20) as SendTime," +
                           " t2.Asset" +
                           " FROM db_Message t1 " +
@@ -640,29 +640,41 @@ namespace HaiGame7.BLL
 
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
-                //判断是否发出过邀请
-                int inviteCount = context.db_Message.Where(c => c.SendID == para.TeamID)
-                                      .Where(c => c.ReceiveID == para.UserID)
-                                      .Where(c => c.State == 2)
-                                      .ToList().Count;
-                if (inviteCount > 0)
+                //判断用户是否已经加入战队
+                var isJoinOther = context.db_TeamUser.Where(c => c.UserID == para.UserID)
+                                      .FirstOrDefault();
+                if (isJoinOther!=null)
                 {
-                    message.MessageCode = MESSAGE.INVITEUSER_CODE;
-                    message.Message = MESSAGE.INVITEUSER;
+                    message.MessageCode = MESSAGE.USERJOINOTHERTEAM_CODE;
+                    message.Message = MESSAGE.USERJOINOTHERTEAM;
                 }
                 else
                 {
-                    //db_Message表插入一条数据
-                    db_Message mes = new db_Message();
-                    mes.SendID = para.TeamID;
-                    mes.ReceiveID = para.UserID;
-                    mes.State = 2;
-                    mes.MessageType = "招募队员";
-                    mes.SendTime = DateTime.Now;
-                    context.db_Message.Add(mes);
-                    context.SaveChanges();
-                    message.Message = MESSAGE.OK;
-                    message.MessageCode = MESSAGE.OK_CODE;
+                    //判断是否发出过邀请
+                    int inviteCount = context.db_Message.Where(c => c.SendID == para.TeamID)
+                                          .Where(c => c.ReceiveID == para.UserID)
+                                          .Where(c => c.State == 2)
+                                          .ToList().Count;
+                    if (inviteCount > 0)
+                    {
+                        message.MessageCode = MESSAGE.INVITEUSER_CODE;
+                        message.Message = MESSAGE.INVITEUSER;
+                    }
+                    else
+                    {
+
+                        //db_Message表插入一条数据
+                        db_Message mes = new db_Message();
+                        mes.SendID = para.TeamID;
+                        mes.ReceiveID = para.UserID;
+                        mes.State = 2;
+                        mes.MessageType = "招募队员";
+                        mes.SendTime = DateTime.Now;
+                        context.db_Message.Add(mes);
+                        context.SaveChanges();
+                        message.Message = MESSAGE.OK;
+                        message.MessageCode = MESSAGE.OK_CODE;
+                    }
                 }
             }
             returnResult.Add(message);
@@ -773,39 +785,78 @@ namespace HaiGame7.BLL
                 //拒绝加入的情况，信息状态设为加入失败
                 if (para.ISOK==1)
                 {
-                    msg.MessageType = "加入失败";
+                    msg.MessageType = "招募失败";
                     message.MessageCode = MESSAGE.OK_CODE;
                     message.Message = "已拒绝";
                 }
                 else
                 {
-                    var count = context.db_TeamUser.Where(c => c.TeamID == para.TeamID).ToList().Count;
-                    //同意加入的情况,判断战队人数是否已满
-                    
-                    if (count>=7)
+                    //判断是否已经加入该战队
+                    var isJoin = context.db_TeamUser.Where(c => c.TeamID == para.TeamID).
+                                        Where(c => c.UserID == para.UserID).FirstOrDefault();
+                    if (isJoin!=null)
                     {
-                        //如果人数已满，此条信息状态设为已失效
-                        msg.MessageType = "已失效";
-                        message.MessageCode = MESSAGE.USERFULL_CODE;
-                        message.Message = MESSAGE.USERFULL;
+                        msg.MessageType = "招募成功";
+                        message.MessageCode = MESSAGE.OK_CODE;
+                        message.Message = "招募成功";
                     }
                     else
                     {
-                        //如果人数未满，状态设为加入成功
-                        msg.MessageType = "加入成功";
-                        db_TeamUser teamUser = new db_TeamUser();
-                        teamUser.TeamID = para.TeamID;
-                        teamUser.UserID = para.UserID;
-                        context.db_TeamUser.Add(teamUser);
-                        context.SaveChanges();
-                        //重新计算战队战斗力
-                        db_Team joinTeam = context.db_Team.Where(c => c.TeamID == para.TeamID).FirstOrDefault();
-                        joinTeam.FightScore = Team.GetFightScoreByTeamID(joinTeam.TeamID);
-                        context.SaveChanges();
+                        //判断是否已加入其它战队
+                        var isJoinOther = context.db_TeamUser.
+                                        Where(c => c.UserID == para.UserID).FirstOrDefault();
+                        if (isJoinOther!=null)
+                        {
+                            //已加入其它战队，此条信息状态设为已被抢
+                            msg.MessageType = "招募失败";
+                            message.MessageCode = MESSAGE.YOUJOINOTHERTEAM_CODE;
+                            message.Message = MESSAGE.YOUJOINOTHERTEAM;
+                        }
+                        else
+                        {
+                            var count = context.db_TeamUser.Where(c => c.TeamID == para.TeamID).ToList().Count;
+                            //同意加入的情况,判断战队人数是否已满
 
-                        message.MessageCode = MESSAGE.OK_CODE;
-                        message.Message = "加入成功";
+                            if (count >= 7)
+                            {
+                                //如果人数已满，此条信息状态设为已失效
+                                msg.MessageType = "招募失败";
+                                message.MessageCode = MESSAGE.USERFULL_CODE;
+                                message.Message = MESSAGE.USERFULL;
+                            }
+                            else
+                            {
+                                //如果人数未满，状态设为加入成功
+                                msg.MessageType = "招募成功";
+                                db_TeamUser teamUser = new db_TeamUser();
+                                teamUser.TeamID = para.TeamID;
+                                teamUser.UserID = para.UserID;
+                                context.db_TeamUser.Add(teamUser);
+                                context.SaveChanges();
+                                //重新计算战队战斗力
+                                db_Team joinTeam = context.db_Team.Where(c => c.TeamID == para.TeamID).FirstOrDefault();
+                                joinTeam.FightScore = Team.GetFightScoreByTeamID(joinTeam.TeamID);
+                                context.SaveChanges();
+
+                                message.MessageCode = MESSAGE.OK_CODE;
+                                message.Message = "招募成功";
+
+                                //设置其它邀请信息【已拒绝】
+                                var msgList = context.db_Message.Where(c => c.ReceiveID == para.UserID)
+                                                        .Where(c => c.MID != para.MessageID)
+                                                        .Where(c => c.State == 2)
+                                                        .ToList();
+                                if (msgList != null)
+                                {
+                                    for (int i=0;i< msgList.Count;i++)
+                                    {
+                                        msgList[i].MessageType= "招募失败";
+                                    }
+                                }
+                            }
+                        }
                     }
+                    
                 }
                 context.SaveChanges();
             }
@@ -829,39 +880,62 @@ namespace HaiGame7.BLL
                 //拒绝加入的情况，信息状态设为加入失败
                 if (para.ISOK == 1)
                 {
-                    msg.MessageType = "招募失败";
+                    msg.MessageType = "加入失败";
                     message.MessageCode = MESSAGE.OK_CODE;
                     message.Message = "已拒绝";
                 }
                 else
                 {
-                    var count = context.db_TeamUser.Where(c => c.UserID == para.UserID).ToList().Count;
-                    //同意加入的情况,判断用户是否
-
-                    if (count > 0)
+                    //判断是否已经加入该战队
+                    var isJoin = context.db_TeamUser.Where(c => c.TeamID == para.TeamID).
+                                        Where(c => c.UserID == para.UserID).FirstOrDefault();
+                    if (isJoin != null)
                     {
-                        //已加入其它战队，此条信息状态设为已失效
-                        msg.MessageType = "已失效";
-                        message.MessageCode = MESSAGE.USERJOINOTHERTEAM_CODE;
-                        message.Message = MESSAGE.USERJOINOTHERTEAM;
+                        msg.MessageType = "加入成功";
+                        message.MessageCode = MESSAGE.OK_CODE;
+                        message.Message = "加入成功";
                     }
                     else
                     {
-                        //如果未加入其它战队，状态设为招募成功
-                        msg.MessageType = "招募成功";
-                        db_TeamUser teamUser = new db_TeamUser();
-                        teamUser.TeamID = para.TeamID;
-                        teamUser.UserID = para.UserID;
-                        context.db_TeamUser.Add(teamUser);
-                        context.SaveChanges();
+                        //判断是否已加入其它战队
+                        var isJoinOther = context.db_TeamUser.
+                                        Where(c => c.UserID == para.UserID).FirstOrDefault();
+                        if (isJoinOther != null)
+                        {
+                            //已加入其它战队，此条信息状态设为已被抢
+                            msg.MessageType = "已被抢";
+                            message.MessageCode = MESSAGE.USERJOINOTHERTEAM_CODE;
+                            message.Message = MESSAGE.USERJOINOTHERTEAM;
+                        }
+                        else
+                        {
+                            //如果未加入其它战队，状态设为招募成功
+                            msg.MessageType = "加入成功";
+                            db_TeamUser teamUser = new db_TeamUser();
+                            teamUser.TeamID = para.TeamID;
+                            teamUser.UserID = para.UserID;
+                            context.db_TeamUser.Add(teamUser);
+                            context.SaveChanges();
 
-                        //重新计算战队战斗力
-                        db_Team joinTeam = context.db_Team.Where(c => c.TeamID == para.TeamID).FirstOrDefault();
-                        joinTeam.FightScore = Team.GetFightScoreByTeamID(joinTeam.TeamID);
-                        context.SaveChanges();
+                            //重新计算战队战斗力
+                            db_Team joinTeam = context.db_Team.Where(c => c.TeamID == para.TeamID).FirstOrDefault();
+                            joinTeam.FightScore = Team.GetFightScoreByTeamID(joinTeam.TeamID);
+                            context.SaveChanges();
 
-                        message.MessageCode = MESSAGE.OK_CODE;
-                        message.Message = "已同意";
+                            message.MessageCode = MESSAGE.OK_CODE;
+                            message.Message = "已同意";
+
+                            //如果同时你也邀请该队员了，将邀请队员的那条信息更改为招募成功
+                            var msgSend = context.db_Message.
+                                                 Where(c => c.State == 2).
+                                                 Where(c => c.SendID == para.TeamID).
+                                                 Where(c => c.ReceiveID == para.UserID).
+                                                 FirstOrDefault();
+                            if (msgSend!=null)
+                            {
+                                msgSend.MessageType = "招募成功";
+                            }
+                        }
                     }
                 }
                 context.SaveChanges();
