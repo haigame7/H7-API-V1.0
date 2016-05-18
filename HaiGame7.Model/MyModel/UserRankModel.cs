@@ -15,7 +15,7 @@ namespace HaiGame7.Model.MyModel
         public string GameID { get; set; }//游戏ID
         public string GameGrade { get; set; }//大神系数
         public string GamePower { get; set; }//战斗力
-        public int Asset { get; set; }//氦金
+        public int Asset { get; set; }//氦气
         public string Sex { get; set; }//性别
         public string RegDate { get; set; }//注册时间
         public List<HeroModel> HeroImage { get; set; }//擅长英雄

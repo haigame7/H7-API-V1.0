@@ -132,9 +132,9 @@ namespace HaiGame7.BLL.Enum
         public const int CANNOTQUITMATCH_CODE = 50003;
         public const string CANNOTQUITMATCH = "队员无权取消";
 
-        //氦金不足
+        //氦气不足
         public const int NOMONEY_CODE = 60001;
-        public const string NOMONEY = "氦金不足";
+        public const string NOMONEY = "氦气不足";
 
         //今日已签到
         public const int SIGN_CODE = 60002;

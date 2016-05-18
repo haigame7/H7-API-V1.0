@@ -27,10 +27,10 @@ namespace HaiGame7.BLL.Logic.Common
                     fightState = "战队【" + fightStateDetail.ETeamName + "】向战队【" + fightStateDetail.STeamName + "】认怂";
                     break;
                 case "挑战成功":
-                    fightState = "战队【" + fightStateDetail.STeamName + "】已战胜【" + fightStateDetail.ETeamName + "】，赢取"+ fightStateDetail.Money+"氦金";
+                    fightState = "战队【" + fightStateDetail.STeamName + "】已战胜【" + fightStateDetail.ETeamName + "】，赢取"+ fightStateDetail.Money+"氦气";
                     break;
                 case "守擂成功":
-                    fightState = "战队【" + fightStateDetail.ETeamName + "】已战胜【" + fightStateDetail.STeamName + "】，赢取" + fightStateDetail.Money + "氦金";
+                    fightState = "战队【" + fightStateDetail.ETeamName + "】已战胜【" + fightStateDetail.STeamName + "】，赢取" + fightStateDetail.Money + "氦气";
                     break;
 
             }
@@ -132,7 +132,7 @@ namespace HaiGame7.BLL.Logic.Common
                 message.MessageCode = MESSAGE.DAILYCOUNT_CODE;
                 return message;
             }
-            //判断氦金是否充足
+            //判断氦气是否充足
             if (Asset.IsEnoughMoney(userID, Money) == false)
             {
                 message.Message = MESSAGE.NOMONEY;

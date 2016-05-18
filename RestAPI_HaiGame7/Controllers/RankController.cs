@@ -38,7 +38,7 @@ namespace HaiGame7.RestAPI.Controllers
         /// </summary>
         /// <param name="rank">
         /// 参数说明：
-        /// ranktype：排名类型 1.大神系数（GameGrade）2.氦金（Asset）3.战斗力（GamePower）
+        /// ranktype：排名类型 1.大神系数（GameGrade）2.氦气（Asset）3.战斗力（GamePower）
         /// ranksort：排序 1.倒序（desc） 2.正序（asc）
         /// startpage：页码
         /// pagecount：每页记录数
@@ -69,7 +69,7 @@ namespace HaiGame7.RestAPI.Controllers
         /// </summary>
         /// <param name="rank">
         /// 参数说明：
-        /// ranktype：排名类型 1.热度（HotScore）2.氦金（Asset）3.战斗力（FightScore）
+        /// ranktype：排名类型 1.热度（HotScore）2.氦气（Asset）3.战斗力（FightScore）
         /// ranksort：排序 1.倒序（desc） 2.正序（asc）
         /// startpage：页码
         /// pagecount：每页记录数

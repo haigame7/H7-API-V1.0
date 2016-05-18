@@ -19,7 +19,7 @@ namespace HaiGame7.Model.MyModel
         public int LoseCount { get; set; }//负场
         public int FollowCount { get; set; }//认怂场
         public int FightScore { get; set; }//战斗力
-        public int Asset { get; set; }//氦金
+        public int Asset { get; set; }//氦气
         public int CreateUserID { get; set; }//创建人ID
         public string CreateUserLogo { get; set; }//创建人头像
         public List<TeamUserModel> UserImage { get; set; }//队员头像

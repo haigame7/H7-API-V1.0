@@ -76,7 +76,7 @@ namespace HaiGame7.RestAPI.Controllers
         /// 约战成功：[{"MessageCode":0,"Message":""}]
         /// 队员不能约战：[{"MessageCode":20004,"Message":"您是队员，不能发起约战"}]
         /// 超出每日限额：[{"MessageCode":20010,"Message":"超出约战限额，每天只可以约战一场"}]
-        /// 氦金不足：[{"MessageCode":60001,"Message":"氦金不足"}]
+        /// 氦气不足：[{"MessageCode":60001,"Message":"氦气不足"}]
         /// </returns>
         [HttpPost]
         public HttpResponseMessage MakeChallenge([FromBody] ChallengeParameterModel para)
@@ -141,7 +141,7 @@ namespace HaiGame7.RestAPI.Controllers
         /// </param>
         /// <returns>
         /// 返回实例：[{"MessageCode":0,"Message":""}]
-        /// 氦金不足：[{"MessageCode":60001,"Message":"氦金不足"}]
+        /// 氦气不足：[{"MessageCode":60001,"Message":"氦气不足"}]
         /// </returns>
         [HttpPost]
         public HttpResponseMessage Accept([FromBody] FightParameter2Model fight)

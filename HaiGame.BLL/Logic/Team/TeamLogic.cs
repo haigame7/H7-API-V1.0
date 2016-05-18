@@ -70,7 +70,7 @@ namespace HaiGame7.BLL
                         }
                         context.SaveChanges();
 
-                        //氦金账户同步
+                        //氦气账户同步
                         var defaultTeam = context.db_Team.Where(c => c.CreateUserID == team.CreatUserID).
                                                           Where(c => c.State == 0).
                                                           Where(c => c.IsDeault == 0).
@@ -426,7 +426,7 @@ namespace HaiGame7.BLL
                 {
                     //string teamID = Team.MyAllTeamID(para.UserID);
                     
-                    //战队名称，战队logo，申请日期，战斗力，氦金，状态
+                    //战队名称，战队logo，申请日期，战斗力，氦气，状态
                     //sql = "SELECT" +
                     //          " t2.TeamID as TeamID," +
                     //          " t2.TeamName as TeamName," +
@@ -528,7 +528,7 @@ namespace HaiGame7.BLL
             {
                 //从Message表取数据，我的申请条件：state=1 and UserID=我的ID。2.申请加入条件：state=1 and TeamID=我的默认战队ID。
 
-                //战队名称，战队logo，申请日期，战斗力，氦金，状态
+                //战队名称，战队logo，申请日期，战斗力，氦气，状态
                 var sql = "SELECT" +
                           " t1.MID as MessageID," +
                           " t1.ReceiveID as TeamID," +
@@ -568,7 +568,7 @@ namespace HaiGame7.BLL
             {
                 //从Message表取数据，我的申请条件：state=1 and UserID=我的ID。2.申请加入条件：state=1 and TeamID=我的默认战队ID。
 
-                //战队名称，战队logo，申请日期，战斗力，氦金，状态
+                //战队名称，战队logo，申请日期，战斗力，氦气，状态
                 var sql = "SELECT" +
                           " t1.MID as MessageID," +
                           " t1.SendID as TeamID," +
@@ -699,7 +699,7 @@ namespace HaiGame7.BLL
                          "  t2.UserWebPicture,t2.UserName,t2.Address," +
                          "  t1.MessageType as State," +
                          "  CONVERT(varchar(100), t1.SendTime, 20) as SendTime," +
-                         "  t2.Sex,CONVERT(varchar(100), t2.Birthday, 23) as Birthday,t2.Hobby" +
+                         "  t2.Sex,CONVERT(varchar(100), t2.Birthday, 23) as Birthday,CONVERT(varchar(100), t2.RegisterDate, 23) as RegDate,t2.Hobby" +
                          "  FROM" +
                          "  db_Message t1" +
                          "  LEFT JOIN db_User t2 ON t1.ReceiveID = t2.UserID" +
@@ -712,7 +712,7 @@ namespace HaiGame7.BLL
                 //循环user，添加擅长英雄图标
                 for (int i = 0; i < userInfo.Count; i++)
                 {
-                    //氦金
+                    //氦气
                     userInfo[i].Asset = User.GetAssetByUserID(userInfo[i].UserID);
                     //战斗力
                     userInfo[i].GamePower = User.GetGamePowerByUserID(userInfo[i].UserID);
@@ -744,7 +744,7 @@ namespace HaiGame7.BLL
                          "  t2.UserWebPicture,t2.UserName,t2.Address," +
                          "  t1.MessageType as State," +
                          "  CONVERT(varchar(100), t1.SendTime, 20) as SendTime," +
-                         "  t2.Sex,CONVERT(varchar(100), t2.Birthday, 23) as Birthday,t2.Hobby" +
+                         "  t2.Sex,CONVERT(varchar(100), t2.Birthday, 23) as Birthday,CONVERT(varchar(100), t2.RegisterDate, 23) as RegDate,t2.Hobby" +
                          "  FROM" +
                          "  db_Message t1" +
                          "  LEFT JOIN db_User t2 ON t1.SendID = t2.UserID" +
@@ -757,7 +757,7 @@ namespace HaiGame7.BLL
                 //循环user，添加擅长英雄图标
                 for (int i = 0; i < userInfo.Count; i++)
                 {
-                    //氦金
+                    //氦气
                     userInfo[i].Asset = User.GetAssetByUserID(userInfo[i].UserID);
                     //战斗力
                     userInfo[i].GamePower = User.GetGamePowerByUserID(userInfo[i].UserID);
@@ -852,6 +852,16 @@ namespace HaiGame7.BLL
                                     {
                                         msgList[i].MessageType= "招募失败";
                                     }
+                                }
+                                //如果同时我也申请加入了该战队，将申请记录设为加入成功
+                                var msgSend = context.db_Message.
+                                                 Where(c => c.State == 1).
+                                                 Where(c => c.SendID == para.UserID).
+                                                 Where(c => c.ReceiveID == para.TeamID).
+                                                 FirstOrDefault();
+                                if (msgSend != null)
+                                {
+                                    msgSend.MessageType = "加入成功";
                                 }
                             }
                         }

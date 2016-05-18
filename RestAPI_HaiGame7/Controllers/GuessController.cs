@@ -60,7 +60,7 @@ namespace RestAPI_HaiGame7.Controllers
         /// </param>
         /// <returns>
         /// 正常：[{"MessageCode":0,"Message":""}]
-        /// 氦金不足：[{"MessageCode":60001,"Message":"氦金不足"}]
+        /// 氦气不足：[{"MessageCode":60001,"Message":"氦气不足"}]
         /// </returns>
         [HttpPost]
         public HttpResponseMessage Bet([FromBody] GuessRecordModel guess)

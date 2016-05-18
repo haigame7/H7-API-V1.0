@@ -34,6 +34,13 @@ namespace HaiGame7.BLL.Logic.Common
 
                 user = context.Database.SqlQuery<UserModel>(sql)
                                  .FirstOrDefault();
+                if (user != null)
+                {
+                    //添加擅长英雄图标
+                    user.HeroImage = User.GetHeroImgeByUserID(user.UserID);
+                    user.Asset = User.GetAssetByUserID(user.UserID);
+                    user.GamePower = User.GetGamePowerByUserID(user.UserID);
+                }
             }
             return user;
         }

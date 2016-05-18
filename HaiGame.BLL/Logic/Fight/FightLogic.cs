@@ -23,7 +23,7 @@ namespace HaiGame7.BLL
             JavaScriptSerializer jss = new JavaScriptSerializer();
             HashSet<object> returnResult = new HashSet<object>();
             //获取约战平台约战记录的当前状态
-            //个人排行：昵称，签名，氦金，战斗力，大神系数
+            //个人排行：昵称，签名，氦气，战斗力，大神系数
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
                 //联合查询
@@ -317,9 +317,9 @@ namespace HaiGame7.BLL
 
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
-                //判断氦金是否充足
+                //判断氦气是否充足
                 bool isEnoughMoney = Asset.IsEnoughMoney(fight.UserID, fight.Money);
-                //氦金不足
+                //氦气不足
                 if (isEnoughMoney == false)
                 {
                     message.Message = MESSAGE.NOMONEY;
@@ -337,7 +337,7 @@ namespace HaiGame7.BLL
                     fightState.StateTime = DateTime.Now;
                     context.db_FightState.Add(fightState);
 
-                    //扣除约战氦金，资产表插入一条数据
+                    //扣除约战氦气，资产表插入一条数据
                     db_AssetRecord assetRecord = new db_AssetRecord();
                     assetRecord.UserID = fight.UserID;
                     assetRecord.VirtualMoney = -fight.Money;

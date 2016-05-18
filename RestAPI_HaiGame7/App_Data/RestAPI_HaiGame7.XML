@@ -504,7 +504,7 @@
             </param>
             <returns>
             正常：[{"MessageCode":0,"Message":""}]
-            氦金不足：[{"MessageCode":60001,"Message":"氦金不足"}]
+            氦气不足：[{"MessageCode":60001,"Message":"氦气不足"}]
             </returns>
         </member>
         <member name="M:RestAPI_HaiGame7.Controllers.GuessController.MyGuessList(HaiGame7.Model.MyModel.GuessParameterModel)">
@@ -576,7 +576,7 @@
             约战成功：[{"MessageCode":0,"Message":""}]
             队员不能约战：[{"MessageCode":20004,"Message":"您是队员，不能发起约战"}]
             超出每日限额：[{"MessageCode":20010,"Message":"超出约战限额，每天只可以约战一场"}]
-            氦金不足：[{"MessageCode":60001,"Message":"氦金不足"}]
+            氦气不足：[{"MessageCode":60001,"Message":"氦气不足"}]
             </returns>
         </member>
         <member name="M:HaiGame7.RestAPI.Controllers.FightController.MyFight(HaiGame7.Model.MyModel.FightParameterModel)">
@@ -611,7 +611,7 @@
             </param>
             <returns>
             返回实例：[{"MessageCode":0,"Message":""}]
-            氦金不足：[{"MessageCode":60001,"Message":"氦金不足"}]
+            氦气不足：[{"MessageCode":60001,"Message":"氦气不足"}]
             </returns>
         </member>
         <member name="M:HaiGame7.RestAPI.Controllers.FightController.UpdateGameID(HaiGame7.Model.MyModel.FightParameter2Model)">
@@ -634,7 +634,7 @@
             </summary>
             <param name="rank">
             参数说明：
-            ranktype：排名类型 1.大神系数（GameGrade）2.氦金（Asset）3.战斗力（GamePower）
+            ranktype：排名类型 1.大神系数（GameGrade）2.氦气（Asset）3.战斗力（GamePower）
             ranksort：排序 1.倒序（desc） 2.正序（asc）
             startpage：页码
             pagecount：每页记录数
@@ -655,7 +655,7 @@
             </summary>
             <param name="rank">
             参数说明：
-            ranktype：排名类型 1.热度（HotScore）2.氦金（Asset）3.战斗力（FightScore）
+            ranktype：排名类型 1.热度（HotScore）2.氦气（Asset）3.战斗力（FightScore）
             ranksort：排序 1.倒序（desc） 2.正序（asc）
             startpage：页码
             pagecount：每页记录数
@@ -1135,7 +1135,7 @@
         </member>
         <member name="M:HaiGame7.RestAPI.Controllers.UserController.MyTotalAsset(HaiGame7.Model.MyModel.SimpleUserModel)">
             <summary>
-            我的总资产，返回总氦金，和我的资产排名
+            我的总资产，返回总氦气，和我的资产排名
             </summary>
             <param name="user"></param>
             <returns>
@@ -1167,6 +1167,15 @@
             <param name="para"></param>
             <returns></returns>
         </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.UserController.DeleteMessage(HaiGame7.Model.MyModel.MyMessageModel)">
+            <summary>
+            删除消息
+            </summary>
+            <param name="para">
+             {MessageID:64}
+            </param>
+            <returns></returns>
+        </member>
         <member name="M:HaiGame7.RestAPI.Controllers.UserController.DeleteAssetRecord(HaiGame7.Model.MyModel.AssetModel)">
             <summary>
             删除微信支付订单
@@ -1178,7 +1187,7 @@
         </member>
         <member name="M:HaiGame7.RestAPI.Controllers.UserController.SignIn(HaiGame7.Model.MyModel.UserParameterModel)">
             <summary>
-            每日签到奖励1氦金
+            每日签到奖励1氦气
             </summary>
             <param name="para">
             {UserID:184}

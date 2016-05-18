@@ -306,7 +306,7 @@ namespace HaiGame7.RestAPI.Controllers
 
         #region MyTotalAsset 我的总资产
         /// <summary>
-        /// 我的总资产，返回总氦金，和我的资产排名
+        /// 我的总资产，返回总氦气，和我的资产排名
         /// </summary>
         /// <param name="user"></param>
         /// <returns>
@@ -378,6 +378,25 @@ namespace HaiGame7.RestAPI.Controllers
         }
         #endregion
 
+        #region DeleteMessage 删除消息
+        /// <summary>
+        /// 删除消息
+        /// </summary>
+        /// <param name="para">
+        ///  {MessageID:64}
+        /// </param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage DeleteMessage([FromBody] MyMessageModel para)
+        {
+            UserLogic userLogic = new UserLogic();
+            jsonResult = userLogic.DeleteMessage(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
+
         #region DeleteAssetRecord 删除微信支付订单
         /// <summary>
         /// 删除微信支付订单
@@ -397,9 +416,9 @@ namespace HaiGame7.RestAPI.Controllers
         }
         #endregion
 
-        #region 每日签到奖励1氦金
+        #region 每日签到奖励1氦气
         /// <summary>
-        /// 每日签到奖励1氦金
+        /// 每日签到奖励1氦气
         /// </summary>
         /// <param name="para">
         /// {UserID:184}

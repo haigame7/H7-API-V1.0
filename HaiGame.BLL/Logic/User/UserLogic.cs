@@ -628,7 +628,7 @@ namespace HaiGame7.BLL
                 //循环user，添加擅长英雄图标
                 for (int i=0;i< userInfo.Count;i++)
                 {
-                    ///氦金
+                    ///氦气
                     userInfo[i].Asset = User.GetAssetByUserID(userInfo[i].UserID);
                     //战斗力
                     userInfo[i].GamePower= User.GetGamePowerByUserID(userInfo[i].UserID);
@@ -661,7 +661,8 @@ namespace HaiGame7.BLL
                             " CONVERT(varchar(100), t1.SendTime, 20) as Time" +
                             " FROM" +
                             " db_Message t1" +
-                            " WHERE t1.State in (0,99) AND t1.ReceiveID =" + para.UserID;
+                            " WHERE t1.State in (0,99) AND t1.ReceiveID =" + para.UserID+
+                            " ORDER BY t1.State ,t1.SendTime DESC";
                             //" union" +
                             ////群发消息
                             //" SELECT" +
@@ -718,6 +719,30 @@ namespace HaiGame7.BLL
         }
         #endregion
 
+        #region 删除消息
+        public string DeleteMessage(MyMessageModel para)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+            using (HaiGame7Entities context = new HaiGame7Entities())
+            {
+                var myMessage = context.db_Message.Where(c => c.MID == para.MessageID).FirstOrDefault();
+                if (myMessage!=null)
+                {
+                    context.db_Message.Remove(myMessage);
+                }
+                context.SaveChanges();
+                message.Message = "";
+                message.MessageCode = MESSAGE.OK_CODE;
+            }
+            returnResult.Add(message);
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
+
         #region 删除微信支付订单
         public string DeleteAssetRecord(AssetModel para)
         {
@@ -745,7 +770,7 @@ namespace HaiGame7.BLL
         }
         #endregion
 
-        #region 每日签到获取1氦金
+        #region 每日签到获取1氦气
         public string SignIn(UserParameterModel para)
         {
             string result = "";

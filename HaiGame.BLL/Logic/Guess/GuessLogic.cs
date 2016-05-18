@@ -78,9 +78,9 @@ namespace HaiGame7.BLL
             //获取竞猜列表
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
-                //判断氦金是否充足
+                //判断氦气是否充足
                 bool isEnoughMoney = Asset.IsEnoughMoney(guess.UserID, guess.Money);
-                //氦金不足
+                //氦气不足
                 if (isEnoughMoney==false)
                 {
                     message.Message = MESSAGE.NOMONEY;
