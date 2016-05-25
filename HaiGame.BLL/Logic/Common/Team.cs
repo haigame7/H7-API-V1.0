@@ -204,8 +204,7 @@ namespace HaiGame7.BLL.Logic.Common
             using (HaiGame7Entities context = new HaiGame7Entities())
             {
                 //获取db_Team表里的数据
-                var teamList = context.db_Team.Where(c => c.CreateUserID == userID)
-                    .Where(c => c.State == 0).ToList();
+                var teamList = context.db_Team.Where(c => c.CreateUserID == userID).ToList();
 
                 //获取db_TeamUser表里的数据
                 if (teamList.Count == 0)
