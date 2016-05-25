@@ -18,6 +18,8 @@ namespace HaiGame7.Model.MyModel
         public int Money { get; set; }
         public string SFightAddress { get; set; }
         public string EFightAddress { get; set; }
+        public string SFightPic { get; set; }
+        public string EFightPic { get; set; }
         public string CurrentState { get; set; }
         public DateTime StateTime { get; set; }
         public string StateTimeStr { get; set; }

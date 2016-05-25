@@ -18,6 +18,7 @@ namespace HaiGame7.Model.EFModel
         public HaiGame7Entities()
             : base("name=HaiGame7Entities")
         {
+            Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

@@ -38,6 +38,8 @@ namespace HaiGame7.Model.EFModel
         public Nullable<int> HomeShow { get; set; }
         public byte[] Systime { get; set; }
         public string FightAddress1 { get; set; }
+        public string SFightPic { get; set; }
+        public string EFightPic { get; set; }
     
         public virtual db_Team db_Team { get; set; }
         public virtual db_Team db_Team1 { get; set; }
