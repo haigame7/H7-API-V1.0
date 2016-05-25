@@ -12,26 +12,16 @@ namespace HaiGame7.Model.EFModel
     using System;
     using System.Collections.Generic;
     
-    public partial class db_Article
+    public partial class db_LiveVideo
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public db_Article()
-        {
-            this.db_ArticleComment = new HashSet<db_ArticleComment>();
-        }
-    
-        public int ArticleID { get; set; }
+        public int VideoID { get; set; }
         public string Title { get; set; }
         public string Thumbnail { get; set; }
         public string Content { get; set; }
         public string Catalog { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string Remark { get; set; }
-        public Nullable<int> ArticleCount { get; set; }
-        public string Label { get; set; }
+        public Nullable<int> Enabled { get; set; }
         public byte[] SysTime { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<db_ArticleComment> db_ArticleComment { get; set; }
     }
 }

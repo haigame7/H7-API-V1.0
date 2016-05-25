@@ -22,15 +22,15 @@ namespace HaiGame7.Model.EFModel
     
         public int ResultID { get; set; }
         public Nullable<int> GameID { get; set; }
+        public Nullable<int> BoBoID { get; set; }
         public Nullable<int> HomeTeamID { get; set; }
         public Nullable<int> CustomerTeamID { get; set; }
         public string Result { get; set; }
         public string GameStage { get; set; }
-        public byte[] SysTime { get; set; }
         public Nullable<System.DateTime> StartTime { get; set; }
         public Nullable<System.DateTime> EndTime { get; set; }
         public string IDFromDota2 { get; set; }
-        public Nullable<int> BoBoID { get; set; }
+        public byte[] SysTime { get; set; }
     
         public virtual db_Game db_Game { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

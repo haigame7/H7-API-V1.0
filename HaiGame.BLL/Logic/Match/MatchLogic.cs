@@ -21,7 +21,7 @@ namespace HaiGame7.BLL
             HashSet<object> returnResult = new HashSet<object>();
             List<MatchModel> matchList = new List<MatchModel>();
             //赛事列表信息
-            using (HaiGame7Entities context=new HaiGame7Entities())
+            using (HiGame_V1Entities context=new HiGame_V1Entities())
             {
                 var sql = "SELECT" +
                           " t1.GameID as MatchID," +
@@ -53,7 +53,7 @@ namespace HaiGame7.BLL
             List<BoBoModel> boboList = new List<BoBoModel>();
             
             //主播列表
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 var sql = "SELECT" +
                           " t1.GameID as MatchID," +
@@ -93,7 +93,7 @@ namespace HaiGame7.BLL
             BoBoCountModel joinCount = new BoBoCountModel();
 
             //主播列表
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 var sql = "SELECT" +
                           " Count(t1.GameRecordID) as JoinCount" +
@@ -122,7 +122,7 @@ namespace HaiGame7.BLL
             HashSet<object> returnResult = new HashSet<object>();
 
             //报名参赛
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 db_User user = User.GetUserByPhoneNumber(match.PhoneNumber);
                 if(user!=null)
@@ -196,7 +196,7 @@ namespace HaiGame7.BLL
             HashSet<object> returnResult = new HashSet<object>();
 
             //取消报名参赛
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 db_User user = User.GetUserByPhoneNumber(match.PhoneNumber);
                 //判断是否队长，队员不可报名
@@ -242,7 +242,7 @@ namespace HaiGame7.BLL
             message.MessageCode = MESSAGE.NOJOINMATCH_CODE;
             message.Message = MESSAGE.NOJOINMATCH;
             //报名参赛
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 db_User user = User.GetUserByPhoneNumber(match.PhoneNumber);
                 if (user != null)
@@ -284,7 +284,7 @@ namespace HaiGame7.BLL
             List<MyMatchModel> myMatchList = new List<MyMatchModel>();
 
             //主播列表
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 string teamID=Team.MyAllTeamID(match.UserID);
                 string sql;
@@ -354,7 +354,7 @@ namespace HaiGame7.BLL
             List<MatchDateModel> dateList = new List<MatchDateModel>();
 
             //主播赛程列表
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 var sql = "SELECT" +
                         " CONVERT(varchar(100), t1.StartTime, 23) as StartTime" +
@@ -387,7 +387,7 @@ namespace HaiGame7.BLL
             List<MyMatchModel> boboMatchList = new List<MyMatchModel>();
 
             //主播赛程列表2
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
 
                 var sql2 = "SELECT" +

@@ -12,17 +12,15 @@ namespace HaiGame7.Model.EFModel
     using System;
     using System.Collections.Generic;
     
-    public partial class db_MatchGuess
+    public partial class db_BarQRCode
     {
-        public int GuessID { get; set; }
-        public Nullable<int> ResultID { get; set; }
-        public string GuessName { get; set; }
-        public Nullable<decimal> STeamOdds { get; set; }
-        public Nullable<decimal> ETeamOdds { get; set; }
-        public string Remark { get; set; }
-        public Nullable<int> State { get; set; }
+        public int ID { get; set; }
+        public Nullable<int> QID { get; set; }
+        public Nullable<int> UID { get; set; }
+        public Nullable<System.DateTime> UseTime { get; set; }
         public byte[] SysTime { get; set; }
     
-        public virtual db_FightResult db_FightResult { get; set; }
+        public virtual db_BarUser db_BarUser { get; set; }
+        public virtual db_QRCode db_QRCode { get; set; }
     }
 }

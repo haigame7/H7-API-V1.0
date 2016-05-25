@@ -52,121 +52,163 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EFModel\db_Article.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_ArticleComment.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_AssetRecord.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EFModel\db_BarQRCode.cs">
+      <DependentUpon>HaiGame.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EFModel\db_BarUser.cs">
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_BoBo.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_CommonUseHero.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EFModel\db_Contribute.cs">
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_DateFight.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_DateFightScore.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EFModel\db_Episode.cs">
+      <DependentUpon>HaiGame.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EFModel\db_EpisodeComment.cs">
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_FightResult.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_FightState.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_Follow.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_Game.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_GameBoBo.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_GameIDofUser.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_GameInfoofPlatform.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_GameRecord.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_GuessAndVote.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EFModel\db_GuessComment.cs">
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_GuessFight.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_GuessFightLink.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_GuessOption.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_GuessRecord.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EFModel\db_LiveVideo.cs">
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_MatchGuess.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_Message.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_MyCollection.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EFModel\db_NetBar.cs">
+      <DependentUpon>HaiGame.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EFModel\db_Partner.cs">
+      <DependentUpon>HaiGame.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EFModel\db_PartnerTime.cs">
+      <DependentUpon>HaiGame.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EFModel\db_PlayRecord.cs">
+      <DependentUpon>HaiGame.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EFModel\db_PlayRecordComment.cs">
+      <DependentUpon>HaiGame.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EFModel\db_PlayRecordPartner.cs">
+      <DependentUpon>HaiGame.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EFModel\db_PlayRecordUser.cs">
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_QRCode.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_Recruit.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_Report.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_SysMessage.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_Team.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_TeamBlog.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_TeamRemoveUser.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_TeamUser.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_UnAnswer.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="EFModel\db_User.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
-    <Compile Include="EFModel\HaiGame7.Context.cs">
+    <Compile Include="EFModel\HaiGame.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>HaiGame7.Context.tt</DependentUpon>
+      <DependentUpon>HaiGame.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="EFModel\HaiGame7.cs">
+    <Compile Include="EFModel\HaiGame.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
-    <Compile Include="EFModel\HaiGame7.Designer.cs">
+    <Compile Include="EFModel\HaiGame.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>HaiGame7.edmx</DependentUpon>
+      <DependentUpon>HaiGame.edmx</DependentUpon>
     </Compile>
     <Compile Include="EFModel\View_TeamUserGamePower.cs">
-      <DependentUpon>HaiGame7.tt</DependentUpon>
+      <DependentUpon>HaiGame.tt</DependentUpon>
     </Compile>
     <Compile Include="MyModel\ApplyTeamParameter2Model.cs" />
     <Compile Include="MyModel\ApplyTeamParameterModel.cs" />
@@ -223,12 +265,12 @@
     <None Include="DBDesigner\PDM_ADMIN.pdm" />
     <None Include="DBDesigner\PDM_GAME.pdm" />
     <None Include="DBDesigner\游戏陪玩.sws" />
-    <EntityDeploy Include="EFModel\HaiGame7.edmx">
+    <EntityDeploy Include="EFModel\HaiGame.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>HaiGame7.Designer.cs</LastGenOutput>
+      <LastGenOutput>HaiGame.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="EFModel\HaiGame7.edmx.diagram">
-      <DependentUpon>HaiGame7.edmx</DependentUpon>
+    <None Include="EFModel\HaiGame.edmx.diagram">
+      <DependentUpon>HaiGame.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -238,15 +280,15 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="DBDesigner\Readme.txt" />
-    <Content Include="EFModel\HaiGame7.Context.tt">
+    <Content Include="EFModel\HaiGame.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>HaiGame7.edmx</DependentUpon>
-      <LastGenOutput>HaiGame7.Context.cs</LastGenOutput>
+      <DependentUpon>HaiGame.edmx</DependentUpon>
+      <LastGenOutput>HaiGame.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="EFModel\HaiGame7.tt">
+    <Content Include="EFModel\HaiGame.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>HaiGame7.edmx</DependentUpon>
-      <LastGenOutput>HaiGame7.cs</LastGenOutput>
+      <DependentUpon>HaiGame.edmx</DependentUpon>
+      <LastGenOutput>HaiGame.cs</LastGenOutput>
     </Content>
     <Content Include="EFModel\Readme.txt" />
     <Content Include="Readme.txt" />

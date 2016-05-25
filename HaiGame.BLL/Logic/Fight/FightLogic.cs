@@ -24,7 +24,7 @@ namespace HaiGame7.BLL
             HashSet<object> returnResult = new HashSet<object>();
             //获取约战平台约战记录的当前状态
             //个人排行：昵称，签名，氦气，战斗力，大神系数
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //联合查询
                 var sql = "SELECT" +
@@ -79,7 +79,7 @@ namespace HaiGame7.BLL
             HashSet<object> returnResult = new HashSet<object>();
             JavaScriptSerializer jss = new JavaScriptSerializer();
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //发起约战前提条件判断
                 message = Fight.IsChallenge(para.UserID,para.STeamID, para.Money);
@@ -158,7 +158,7 @@ namespace HaiGame7.BLL
             JavaScriptSerializer jss = new JavaScriptSerializer();
             List<FightStateDetailModel> fightSendList;
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 string teamID = "()";
                 db_User userInfo = context.db_User.Where(c => c.PhoneNumber == fight.PhoneNumber).FirstOrDefault();
@@ -210,7 +210,7 @@ namespace HaiGame7.BLL
             JavaScriptSerializer jss = new JavaScriptSerializer();
             List<FightStateDetailModel> fightReceiveList;
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 string teamID = "()";
                 db_User userInfo = context.db_User.Where(c => c.PhoneNumber == fight.PhoneNumber).FirstOrDefault();
@@ -261,7 +261,7 @@ namespace HaiGame7.BLL
             HashSet<object> returnResult = new HashSet<object>();
             JavaScriptSerializer jss = new JavaScriptSerializer();
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //1.dategight表更改当前状态
                 var fightRecord=context.db_DateFight.Where(c => c.DateID == fight.DateID).FirstOrDefault();
@@ -317,7 +317,7 @@ namespace HaiGame7.BLL
             HashSet<object> returnResult = new HashSet<object>();
             JavaScriptSerializer jss = new JavaScriptSerializer();
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //判断氦气是否充足
                 bool isEnoughMoney = Asset.IsEnoughMoney(fight.UserID, fight.Money);
@@ -376,7 +376,7 @@ namespace HaiGame7.BLL
             HashSet<object> returnResult = new HashSet<object>();
             JavaScriptSerializer jss = new JavaScriptSerializer();
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //datefight表更改当前状态
                 db_DateFight fightRecord = new db_DateFight();

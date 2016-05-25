@@ -15,7 +15,7 @@ namespace HaiGame7.BLL.Logic.Common
         public static int MyRank(int myAsset, DateTime regDate)
         {
             int totalCount = 0;
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //
                 var sql = "select t1.UserID,t2.RegisterDate," +
@@ -42,7 +42,7 @@ namespace HaiGame7.BLL.Logic.Common
         /// <returns>true|false</returns>
         public static bool AddMoneyRegister(int userID)
         {
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 db_AssetRecord assetRecord = new db_AssetRecord();
 
@@ -70,7 +70,7 @@ namespace HaiGame7.BLL.Logic.Common
         #region 判断氦气是否充足
         public static bool IsEnoughMoney(int userID,int Money)
         {
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 int asset = Convert.ToInt32(context.db_AssetRecord.Where(c => c.UserID == userID).Sum(c => c.VirtualMoney));
                 //氦气不足

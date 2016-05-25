@@ -18,7 +18,7 @@ namespace HaiGame7.BLL
             JavaScriptSerializer jss = new JavaScriptSerializer();
             HashSet<object> returnResult = new HashSet<object>();
             //个人排行：昵称，签名，氦气，战斗力，大神系数
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //联合查询
                 string sql;
@@ -108,7 +108,7 @@ namespace HaiGame7.BLL
             HashSet<object> returnResult = new HashSet<object>();
 
             //团队排行：战队名称，战斗力，氦气，热度
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 var sql = "SELECT" +
                           " t.TeamID," +

@@ -12,21 +12,18 @@ namespace HaiGame7.Model.EFModel
     using System;
     using System.Collections.Generic;
     
-    public partial class db_GuessRecord
+    public partial class db_PlayRecordUser
     {
-        public int GuessRecordID { get; set; }
+        public int ID { get; set; }
+        public Nullable<int> PlayRecordID { get; set; }
         public Nullable<int> UserID { get; set; }
-        public Nullable<int> GuessID { get; set; }
-        public Nullable<int> OptionID { get; set; }
-        public Nullable<int> BetMoney { get; set; }
-        public string Result { get; set; }
-        public Nullable<int> WinMoney { get; set; }
-        public Nullable<int> FinalMoney { get; set; }
-        public Nullable<int> GuessType { get; set; }
-        public Nullable<System.DateTime> GuessTime { get; set; }
-        public Nullable<decimal> Odds { get; set; }
+        public string GameID { get; set; }
+        public Nullable<int> Pay { get; set; }
+        public string State { get; set; }
+        public string Remark { get; set; }
         public byte[] SysTime { get; set; }
     
+        public virtual db_PlayRecord db_PlayRecord { get; set; }
         public virtual db_User db_User { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace HaiGame7.BLL.Logic.Common
         public static db_User GetUserByPhoneNumber(string phoneNumber)
         {
             db_User user;
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 user = context.db_User.Where(c => c.PhoneNumber == phoneNumber).FirstOrDefault();
             }
@@ -26,7 +26,7 @@ namespace HaiGame7.BLL.Logic.Common
         public static UserModel GetUserModelByPhoneNumber(string phoneNumber)
         {
             UserModel user;
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 var sql = "SELECT t1.UserID,t1.PhoneNumber,t1.UserWebNickName," +
                          "  t1.UserWebPicture,t1.UserName,t1.Address,t1.Sex,CONVERT(varchar(100), t1.Birthday, 23) as Birthday,t1.Hobby" +
@@ -50,7 +50,7 @@ namespace HaiGame7.BLL.Logic.Common
         public static UserModel GetUserModelByUserID(int userID)
         {
             UserModel user;
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 var sql = "SELECT t1.UserID,t1.PhoneNumber,t1.UserWebNickName," +
                          " CONVERT(varchar(100), t1.RegisterDate, 20) as RegDate," +
@@ -76,7 +76,7 @@ namespace HaiGame7.BLL.Logic.Common
         public static UserModel GetUserModelByNickName(string nickName)
         {
             UserModel user;
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 var sql = "SELECT t1.UserID,t1.PhoneNumber,t1.UserWebNickName," +
                          "  t1.UserWebPicture,t1.UserName,t1.Address,t1.Sex,CONVERT(varchar(100), t1.Birthday, 23) as Birthday,t1.Hobby" +
@@ -93,7 +93,7 @@ namespace HaiGame7.BLL.Logic.Common
         public static bool GetUserByNickName(string nickName)
         {
             db_User user;
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 user = context.db_User.Where(c => c.UserWebNickName == nickName).FirstOrDefault();
             }
@@ -109,7 +109,7 @@ namespace HaiGame7.BLL.Logic.Common
         public static List<HeroModel> GetHeroImgeByUserID(int userID)
         {
             List<HeroModel> heroImage;
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //
                 var sql = "SELECT" +
@@ -131,7 +131,7 @@ namespace HaiGame7.BLL.Logic.Common
         public static int GetGamePowerByUserID(int userID)
         {
             GameModel gameInfo = new GameModel();
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //
                 // 获取用户游戏数据
@@ -158,7 +158,7 @@ namespace HaiGame7.BLL.Logic.Common
         public static int? GetAssetByUserID(int userID)
         {
             int? asset;
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //获取用户总资产
                 asset = context.db_AssetRecord.Where(c => c.UserID == userID).Sum(c => c.VirtualMoney);

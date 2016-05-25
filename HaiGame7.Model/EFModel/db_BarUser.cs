@@ -12,23 +12,23 @@ namespace HaiGame7.Model.EFModel
     using System;
     using System.Collections.Generic;
     
-    public partial class db_QRCode
+    public partial class db_BarUser
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public db_QRCode()
+        public db_BarUser()
         {
             this.db_BarQRCode = new HashSet<db_BarQRCode>();
         }
     
-        public int QID { get; set; }
-        public int DateID { get; set; }
-        public string CodeStr { get; set; }
-        public System.DateTime EndDate { get; set; }
-        public int State { get; set; }
+        public int UID { get; set; }
+        public Nullable<int> BID { get; set; }
+        public string UserName { get; set; }
+        public string LoginName { get; set; }
+        public string PassWord { get; set; }
         public byte[] SysTime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<db_BarQRCode> db_BarQRCode { get; set; }
-        public virtual db_DateFight db_DateFight { get; set; }
+        public virtual db_NetBar db_NetBar { get; set; }
     }
 }

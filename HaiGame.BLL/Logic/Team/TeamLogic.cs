@@ -22,7 +22,7 @@ namespace HaiGame7.BLL
             JavaScriptSerializer jss = new JavaScriptSerializer();
             HashSet<object> returnResult = new HashSet<object>();
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //判断战队名称是否存在
                 var count=context.db_Team.
@@ -105,7 +105,7 @@ namespace HaiGame7.BLL
             JavaScriptSerializer jss = new JavaScriptSerializer();
             HashSet<object> returnResult = new HashSet<object>();
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //判断战队名称是否存在
                 var setTeam = context.db_Team.
@@ -150,7 +150,7 @@ namespace HaiGame7.BLL
             JavaScriptSerializer jss = new JavaScriptSerializer();
             HashSet<object> returnResult = new HashSet<object>();
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //更新战队信息
                 db_Team team = context.db_Team.Where(c => c.TeamID == para.TeamID).FirstOrDefault();
@@ -190,7 +190,7 @@ namespace HaiGame7.BLL
             JavaScriptSerializer jss = new JavaScriptSerializer();
             HashSet<object> returnResult = new HashSet<object>();
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //判断是否有权解散战队
                 var deleteTeam=context.db_Team.Where(c => c.CreateUserID == team.CreatUserID)
@@ -259,7 +259,7 @@ namespace HaiGame7.BLL
             JavaScriptSerializer jss = new JavaScriptSerializer();
             HashSet<object> returnResult = new HashSet<object>();
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //三种情况：1.不属于任何战队，也没有自己的战队。2.是某战队的队员。 3.是某战队的队长
                 db_User user = context.db_User.Where(c => c.UserID == team.CreatUserID).FirstOrDefault();
@@ -303,7 +303,7 @@ namespace HaiGame7.BLL
             JavaScriptSerializer jss = new JavaScriptSerializer();
             HashSet<object> returnResult = new HashSet<object>();
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //三种情况：1.不属于任何战队，也没有自己的战队。2.是某战队的队员。 3.是某战队的队长
                 db_User user = context.db_User.Where(c => c.UserID == team.CreatUserID).FirstOrDefault();
@@ -384,7 +384,7 @@ namespace HaiGame7.BLL
             MessageModel message = new MessageModel();
             JavaScriptSerializer jss = new JavaScriptSerializer();
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 
                 //判断战队名称是否存在
@@ -404,7 +404,7 @@ namespace HaiGame7.BLL
             HashSet<object> returnResult = new HashSet<object>();
             List<RecruitModel> recruitList;
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 string sql;
                 if (para.UserID == 0)
@@ -472,7 +472,7 @@ namespace HaiGame7.BLL
             JavaScriptSerializer jss = new JavaScriptSerializer();
             HashSet<object> returnResult = new HashSet<object>();
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //判断角色是否是队长，队长不可申请加入其它战队
                 //判断是否参加其它战队，每个队员只可以参加一只战队
@@ -524,7 +524,7 @@ namespace HaiGame7.BLL
             HashSet<object> returnResult = new HashSet<object>();
             List<MyApplyTeamModel> teamList;
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //从Message表取数据，我的申请条件：state=1 and UserID=我的ID。2.申请加入条件：state=1 and TeamID=我的默认战队ID。
 
@@ -564,7 +564,7 @@ namespace HaiGame7.BLL
             HashSet<object> returnResult = new HashSet<object>();
             List<MyApplyTeamModel> teamList;
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //从Message表取数据，我的申请条件：state=1 and UserID=我的ID。2.申请加入条件：state=1 and TeamID=我的默认战队ID。
 
@@ -603,7 +603,7 @@ namespace HaiGame7.BLL
             JavaScriptSerializer jss = new JavaScriptSerializer();
             HashSet<object> returnResult = new HashSet<object>();
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //db_Recruit表插入或更新一条数据
                 var recruit=context.db_Recruit.Where(c => c.TeamID == para.TeamID).FirstOrDefault();
@@ -638,7 +638,7 @@ namespace HaiGame7.BLL
             JavaScriptSerializer jss = new JavaScriptSerializer();
             HashSet<object> returnResult = new HashSet<object>();
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //判断用户是否已经加入战队
                 var isJoinOther = context.db_TeamUser.Where(c => c.UserID == para.UserID)
@@ -692,7 +692,7 @@ namespace HaiGame7.BLL
             HashSet<object> returnResult = new HashSet<object>();
             List<User2Model> userInfo;
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //从Message表取数据，发出申请条件：state=2 and SendID=TeamID。
                 var sql = "SELECT t2.UserID,t2.PhoneNumber,t2.UserWebNickName," +
@@ -735,7 +735,7 @@ namespace HaiGame7.BLL
             HashSet<object> returnResult = new HashSet<object>();
             List<User2Model> userInfo;
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //从Message表取数据，发出申请条件：state=1 and ReceiveID=TeamID。
                 var sql = "SELECT"+
@@ -779,7 +779,7 @@ namespace HaiGame7.BLL
             JavaScriptSerializer jss = new JavaScriptSerializer();
             HashSet<object> returnResult = new HashSet<object>();
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 var msg = context.db_Message.Where(c => c.MID == para.MessageID).FirstOrDefault();
                 //拒绝加入的情况，信息状态设为加入失败
@@ -884,7 +884,7 @@ namespace HaiGame7.BLL
             JavaScriptSerializer jss = new JavaScriptSerializer();
             HashSet<object> returnResult = new HashSet<object>();
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 var msg = context.db_Message.Where(c => c.MID == para.MessageID).FirstOrDefault();
                 //拒绝加入的情况，信息状态设为加入失败
@@ -964,7 +964,7 @@ namespace HaiGame7.BLL
             JavaScriptSerializer jss = new JavaScriptSerializer();
             HashSet<object> returnResult = new HashSet<object>();
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //获取战队信息
                 db_Team team = context.db_Team.Where(c => c.TeamID == para.TeamID).FirstOrDefault();

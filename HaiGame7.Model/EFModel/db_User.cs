@@ -19,10 +19,14 @@ namespace HaiGame7.Model.EFModel
         {
             this.db_ArticleComment = new HashSet<db_ArticleComment>();
             this.db_AssetRecord = new HashSet<db_AssetRecord>();
+            this.db_Contribute = new HashSet<db_Contribute>();
+            this.db_EpisodeComment = new HashSet<db_EpisodeComment>();
             this.db_GameIDofUser = new HashSet<db_GameIDofUser>();
             this.db_GameRecord = new HashSet<db_GameRecord>();
             this.db_GuessRecord = new HashSet<db_GuessRecord>();
             this.db_MyCollection = new HashSet<db_MyCollection>();
+            this.db_PlayRecordComment = new HashSet<db_PlayRecordComment>();
+            this.db_PlayRecordUser = new HashSet<db_PlayRecordUser>();
             this.db_Report = new HashSet<db_Report>();
             this.db_Team = new HashSet<db_Team>();
         }
@@ -33,10 +37,10 @@ namespace HaiGame7.Model.EFModel
         public string UserPicture { get; set; }
         public string UserName { get; set; }
         public string PhoneNumber { get; set; }
-        public string CardID { get; set; }
         public string UserPassWord { get; set; }
         public string UserWebNickName { get; set; }
         public string UserWebPicture { get; set; }
+        public string CardID { get; set; }
         public string StudentID { get; set; }
         public string GameID { get; set; }
         public string Picture { get; set; }
@@ -57,6 +61,10 @@ namespace HaiGame7.Model.EFModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<db_AssetRecord> db_AssetRecord { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<db_Contribute> db_Contribute { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<db_EpisodeComment> db_EpisodeComment { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<db_GameIDofUser> db_GameIDofUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<db_GameRecord> db_GameRecord { get; set; }
@@ -64,6 +72,10 @@ namespace HaiGame7.Model.EFModel
         public virtual ICollection<db_GuessRecord> db_GuessRecord { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<db_MyCollection> db_MyCollection { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<db_PlayRecordComment> db_PlayRecordComment { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<db_PlayRecordUser> db_PlayRecordUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<db_Report> db_Report { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

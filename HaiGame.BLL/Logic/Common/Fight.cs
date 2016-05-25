@@ -42,7 +42,7 @@ namespace HaiGame7.BLL.Logic.Common
         #region 判断角色，队员不能发起约战
         public static bool IsTeamCreater(int userID,int teamID)
         {
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 var team=context.db_Team.
                                 Where(c => c.CreateUserID == userID).
@@ -62,7 +62,7 @@ namespace HaiGame7.BLL.Logic.Common
         #region 判断是否超出每日限额
         public static bool IsDailyLimit(int userID, int teamID)
         {
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 var sql = "SELECT" +
                           "  t1.DateID" +
@@ -89,7 +89,7 @@ namespace HaiGame7.BLL.Logic.Common
         #region 判断是否与对方有未完成的约战
         public static bool IsFinished(int userID, int teamID)
         {
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 var sql = "SELECT" +
                           "  t1.DateID" +
@@ -149,7 +149,7 @@ namespace HaiGame7.BLL.Logic.Common
         #endregion
 
         #region 根据约战ID更改Team表胜负场
-        public static void UpdateTeamByDateID(FightParameter2Model fight, HaiGame7Entities context)
+        public static void UpdateTeamByDateID(FightParameter2Model fight, HiGame_V1Entities context)
         {
             db_DateFight dateFight = context.db_DateFight.Where(c => c.DateID == fight.DateID).FirstOrDefault();
             db_Team sTeam = context.db_Team.Where(c => c.TeamID == dateFight.STeamID).FirstOrDefault();

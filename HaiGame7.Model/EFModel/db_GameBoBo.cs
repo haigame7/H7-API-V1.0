@@ -19,8 +19,8 @@ namespace HaiGame7.Model.EFModel
         public Nullable<int> GameID { get; set; }
         public Nullable<int> Count { get; set; }
         public string TalkShow { get; set; }
-        public byte[] SysTime { get; set; }
         public string Remark { get; set; }
+        public byte[] SysTime { get; set; }
     
         public virtual db_BoBo db_BoBo { get; set; }
         public virtual db_Game db_Game { get; set; }

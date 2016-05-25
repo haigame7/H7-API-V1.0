@@ -12,33 +12,33 @@ namespace HaiGame7.Model.EFModel
     using System;
     using System.Collections.Generic;
     
-    public partial class db_GuessAndVote
+    public partial class db_PlayRecord
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public db_GuessAndVote()
+        public db_PlayRecord()
         {
-            this.db_GuessFightLink = new HashSet<db_GuessFightLink>();
-            this.db_GuessComment = new HashSet<db_GuessComment>();
-            this.db_GuessOption = new HashSet<db_GuessOption>();
+            this.db_PlayRecordPartner = new HashSet<db_PlayRecordPartner>();
+            this.db_PlayRecordUser = new HashSet<db_PlayRecordUser>();
+            this.db_PlayRecordComment = new HashSet<db_PlayRecordComment>();
         }
     
-        public int GuessID { get; set; }
-        public string GuessTitle { get; set; }
-        public string GuessPic { get; set; }
-        public string Introduce { get; set; }
-        public string GuessRule { get; set; }
+        public int PlayRecordID { get; set; }
+        public string PlayRecordCode { get; set; }
+        public string GameName { get; set; }
+        public string VSPlace { get; set; }
+        public string GameRoom { get; set; }
         public Nullable<System.DateTime> StartTime { get; set; }
         public Nullable<System.DateTime> EndTime { get; set; }
+        public string State { get; set; }
+        public Nullable<int> Income { get; set; }
         public string Remark { get; set; }
-        public Nullable<int> Enabled { get; set; }
-        public Nullable<int> Show { get; set; }
         public byte[] SysTime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<db_GuessFightLink> db_GuessFightLink { get; set; }
+        public virtual ICollection<db_PlayRecordPartner> db_PlayRecordPartner { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<db_GuessComment> db_GuessComment { get; set; }
+        public virtual ICollection<db_PlayRecordUser> db_PlayRecordUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<db_GuessOption> db_GuessOption { get; set; }
+        public virtual ICollection<db_PlayRecordComment> db_PlayRecordComment { get; set; }
     }
 }

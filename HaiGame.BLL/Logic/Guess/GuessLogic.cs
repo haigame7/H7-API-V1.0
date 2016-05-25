@@ -22,7 +22,7 @@ namespace HaiGame7.BLL
             HashSet<object> returnResult = new HashSet<object>();
             List<GuessModel> guessList = new List<GuessModel>();
             //获取竞猜列表
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //联合查询
                 var sql = "SELECT"+
@@ -76,7 +76,7 @@ namespace HaiGame7.BLL
             HashSet<object> returnResult = new HashSet<object>();
 
             //获取竞猜列表
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //判断氦气是否充足
                 bool isEnoughMoney = Asset.IsEnoughMoney(guess.UserID, guess.Money);
@@ -137,7 +137,7 @@ namespace HaiGame7.BLL
             HashSet<object> returnResult = new HashSet<object>();
 
             //获取竞猜列表
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 string where = "";
                 if (guess.GuessID==0)

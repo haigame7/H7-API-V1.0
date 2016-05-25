@@ -20,8 +20,8 @@ namespace HaiGame7.Model.EFModel
             this.db_DateFight = new HashSet<db_DateFight>();
             this.db_DateFight1 = new HashSet<db_DateFight>();
             this.db_GameRecord = new HashSet<db_GameRecord>();
-            this.db_TeamUser = new HashSet<db_TeamUser>();
             this.db_Recruit = new HashSet<db_Recruit>();
+            this.db_TeamUser = new HashSet<db_TeamUser>();
         }
     
         public int TeamID { get; set; }
@@ -48,10 +48,10 @@ namespace HaiGame7.Model.EFModel
         public virtual ICollection<db_DateFight> db_DateFight1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<db_GameRecord> db_GameRecord { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<db_Recruit> db_Recruit { get; set; }
         public virtual db_User db_User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<db_TeamUser> db_TeamUser { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<db_Recruit> db_Recruit { get; set; }
     }
 }

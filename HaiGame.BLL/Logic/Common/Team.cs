@@ -9,7 +9,7 @@ namespace HaiGame7.BLL.Logic.Common
     public class Team
     {
         #region 判断用户是否加入战队或创建战队
-        public static bool IsCreateOrJoinTeam(int userID, HaiGame7Entities context)
+        public static bool IsCreateOrJoinTeam(int userID, HiGame_V1Entities context)
         {
             db_Team team = context.db_Team.
                 Where(c => c.CreateUserID == userID).
@@ -29,7 +29,7 @@ namespace HaiGame7.BLL.Logic.Common
         #endregion
 
         #region 获取我的默认战队信息
-        public static TeamModel MyTeam(int userID, HaiGame7Entities context)
+        public static TeamModel MyTeam(int userID, HiGame_V1Entities context)
         {
             TeamModel myTeam = new TeamModel();
 
@@ -101,7 +101,7 @@ namespace HaiGame7.BLL.Logic.Common
         public static List<TeamModel> MyAllTeam(int userID)
         {
             List<TeamModel> myTeamList = new List<TeamModel>();
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 List<db_Team> team = context.db_Team.
                 Where(c => c.CreateUserID == userID).
@@ -143,7 +143,7 @@ namespace HaiGame7.BLL.Logic.Common
         #region 根据战队ID获取战队信息
         public static TeamModel GetTeambyID(int teamID)
         {
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 TeamModel myTeam = new TeamModel();
 
@@ -179,7 +179,7 @@ namespace HaiGame7.BLL.Logic.Common
         public static bool IsTeamNameExist(SimpleTeam2Model para)
         {
             bool isTeamNameExist = false;
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 TeamModel myTeam = new TeamModel();
 
@@ -201,7 +201,7 @@ namespace HaiGame7.BLL.Logic.Common
         {
             string myAllTeamID = "(0)";
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 //获取db_Team表里的数据
                 var teamList = context.db_Team.Where(c => c.CreateUserID == userID).ToList();
@@ -240,7 +240,7 @@ namespace HaiGame7.BLL.Logic.Common
         public static List<TeamModel> TeamListByUserFightScore(TeamListParameterModel para)
         {
             List<TeamModel> teamList = new List<TeamModel>();
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 // 获取战队列表
                 var sql = "SELECT" +
@@ -273,7 +273,7 @@ namespace HaiGame7.BLL.Logic.Common
         public static List<TeamModel> TeamListByTeamFightScore(TeamListParameterModel para)
         {
             List<TeamModel> teamList = new List<TeamModel>();
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 // 根据战队战斗力获取战队列表
                 // 查询条件：1.战队状态=0 2.战队满5人 3.剔除自己的战队
@@ -311,7 +311,7 @@ namespace HaiGame7.BLL.Logic.Common
         public static List<TeamModel> TeamListByCreateDate(TeamListParameterModel para)
         {
             List<TeamModel> teamList = new List<TeamModel>();
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 // 获取战队列表
                 var sql = "SELECT" +
@@ -344,7 +344,7 @@ namespace HaiGame7.BLL.Logic.Common
         public static string GetRecruitContentByTeamID(int teamID)
         {
             string RecruitContent="";
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 var Recruit = context.db_Recruit.Where(c => c.TeamID == teamID).FirstOrDefault();
                 if (Recruit != null)
@@ -360,7 +360,7 @@ namespace HaiGame7.BLL.Logic.Common
         public static string GetUserPictureByUserID(int? userID)
         {
             string userPicture = "";
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 var user = context.db_User.Where(c => c.UserID == userID).FirstOrDefault();
                 if (user != null)
@@ -378,7 +378,7 @@ namespace HaiGame7.BLL.Logic.Common
             List<db_TeamUser> teamUser;
             List<TeamUserModel> teamUserList=new List<TeamUserModel>();
             
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 teamUser = context.db_TeamUser.Where(c => c.TeamID == teamID).ToList();
                 if (teamUser != null)
@@ -413,7 +413,7 @@ namespace HaiGame7.BLL.Logic.Common
             int teamUserCount;
             List<TeamUserModel> teamUserList = new List<TeamUserModel>();
 
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 teamUserCount = context.db_TeamUser.Where(c => c.TeamID == teamID).ToList().Count;
             }
@@ -425,7 +425,7 @@ namespace HaiGame7.BLL.Logic.Common
         public static bool IsBoBoFull(MatchParameter2Model match)
         {
             bool isOK = true;
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
                 var boboCount = context.db_GameRecord.Where(c => c.BoBoID == match.BoBoID)
                                                          .Where(c => c.GameID == match.MatchID)
@@ -446,7 +446,7 @@ namespace HaiGame7.BLL.Logic.Common
         public static int GetFightScoreByTeamID(int teamID)
         {
             int fightScore = 0;
-            using (HaiGame7Entities context = new HaiGame7Entities())
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
             {
 
                 var team = context.View_TeamUserGamePower.Where(c => c.TeamID == teamID)
