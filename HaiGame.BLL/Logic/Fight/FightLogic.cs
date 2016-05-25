@@ -171,7 +171,8 @@ namespace HaiGame7.BLL
                           " CONVERT(varchar(100), t1.FightTime, 20) as FightTime," +
                           " t5.PhoneNumber," +
                           " CONVERT(varchar(100), t2.StateTime, 20) as StateTimeStr," +
-                          "　t3.TeamName as STeamName,t4.TeamName as ETeamName" +
+                          "　t3.TeamName as STeamName,t4.TeamName as ETeamName," +
+                          "　t1.SFightPic as SFightPic,t1.EFightPic as EFightPic" +
                           " FROM" +
                           " db_DateFight t1 join db_FightState t2" +
                           " ON t1.DateID = t2.DateID and t1.CurrentState = t2.State" +
@@ -222,7 +223,8 @@ namespace HaiGame7.BLL
                           " CONVERT(varchar(100), t1.FightTime, 20) as FightTime," +
                           " t5.PhoneNumber," +
                           " CONVERT(varchar(100), t2.StateTime, 20) as StateTimeStr," +
-                          " t3.TeamName as STeamName,t4.TeamName as ETeamName" +
+                          " t3.TeamName as STeamName,t4.TeamName as ETeamName," +
+                          "　t1.SFightPic as SFightPic,t1.EFightPic as EFightPic" +
                           " FROM" +
                           " db_DateFight t1 join db_FightState t2" +
                           " ON t1.DateID = t2.DateID and t1.CurrentState = t2.State" +
@@ -382,10 +384,12 @@ namespace HaiGame7.BLL
                 if (fight.SFightAddress==null)
                 {
                     fightRecord.FightAddress1 = fight.EFightAddress;
+                    fightRecord.EFightPic = Common.Base64ToFightImage(fight.EFightPic,fight.DateID.ToString());
                 }
                 else
                 {
                     fightRecord.FightAddress = fight.SFightAddress;
+                    fightRecord.SFightPic = Common.Base64ToFightImage(fight.SFightPic, fight.DateID.ToString());
                 }
                 context.SaveChanges();
 

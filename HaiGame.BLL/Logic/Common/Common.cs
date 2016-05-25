@@ -166,7 +166,7 @@ namespace HaiGame7.BLL.Logic.Common
         }
         #endregion
 
-        #region 将Base64字符串转换为图片
+        #region 将Base64字符串转换为战队图片
         /// <summary>
         /// 将Base64字符串转换为图片
         /// </summary>
@@ -184,6 +184,27 @@ namespace HaiGame7.BLL.Logic.Common
             ms.Dispose();
             bmp.Dispose();
             return txtFileName.Replace(@"D:\HiGameImages\logo\", @"http://images.haigame7.com/logo/");
+        }
+        #endregion
+
+        #region 将Base64字符串转换赛果截图
+        /// <summary>
+        /// 将Base64字符串转换赛果截图
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public static string Base64ToFightImage(string base64, string dateID)
+        {
+            byte[] arr = Convert.FromBase64String(base64);
+            MemoryStream ms = new MemoryStream(arr);
+            Bitmap bmp = new Bitmap(ms);
+
+            string txtFileName = @"D:\HiGameImages\fight\" + dateID + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".png";
+            bmp.Save(txtFileName, ImageFormat.Png);
+            ms.Close();
+            ms.Dispose();
+            bmp.Dispose();
+            return txtFileName.Replace(@"D:\HiGameImages\fight\", @"http://images.haigame7.com/fight/");
         }
         #endregion
     }
