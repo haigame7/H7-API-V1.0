@@ -225,6 +225,7 @@
     <Compile Include="MyModel\Guess2Model.cs" />
     <Compile Include="MyModel\GuessModel.cs" />
     <Compile Include="MyModel\SimpleTeam2Model.cs" />
+    <Compile Include="MyModel\UserRechargeParameterModel.cs" />
     <Compile Include="MyModel\UserParameterModel.cs" />
     <Compile Include="MyModel\GuessParameterModel.cs" />
     <Compile Include="MyModel\GuessRecordModel.cs" />

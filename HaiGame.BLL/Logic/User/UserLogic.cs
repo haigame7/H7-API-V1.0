@@ -854,5 +854,42 @@ namespace HaiGame7.BLL
             return result;
         }
         #endregion
+
+        #region 苹果充值
+        public string Recharge(UserRechargeParameterModel para)
+        {
+            string result = "";
+            MessageModel message = new MessageModel();
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            HashSet<object> returnResult = new HashSet<object>();
+
+            using (HiGame_V1Entities context = new HiGame_V1Entities())
+            {
+                
+                    db_AssetRecord assetRecord = new db_AssetRecord();
+
+                    assetRecord.UserID = para.UserID;
+                    assetRecord.VirtualMoney = para.VirtualMoney;
+                    assetRecord.TrueMoney = para.VirtualMoney/10;
+                    assetRecord.GainWay = ASSET.GAINWAY_RECHARGE;
+                    assetRecord.GainTime = DateTime.Now;
+                    assetRecord.State = ASSET.MONEYSTATE_YES;
+                    //时间+操作+收入支出金额
+                    assetRecord.Remark = assetRecord.GainTime + " " +
+                                        assetRecord.GainWay + " "
+                                        + ASSET.PAY_IN +
+                                        assetRecord.VirtualMoney.ToString();
+
+                    //将充值记录加入资产记录表
+                    context.db_AssetRecord.Add(assetRecord);
+                    context.SaveChanges();
+                    message.Message = MESSAGE.OK;
+                    message.MessageCode = MESSAGE.OK_CODE;
+            }
+            returnResult.Add(message);
+            result = jss.Serialize(returnResult);
+            return result;
+        }
+        #endregion
     }
 }

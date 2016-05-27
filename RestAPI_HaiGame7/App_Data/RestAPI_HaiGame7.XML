@@ -1209,6 +1209,15 @@
             今日已签到：[{"MessageCode":60002,"Message":"今日已签到"}]
             </returns>
         </member>
+        <member name="M:HaiGame7.RestAPI.Controllers.UserController.Recharge(HaiGame7.Model.MyModel.UserRechargeParameterModel)">
+            <summary>
+            充值
+            </summary>
+            <param name="para">
+            {UserID:184,VirtualMoney:100}
+            </param>
+            <returns></returns>
+        </member>
         <member name="T:HaiGame7.RestAPI.Filter.ExceptionFilter">
             <summary>
             异常处理Filter

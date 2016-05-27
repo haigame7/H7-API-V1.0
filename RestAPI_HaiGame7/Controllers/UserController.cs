@@ -459,5 +459,24 @@ namespace HaiGame7.RestAPI.Controllers
             return returnResult;
         }
         #endregion
+
+        #region 充值
+        /// <summary>
+        /// 充值
+        /// </summary>
+        /// <param name="para">
+        /// {UserID:184,VirtualMoney:100}
+        /// </param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage Recharge([FromBody] UserRechargeParameterModel para)
+        {
+            UserLogic userLogic = new UserLogic();
+            jsonResult = userLogic.Recharge(para);
+
+            returnResult.Content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
+            return returnResult;
+        }
+        #endregion
     }
 }
